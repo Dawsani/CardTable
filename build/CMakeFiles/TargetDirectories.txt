@@ -1,0 +1,3 @@
+/home/dawson/Desktop/projects/card_table/build/CMakeFiles/CardTable.dir
+/home/dawson/Desktop/projects/card_table/build/CMakeFiles/edit_cache.dir
+/home/dawson/Desktop/projects/card_table/build/CMakeFiles/rebuild_cache.dir
