@@ -1,6 +1,8 @@
 #include <GL/glew.h>    // Include GLEW for OpenGL function loading
 #include <GLFW/glfw3.h> // Include GLFW for window management
 #include <iostream>
+#include <glm/mat4x4.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 // Vertex data for a quad
 float vertices[] = {
@@ -59,7 +61,7 @@ int main() {
     glViewport(0, 0, width, height);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-     Compile and link shaders (load your own shader loading utility or use raw OpenGL shader compilation)
+    // Compile and link shaders (load your own shader loading utility or use raw OpenGL shader compilation)
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     unsigned int shaderProgram = glCreateProgram();

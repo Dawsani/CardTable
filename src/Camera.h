@@ -1,6 +1,5 @@
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
-#include <GL/gl.h>
 
 class Camera {
     public:
