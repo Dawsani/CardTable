@@ -4,5 +4,11 @@
   "command": "/usr/bin/g++   -g -o CMakeFiles/CardTable.dir/src/main.cpp.o -c /home/dawson/Desktop/projects/card_table/src/main.cpp",
   "file": "/home/dawson/Desktop/projects/card_table/src/main.cpp",
   "output": "CMakeFiles/CardTable.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/dawson/Desktop/projects/card_table/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/CardTable.dir/src/Camera.cpp.o -c /home/dawson/Desktop/projects/card_table/src/Camera.cpp",
+  "file": "/home/dawson/Desktop/projects/card_table/src/Camera.cpp",
+  "output": "CMakeFiles/CardTable.dir/src/Camera.cpp.o"
 }
 ]

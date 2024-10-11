@@ -4,6 +4,8 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Utils.hpp"
+
 // Vertex data for a quad
 float vertices[] = {
     -0.5f, -0.5f, 0.0f,
@@ -64,7 +66,35 @@ int main() {
     // Compile and link shaders (load your own shader loading utility or use raw OpenGL shader compilation)
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+    const char* vertexShaderFileName =      "src/shaders/shader.v.glsl";
+    const char* fragmentShaderFileName =    "src/shaders/shader.f.glsl";
+
+    char* fileString;
+    if (Utils::readTextFromFile(vertexShaderFileName, fileString) == false) {
+        return -1;
+    }
+
+    glShaderSource(vertexShader, 1, (const char**)&fileString, nullptr);
+    glCompileShader(vertexShader);
+
+    if (Utils::readTextFromFile(fragmentShaderFileName, fileString) == false) {
+        std::cout << "Could not read shader file: " << fragmentShaderFileName << std::endl;
+        return -1;
+    }
+
+    glShaderSource(fragmentShader, 1, (const char**)&fileString, nullptr);
+    glCompileShader(fragmentShader);
+
     unsigned int shaderProgram = glCreateProgram();
+
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+
+    glLinkProgram(shaderProgram);
+
+    // clean up memory
+    delete fileString;
 
     // Generate vertex array and buffers
     unsigned int VAO, VBO, IBO;
@@ -96,7 +126,7 @@ int main() {
     while (!glfwWindowShouldClose(window)) {
         // Clear the screen to a color (e.g., black)
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
 
