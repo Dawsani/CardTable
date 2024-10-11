@@ -1,0 +1,13 @@
+add zoom in/out
+make the table bigger
+add a texture to the table
+allow the shaders to use textures
+make a card object
+texture the card object
+move card objects when they are clicked and dragged
+allow a deck of stacked cards to be created from a file full of card names, each with a corresponding image file
+create the hand in screen space
+allow cards to be dragged to and from the hand and the board
+add lighting to shaders
+networks, client/server multiplayer
+fix camera width height on window

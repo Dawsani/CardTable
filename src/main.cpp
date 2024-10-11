@@ -63,6 +63,18 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods 
     }
 }
 
+void scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
+    cameraPosition += glm::vec3(0.0f, yOffset, -yOffset);
+    if (cameraPosition.y < 1.0f) {
+        cameraPosition.y = 1.0f;
+        cameraPosition.z = -1.0f;
+    }
+    else if (cameraPosition.y > 20.0f) {
+        cameraPosition.y = 20.0f;
+        cameraPosition.z = -20.0f;
+    }
+}
+
 int main() {
     // Initialize GLFW
     if (!glfwInit()) {
@@ -104,6 +116,7 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, cursor_position_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
+    glfwSetScrollCallback(window, scroll_callback);
 
     // Compile and link shaders (load your own shader loading utility or use raw OpenGL shader compilation)
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
