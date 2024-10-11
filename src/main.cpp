@@ -8,15 +8,14 @@
 
 // Vertex data for a quad
 float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-    -0.5f,  0.5f, 0.0f,
-    0.5f,  0.5f, 0.0f
+    -0.5f, 0.0f, -0.5f,
+     0.5f, 0.0f, -0.5f,
+    -0.5f,  0.0f, 0.5f,
+    0.5f,  0.0f, 0.5f
 };
 
 unsigned int indices[] = {
-    0, 1, 2,
-    1, 2, 3
+    0, 1, 2, 3
 };
 
 // Window resize callback function
@@ -130,8 +129,12 @@ int main() {
 
         glUseProgram(shaderProgram);
 
+        glm::vec3 cameraPosition = glm::vec3(0, 3, -3);
+        glm::vec3 cameraLookAtPoint = glm::vec3(0, 0, 0);   // looking at the origin
+        glm::vec3 cameraUpVector = glm::vec3(0, 1, 0);      
+
         glm::mat4 modelMatrix = glm::mat4(1.0f);
-        glm::mat4 viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));  // Camera is 3 units back
+        glm::mat4 viewMatrix = glm::lookAt(cameraPosition, cameraLookAtPoint, cameraUpVector );
         glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
         glm::mat4 mvpMatrix =  projectionMatrix * viewMatrix * modelMatrix;
@@ -140,7 +143,7 @@ int main() {
         glProgramUniformMatrix4fv(shaderProgram, mvpMatrixLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
 
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, 0);
 
         // Swap front and back buffers
         glfwSwapBuffers(window);
