@@ -18,9 +18,27 @@ unsigned int indices[] = {
     0, 1, 2, 3
 };
 
+glm::vec3 cameraPosition = glm::vec3(0, 3, -3);
+glm::vec3 cameraLookAtPoint = glm::vec3(0, 0, 0);   // looking at the origin
+glm::vec3 cameraUpVector = glm::vec3(0, 1, 0);    
+float cameraSpeed = 0.01f;  
+
+glm::vec2 cursorPosition;
+
 // Window resize callback function
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+}
+
+void cursor_position_callback(GLFWwindow* window, double x, double y ) {
+    glm::vec2 currentCursorPosition = glm::vec2(x, y);
+    glm::vec2 cursorMovement = cursorPosition - currentCursorPosition;
+    
+    glm::vec3 cameraTranslation = cameraSpeed * glm::vec3(cursorMovement.x, 0, cursorMovement.y);
+	cameraPosition += cameraTranslation;
+    cameraLookAtPoint += cameraTranslation;
+    
+    cursorPosition = currentCursorPosition;
 }
 
 int main() {
@@ -60,7 +78,9 @@ int main() {
     int width, height;
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
+
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, cursor_position_callback);
 
     // Compile and link shaders (load your own shader loading utility or use raw OpenGL shader compilation)
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -128,10 +148,6 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
-
-        glm::vec3 cameraPosition = glm::vec3(0, 3, -3);
-        glm::vec3 cameraLookAtPoint = glm::vec3(0, 0, 0);   // looking at the origin
-        glm::vec3 cameraUpVector = glm::vec3(0, 1, 0);      
 
         glm::mat4 modelMatrix = glm::mat4(1.0f);
         glm::mat4 viewMatrix = glm::lookAt(cameraPosition, cameraLookAtPoint, cameraUpVector );
