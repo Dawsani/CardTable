@@ -24,6 +24,9 @@ glm::vec3 cameraUpVector = glm::vec3(0, 1, 0);
 float cameraSpeed = 0.01f;  
 
 glm::vec2 cursorPosition;
+GLint rightMouseButtonState = GLFW_RELEASE;
+GLint leftMouseButtonState = GLFW_RELEASE;
+
 
 // Window resize callback function
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -32,13 +35,32 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 
 void cursor_position_callback(GLFWwindow* window, double x, double y ) {
     glm::vec2 currentCursorPosition = glm::vec2(x, y);
-    glm::vec2 cursorMovement = cursorPosition - currentCursorPosition;
-    
-    glm::vec3 cameraTranslation = cameraSpeed * glm::vec3(cursorMovement.x, 0, cursorMovement.y);
-	cameraPosition += cameraTranslation;
-    cameraLookAtPoint += cameraTranslation;
-    
+
+    if (leftMouseButtonState == GLFW_PRESS) {
+
+        // disable the curser until they release mouse button
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+        glm::vec2 cursorMovement = cursorPosition - currentCursorPosition;
+        
+        glm::vec3 cameraTranslation = -cameraSpeed * glm::vec3(cursorMovement.x, 0, cursorMovement.y);
+        cameraPosition += cameraTranslation;
+        cameraLookAtPoint += cameraTranslation;
+    }
+
     cursorPosition = currentCursorPosition;
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods ) {
+	if (button == GLFW_MOUSE_BUTTON_RIGHT) {
+        rightMouseButtonState = action;
+    }
+    else if (button == GLFW_MOUSE_BUTTON_LEFT) {
+        leftMouseButtonState = action;
+        if (leftMouseButtonState == GLFW_RELEASE) {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
+    }
 }
 
 int main() {
@@ -81,6 +103,7 @@ int main() {
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, cursor_position_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
 
     // Compile and link shaders (load your own shader loading utility or use raw OpenGL shader compilation)
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
