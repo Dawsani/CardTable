@@ -19,6 +19,8 @@ unsigned int LoadTexture(const char* filename) {
     
     glGenTextures(1, &textureHandle);
     glBindTexture(GL_TEXTURE_2D, textureHandle);
+    glGenTextures(1, &textureHandle);
+    glBindTexture(GL_TEXTURE_2D, textureHandle);
 
     // Load the texture image
     int width, height, nrChannels;
@@ -218,6 +220,7 @@ int main() {
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
 
+    SetupTextures();
     SetupTextures();
 
     // Main loop
