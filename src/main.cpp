@@ -6,17 +6,23 @@
 #include <stb_image.h>
 #include "Utils.hpp"
 
-unsigned int textureID = 0;
+unsigned int textureHandles[1];
 
-void SetUpTextures() {
+enum TEXTURE_ID {
+    TABLE = 0
+};
+
+unsigned int LoadTexture(const char* filename) {
+    unsigned int textureHandle = 0;
+
     stbi_set_flip_vertically_on_load(true);
     
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_2D, textureID);
+    glGenTextures(1, &textureHandle);
+    glBindTexture(GL_TEXTURE_2D, textureHandle);
 
     // Load the texture image
     int width, height, nrChannels;
-    unsigned char *data = stbi_load("assets/textures/test.png", &width, &height, &nrChannels, 0);
+    unsigned char *data = stbi_load(filename, &width, &height, &nrChannels, 0);
     if (data) {
         // Upload the image to the GPU
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -31,6 +37,12 @@ void SetUpTextures() {
     }
 
     stbi_image_free(data);
+
+    return textureHandle;
+}
+
+void SetupTextures() {
+    textureHandles[TEXTURE_ID::TABLE] = LoadTexture("assets/textures/test.png");
 }
 
 // Vertex data for a quad
@@ -206,7 +218,7 @@ int main() {
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
 
-    SetUpTextures();
+    SetupTextures();
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
@@ -217,7 +229,7 @@ int main() {
         glUseProgram(shaderProgram);
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureID);
+        glBindTexture(GL_TEXTURE_2D, textureHandles[0]);
 
         glm::mat4 modelMatrix = glm::mat4(1.0f);
         glm::mat4 viewMatrix = glm::lookAt(cameraPosition, cameraLookAtPoint, cameraUpVector );
