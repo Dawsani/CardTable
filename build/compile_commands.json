@@ -1,7 +1,7 @@
 [
 {
   "directory": "/home/dawson/Desktop/projects/card_table/build",
-  "command": "/usr/bin/g++   -g -o CMakeFiles/CardTable.dir/src/main.cpp.o -c /home/dawson/Desktop/projects/card_table/src/main.cpp",
+  "command": "/usr/bin/g++  -I/usr/local/lib -g -o CMakeFiles/CardTable.dir/src/main.cpp.o -c /home/dawson/Desktop/projects/card_table/src/main.cpp",
   "file": "/home/dawson/Desktop/projects/card_table/src/main.cpp",
   "output": "CMakeFiles/CardTable.dir/src/main.cpp.o"
 }

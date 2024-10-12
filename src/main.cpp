@@ -3,15 +3,42 @@
 #include <iostream>
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
+#include <stb_image.h>
 #include "Utils.hpp"
+
+unsigned int textureID = 0;
+
+void SetUpTextures() {
+    stbi_set_flip_vertically_on_load(true);
+    
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    // Load the texture image
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load("assets/textures/test.png", &width, &height, &nrChannels, 0);
+    if (data) {
+        // Upload the image to the GPU
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        //glGenerateMipmap(GL_TEXTURE_2D);  // Generate Mipmaps
+        std::cout << "Succesfully read in texture." << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+
+    stbi_image_free(data);
+}
 
 // Vertex data for a quad
 float vertices[] = {
-    -0.5f, 0.0f, -0.5f,
-     0.5f, 0.0f, -0.5f,
-    -0.5f,  0.0f, 0.5f,
-    0.5f,  0.0f, 0.5f
+    -10.0f, 0.0f, -10.0f, 0.0f, 0.0f,
+     10.0f, 0.0f, -10.0f, 20.0f, 0.0f,
+    -10.0f,  0.0f, 10.0f, 0.0f, 20.0f,
+    10.0f,  0.0f, 10.0f, 20.0f, 20.0f
 };
 
 unsigned int indices[] = {
@@ -167,8 +194,10 @@ int main() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // Vertex attributes
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);   // vertex postion
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))); // texture coordinate
+    glEnableVertexAttribArray(1);
 
     // Unbind VBO and VAO (optional)
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
@@ -176,6 +205,8 @@ int main() {
 
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
+
+    SetUpTextures();
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
@@ -185,14 +216,20 @@ int main() {
 
         glUseProgram(shaderProgram);
 
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+
         glm::mat4 modelMatrix = glm::mat4(1.0f);
         glm::mat4 viewMatrix = glm::lookAt(cameraPosition, cameraLookAtPoint, cameraUpVector );
         glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
         glm::mat4 mvpMatrix =  projectionMatrix * viewMatrix * modelMatrix;
 
-        unsigned int mvpMatrixLocation = glGetUniformLocation(shaderProgram, "mvpMatrix");
-        glProgramUniformMatrix4fv(shaderProgram, mvpMatrixLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
+        unsigned int mvpMatrixUniformLocation = glGetUniformLocation(shaderProgram, "mvpMatrix");
+        glProgramUniformMatrix4fv(shaderProgram, mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
+
+        unsigned int textureMapUniformLocation = glGetUniformLocation(shaderProgram, "textureMap");
+        glProgramUniform1i(shaderProgram, textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, 0);

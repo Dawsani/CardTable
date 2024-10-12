@@ -101,6 +101,7 @@ CMakeFiles/CardTable.dir/src/main.cpp.o: src/main.cpp \
   /usr/include/c++/13/ostream \
   /usr/include/c++/13/pstl/pstl_config.h \
   /usr/include/c++/13/stdexcept \
+  /usr/include/c++/13/stdlib.h \
   /usr/include/c++/13/streambuf \
   /usr/include/c++/13/string \
   /usr/include/c++/13/string_view \
@@ -368,8 +369,11 @@ CMakeFiles/CardTable.dir/src/main.cpp.o: src/main.cpp \
   /usr/include/x86_64-linux-gnu/sys/types.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h \
-  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h
+  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h \
+  /usr/local/include/stb_image.h
 
+
+/usr/local/include/stb_image.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h:
 
@@ -489,9 +493,7 @@ CMakeFiles/CardTable.dir/src/main.cpp.o: src/main.cpp \
 
 /usr/include/glm/vec2.hpp:
 
-/usr/include/x86_64-linux-gnu/bits/fp-fast.h:
-
-/usr/include/glm/detail/_vectorize.hpp:
+/usr/include/glm/trigonometric.hpp:
 
 /usr/include/stdint.h:
 
@@ -606,6 +608,8 @@ src/Utils.hpp:
 /usr/include/c++/13/cerrno:
 
 /usr/include/c++/13/tr1/ell_integral.tcc:
+
+/usr/include/c++/13/stdlib.h:
 
 /usr/include/c++/13/bits/new_allocator.h:
 
@@ -867,8 +871,6 @@ src/main.cpp:
 
 /usr/include/c++/13/bits/fstream.tcc:
 
-/usr/include/glm/trigonometric.hpp:
-
 /usr/include/glm/ext/matrix_float3x2_precision.hpp:
 
 /usr/include/c++/13/bits/refwrap.h:
@@ -876,6 +878,10 @@ src/main.cpp:
 /usr/include/c++/13/bits/stl_algobase.h:
 
 /usr/include/c++/13/bits/stl_construct.h:
+
+/usr/include/x86_64-linux-gnu/bits/fp-fast.h:
+
+/usr/include/glm/detail/_vectorize.hpp:
 
 /usr/include/strings.h:
 

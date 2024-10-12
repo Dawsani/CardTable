@@ -1,7 +1,3 @@
-add zoom in/out
-make the table bigger
-add a texture to the table
-allow the shaders to use textures
 make a card object
 texture the card object
 move card objects when they are clicked and dragged
@@ -11,3 +7,6 @@ allow cards to be dragged to and from the hand and the board
 add lighting to shaders
 networks, client/server multiplayer
 fix camera width height on window
+
+bugs:
+textures are flipped horizontally
