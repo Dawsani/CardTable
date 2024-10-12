@@ -10,3 +10,6 @@ fix camera width height on window
 
 bugs:
 textures are flipped horizontally
+
+polish:
+add mipmapping

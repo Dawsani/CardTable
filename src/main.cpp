@@ -8,10 +8,17 @@
 
 const int NUM_TEXTURES = 2;
 enum TEXTURE_ID {
+    GRID = 0,
+    SATYA = 1
+};
+unsigned int textureHandles[NUM_TEXTURES];
+
+const int NUM_VAOS = 2;
+enum VAO_ID {
     TABLE = 0,
     CARD = 1
 };
-unsigned int textureHandles[NUM_TEXTURES];
+unsigned int vaoHandles[NUM_TEXTURES];
 
 
 unsigned int LoadTexture(const char* filename) {
@@ -19,8 +26,6 @@ unsigned int LoadTexture(const char* filename) {
 
     stbi_set_flip_vertically_on_load(true);
     
-    glGenTextures(1, &textureHandle);
-    glBindTexture(GL_TEXTURE_2D, textureHandle);
     glGenTextures(1, &textureHandle);
     glBindTexture(GL_TEXTURE_2D, textureHandle);
 
@@ -45,21 +50,11 @@ unsigned int LoadTexture(const char* filename) {
 }
 
 void SetupTextures() {
-    textureHandles[TEXTURE_ID::TABLE] = LoadTexture("assets/textures/test.png");
-    textureHandles[TEXTURE_ID::CARD] = LoadTexture("assets/textures/m3c-3-satya-aetherflux-genius.jpg");
+    textureHandles[TEXTURE_ID::GRID] = LoadTexture("assets/textures/test.png");
+    std::cout << textureHandles[TEXTURE_ID::GRID] << std::endl;
+    textureHandles[TEXTURE_ID::SATYA] = LoadTexture("assets/textures/m3c-3-satya-aetherflux-genius.jpg");
+    std::cout << textureHandles[TEXTURE_ID::SATYA] << std::endl;
 }
-
-// Vertex data for the table
-float vertices[] = {
-    -10.0f, 0.0f, -10.0f, 0.0f, 0.0f,
-     10.0f, 0.0f, -10.0f, 20.0f, 0.0f,
-    -10.0f,  0.0f, 10.0f, 0.0f, 20.0f,
-    10.0f,  0.0f, 10.0f, 20.0f, 20.0f
-};
-
-unsigned int indices[] = {
-    0, 1, 2, 3
-};
 
 glm::vec3 cameraPosition = glm::vec3(0, 3, -3);
 glm::vec3 cameraLookAtPoint = glm::vec3(0, 0, 0);   // looking at the origin
@@ -118,6 +113,93 @@ void scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
     }
 }
 
+unsigned int CreateCard() {
+    // Vertex data for the table
+    float vertices[] = {
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.63f, 0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f,  0.88f, 0.0f, 0.0f, 1.0f,
+        0.63f,  0.88f, 0.0f, 1.0f, 1.0f
+    };
+
+    unsigned int indices[] = {
+        0, 1, 2, 3
+    };
+
+    // Generate vertex array and buffers
+    unsigned int VAO, VBO, IBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &IBO);
+
+    // Bind VAO and VBO
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // Vertex attributes
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);   // vertex postion
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))); // texture coordinate
+    glEnableVertexAttribArray(1);
+
+    // Unbind VBO and VAO (optional)
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+    glBindVertexArray(0);
+
+    return VAO;
+}
+
+unsigned int CreateTable() {
+    // Vertex data for the table
+    float vertices[] = {
+        -10.0f, 0.0f, -10.0f, 0.0f, 0.0f,
+        10.0f, 0.0f, -10.0f, 20.0f, 0.0f,
+        -10.0f,  0.0f, 10.0f, 0.0f, 20.0f,
+        10.0f,  0.0f, 10.0f, 20.0f, 20.0f
+    };
+
+    unsigned int indices[] = {
+        0, 1, 2, 3
+    };
+
+    // Generate vertex array and buffers
+    unsigned int VAO, VBO, IBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &IBO);
+
+    // Bind VAO and VBO
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // Vertex attributes
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);   // vertex postion
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))); // texture coordinate
+    glEnableVertexAttribArray(1);
+
+    // Unbind VBO and VAO (optional)
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+    glBindVertexArray(0);
+
+    return VAO;
+}
+
+void SetupVAOs() {
+    vaoHandles[VAO_ID::TABLE] = CreateTable();
+    vaoHandles[VAO_ID::CARD] = CreateCard();
+}
+
 int main() {
     // Initialize GLFW
     if (!glfwInit()) {
@@ -135,7 +217,7 @@ int main() {
 #endif
 
     // Create a windowed mode window and its OpenGL context
-    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Window", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Card Table", NULL, NULL);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -194,38 +276,15 @@ int main() {
     // clean up memory
     delete fileString;
 
-    // Generate vertex array and buffers
-    unsigned int VAO, VBO, IBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &IBO);
-
-    // Bind VAO and VBO
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // Vertex attributes
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);   // vertex postion
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))); // texture coordinate
-    glEnableVertexAttribArray(1);
-
-    // Unbind VBO and VAO (optional)
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
-    glBindVertexArray(0);
-
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
 
     SetupTextures();
-    SetupTextures();
+    SetupVAOs();
 
     // Main loop
+    glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
+    
     while (!glfwWindowShouldClose(window)) {
         // Clear the screen to a color (e.g., black)
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -233,23 +292,33 @@ int main() {
 
         glUseProgram(shaderProgram);
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureHandles[0]);
-
-        glm::mat4 modelMatrix = glm::mat4(1.0f);
-        glm::mat4 viewMatrix = glm::lookAt(cameraPosition, cameraLookAtPoint, cameraUpVector );
-        glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-
+        viewMatrix = glm::lookAt(cameraPosition, cameraLookAtPoint, cameraUpVector );
+        projectionMatrix = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+        
+        modelMatrix = glm::mat4(1.0f);
         glm::mat4 mvpMatrix =  projectionMatrix * viewMatrix * modelMatrix;
-
         unsigned int mvpMatrixUniformLocation = glGetUniformLocation(shaderProgram, "mvpMatrix");
         glProgramUniformMatrix4fv(shaderProgram, mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
-
         unsigned int textureMapUniformLocation = glGetUniformLocation(shaderProgram, "textureMap");
         glProgramUniform1i(shaderProgram, textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
 
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, 0);
+        // glActiveTexture(GL_TEXTURE0); // Not sure if this does anything
+        glBindTexture(GL_TEXTURE_2D, textureHandles[TEXTURE_ID::GRID]);
+        glBindVertexArray(vaoHandles[VAO_ID::TABLE]);
+        glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
+
+        modelMatrix = glm::mat4(1.0f);
+        modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, 0.02f, 0.0f));
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        mvpMatrix =  projectionMatrix * viewMatrix * modelMatrix;
+        mvpMatrixUniformLocation = glGetUniformLocation(shaderProgram, "mvpMatrix");
+        glProgramUniformMatrix4fv(shaderProgram, mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
+        textureMapUniformLocation = glGetUniformLocation(shaderProgram, "textureMap");
+        glProgramUniform1i(shaderProgram, textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
+
+        glBindTexture(GL_TEXTURE_2D, textureHandles[TEXTURE_ID::SATYA]);
+        glBindVertexArray(vaoHandles[VAO_ID::CARD]);
+        glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
 
         // Swap front and back buffers
         glfwSwapBuffers(window);
