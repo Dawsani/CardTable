@@ -6,13 +6,21 @@
 #include <stb_image.h>
 #include "Utils.hpp"
 
-unsigned int textureID = 0;
+static constexpr GLuint NUM_TEXTURES = 1;
 
-void SetUpTextures() {
+enum TEXTURE_ID {
+    TABLE = 0,
+};
+
+GLuint textureHandles[NUM_TEXTURES];
+
+GLuint LoadTexture() {
+    GLuint textureHandle = 0;
+
     stbi_set_flip_vertically_on_load(true);
     
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_2D, textureID);
+    glGenTextures(1, &textureHandle);
+    glBindTexture(GL_TEXTURE_2D, textureHandle);
 
     // Load the texture image
     int width, height, nrChannels;
@@ -31,6 +39,13 @@ void SetUpTextures() {
     }
 
     stbi_image_free(data);
+
+    return textureHandle;
+}
+
+void SetupTextures() {
+    textureHandles[TEXTURE_ID::TABLE] = LoadTexture();
+    std::cout << textureHandles[TEXTURE_ID::TABLE] << std::endl;
 }
 
 // Vertex data for a quad
@@ -206,7 +221,7 @@ int main() {
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
 
-    SetUpTextures();
+    SetupTextures();
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
@@ -217,7 +232,7 @@ int main() {
         glUseProgram(shaderProgram);
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureID);
+        glBindTexture(GL_TEXTURE_2D, TEXTURE_ID::TABLE);
 
         glm::mat4 modelMatrix = glm::mat4(1.0f);
         glm::mat4 viewMatrix = glm::lookAt(cameraPosition, cameraLookAtPoint, cameraUpVector );
