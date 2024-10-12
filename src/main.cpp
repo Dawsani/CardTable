@@ -20,6 +20,7 @@ enum VAO_ID {
 };
 unsigned int vaoHandles[NUM_TEXTURES];
 
+unsigned int shaderProgram;
 
 unsigned int LoadTexture(const char* filename) {
     unsigned int textureHandle = 0;
@@ -74,7 +75,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 void cursor_position_callback(GLFWwindow* window, double x, double y ) {
     glm::vec2 currentCursorPosition = glm::vec2(x, y);
 
-    if (leftMouseButtonState == GLFW_PRESS) {
+    if (rightMouseButtonState == GLFW_PRESS) {
 
         // disable the curser until they release mouse button
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -85,6 +86,10 @@ void cursor_position_callback(GLFWwindow* window, double x, double y ) {
         cameraPosition += cameraTranslation;
         cameraLookAtPoint += cameraTranslation;
     }
+    if (leftMouseButtonState == GLFW_PRESS) {
+        // Check if the mouse clicked a card, skipping this for now and just grabbing the only card
+
+    }
 
     cursorPosition = currentCursorPosition;
 }
@@ -92,12 +97,12 @@ void cursor_position_callback(GLFWwindow* window, double x, double y ) {
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods ) {
 	if (button == GLFW_MOUSE_BUTTON_RIGHT) {
         rightMouseButtonState = action;
+        if (rightMouseButtonState == GLFW_RELEASE) {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
     }
     else if (button == GLFW_MOUSE_BUTTON_LEFT) {
         leftMouseButtonState = action;
-        if (leftMouseButtonState == GLFW_RELEASE) {
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        }
     }
 }
 
@@ -200,6 +205,26 @@ void SetupVAOs() {
     vaoHandles[VAO_ID::CARD] = CreateCard();
 }
 
+void DrawCard(TEXTURE_ID cardTextureID, glm::vec3 cardPosition) {
+
+    glm::mat4 viewMatrix = glm::lookAt(cameraPosition, cameraLookAtPoint, cameraUpVector );
+    glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::translate(modelMatrix, cardPosition + glm::vec3(0.0f, 0.02f, 0.0f));
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+    glm::mat4 mvpMatrix =  projectionMatrix * viewMatrix * modelMatrix;
+    unsigned int mvpMatrixUniformLocation = glGetUniformLocation(shaderProgram, "mvpMatrix");
+    glProgramUniformMatrix4fv(shaderProgram, mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
+    unsigned int textureMapUniformLocation = glGetUniformLocation(shaderProgram, "textureMap");
+    glProgramUniform1i(shaderProgram, textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
+
+    glBindTexture(GL_TEXTURE_2D, textureHandles[TEXTURE_ID::SATYA]);
+    glBindVertexArray(vaoHandles[VAO_ID::CARD]);
+    glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
+}
+
 int main() {
     // Initialize GLFW
     if (!glfwInit()) {
@@ -266,7 +291,7 @@ int main() {
     glShaderSource(fragmentShader, 1, (const char**)&fileString, nullptr);
     glCompileShader(fragmentShader);
 
-    unsigned int shaderProgram = glCreateProgram();
+    shaderProgram = glCreateProgram();
 
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
@@ -307,18 +332,8 @@ int main() {
         glBindVertexArray(vaoHandles[VAO_ID::TABLE]);
         glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
 
-        modelMatrix = glm::mat4(1.0f);
-        modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, 0.02f, 0.0f));
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        mvpMatrix =  projectionMatrix * viewMatrix * modelMatrix;
-        mvpMatrixUniformLocation = glGetUniformLocation(shaderProgram, "mvpMatrix");
-        glProgramUniformMatrix4fv(shaderProgram, mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
-        textureMapUniformLocation = glGetUniformLocation(shaderProgram, "textureMap");
-        glProgramUniform1i(shaderProgram, textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
-
-        glBindTexture(GL_TEXTURE_2D, textureHandles[TEXTURE_ID::SATYA]);
-        glBindVertexArray(vaoHandles[VAO_ID::CARD]);
-        glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
+        DrawCard(TEXTURE_ID::SATYA, glm::vec3(0.0f, 0.0f, 0.0f));
+        DrawCard(TEXTURE_ID::SATYA, glm::vec3(2.0f, 0.0f, 1.0f));
 
         // Swap front and back buffers
         glfwSwapBuffers(window);

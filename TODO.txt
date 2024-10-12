@@ -1,5 +1,3 @@
-make a card object
-texture the card object
 move card objects when they are clicked and dragged
 allow a deck of stacked cards to be created from a file full of card names, each with a corresponding image file
 create the hand in screen space
@@ -11,5 +9,8 @@ fix camera width height on window
 bugs:
 textures are flipped horizontally
 
+refactor/clean up code!
+
 polish:
 add mipmapping
+add a border around hovered cards
