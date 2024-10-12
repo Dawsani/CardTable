@@ -6,11 +6,13 @@
 #include <stb_image.h>
 #include "Utils.hpp"
 
-unsigned int textureHandles[1];
-
+const int NUM_TEXTURES = 2;
 enum TEXTURE_ID {
-    TABLE = 0
+    TABLE = 0,
+    CARD = 1
 };
+unsigned int textureHandles[NUM_TEXTURES];
+
 
 unsigned int LoadTexture(const char* filename) {
     unsigned int textureHandle = 0;
@@ -33,7 +35,6 @@ unsigned int LoadTexture(const char* filename) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         //glGenerateMipmap(GL_TEXTURE_2D);  // Generate Mipmaps
-        std::cout << "Succesfully read in texture." << std::endl;
     } else {
         std::cout << "Failed to load texture" << std::endl;
     }
@@ -45,9 +46,10 @@ unsigned int LoadTexture(const char* filename) {
 
 void SetupTextures() {
     textureHandles[TEXTURE_ID::TABLE] = LoadTexture("assets/textures/test.png");
+    textureHandles[TEXTURE_ID::CARD] = LoadTexture("assets/textures/m3c-3-satya-aetherflux-genius.jpg");
 }
 
-// Vertex data for a quad
+// Vertex data for the table
 float vertices[] = {
     -10.0f, 0.0f, -10.0f, 0.0f, 0.0f,
      10.0f, 0.0f, -10.0f, 20.0f, 0.0f,
