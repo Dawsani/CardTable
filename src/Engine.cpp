@@ -131,15 +131,15 @@ int Engine::run() {
 #endif
 
     // Create a windowed mode window and its OpenGL context
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Card Table", NULL, NULL);
-    if (!window) {
+    pWindow = glfwCreateWindow(800, 600, "Card Table", NULL, NULL);
+    if (!pWindow) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
 
     // Make the window's context current
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(pWindow);
 
     // Initialize GLEW
     if (glewInit() != GLEW_OK) {
@@ -149,16 +149,14 @@ int Engine::run() {
 
     // Set the viewport and callback for resizing the window
     int width, height;
-    glfwGetFramebufferSize(window, &width, &height);
+    glfwGetFramebufferSize(pWindow, &width, &height);
     glViewport(0, 0, width, height);
 
     
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    /*
-    glfwSetCursorPosCallback(window, cursor_position_callback);
-    glfwSetMouseButtonCallback(window, mouse_button_callback);
-    glfwSetScrollCallback(window, scroll_callback);
-    */
+    glfwSetFramebufferSizeCallback(pWindow, framebuffer_size_callback);
+    glfwSetCursorPosCallback(pWindow, cursor_position_callback);
+    glfwSetMouseButtonCallback(pWindow, mouse_button_callback);
+    glfwSetScrollCallback(pWindow, scroll_callback);
 
     // Compile and link shaders (load your own shader loading utility or use raw OpenGL shader compilation)
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -202,7 +200,7 @@ int Engine::run() {
     // Main loop
     glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
     
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(pWindow)) {
         // Clear the screen to a color (e.g., black)
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -228,14 +226,14 @@ int Engine::run() {
         DrawCard(TEXTURE_ID::SATYA, glm::vec3(2.0f, 0.0f, 1.0f));
 
         // Swap front and back buffers
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(pWindow);
 
         // Poll for and process events
         glfwPollEvents();
     }
 
     // Clean up and exit
-    glfwDestroyWindow(window);
+    glfwDestroyWindow(pWindow);
     glfwTerminate();
     return 0;
 }
@@ -244,20 +242,13 @@ void Engine::handleFramebufferSizeEven(int width, int height) {
         glViewport(0, 0, width, height);
 }
 
-// Window resize callback function
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    auto engine = (Engine*) glfwGetWindowUserPointer(window);
-    engine->handleFramebufferSizeEven(width, height);
-}
-
-/*
-void cursor_position_callback(GLFWwindow* window, double x, double y ) {
+void Engine::handleCursorPositionEvent(double x, double y) {
     glm::vec2 currentCursorPosition = glm::vec2(x, y);
 
     if (rightMouseButtonState == GLFW_PRESS) {
 
         // disable the curser until they release mouse button
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetInputMode(pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         glm::vec2 cursorMovement = cursorPosition - currentCursorPosition;
         
@@ -273,11 +264,11 @@ void cursor_position_callback(GLFWwindow* window, double x, double y ) {
     cursorPosition = currentCursorPosition;
 }
 
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods ) {
-	if (button == GLFW_MOUSE_BUTTON_RIGHT) {
+void Engine::handleMouseButtonEvent(int button, int action, int mod) {
+    if (button == GLFW_MOUSE_BUTTON_RIGHT) {
         rightMouseButtonState = action;
         if (rightMouseButtonState == GLFW_RELEASE) {
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            glfwSetInputMode(pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
     }
     else if (button == GLFW_MOUSE_BUTTON_LEFT) {
@@ -285,7 +276,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods 
     }
 }
 
-void scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
+void Engine::handleScrollEvent(double xOffset, double yOffset) {
     cameraPosition += glm::vec3(0.0f, yOffset, -yOffset);
     if (cameraPosition.y < 1.0f) {
         cameraPosition.y = 1.0f;
@@ -296,4 +287,3 @@ void scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
         cameraPosition.z = -20.0f;
     }
 }
-*/

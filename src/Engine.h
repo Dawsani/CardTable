@@ -8,12 +8,15 @@
 
 class Engine {
     public:
+    int run();
     void handleFramebufferSizeEven(int width, int height);
     void handleCursorPositionEvent(double x, double y );  
     void handleMouseButtonEvent(int button, int action, int mods );
     void handleScrollEvent(double xOffset, double yOffset);  
 
     private:
+
+    GLFWwindow* pWindow;
 
     static const int NUM_TEXTURES = 2;
     enum TEXTURE_ID {
@@ -45,10 +48,11 @@ class Engine {
     unsigned int CreateCard();
     unsigned int CreateTable();
     void SetupVAOs();
-    void DrawCard(TEXTURE_ID cardTextureID, glm::vec3 cardPosition);
-    int run();
-    
-
+    void DrawCard(TEXTURE_ID cardTextureID, glm::vec3 cardPosition);    
 };
 
+// Declare callbacks
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void cursor_position_callback(GLFWwindow* window, double x, double y );
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods );
+void scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
