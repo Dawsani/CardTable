@@ -8,6 +8,7 @@ include_directories("/usr/local/lib")
 add_executable(CardTable 
                 src/main.cpp
                 src/Engine.cpp src/Engine.h
+                src/Camera.cpp src/Camera.h
                 src/Utils.hpp)
 
 target_link_libraries(CardTable GL glfw GLEW stbimage)

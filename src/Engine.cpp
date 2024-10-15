@@ -96,8 +96,8 @@ void Engine::SetupVAOs() {
 
 void Engine::DrawCard(TEXTURE_ID cardTextureID, glm::vec3 cardPosition) {
 
-    glm::mat4 viewMatrix = glm::lookAt(cameraPosition, cameraLookAtPoint, cameraUpVector );
-    glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+    glm::mat4 viewMatrix = pCamera->getViewMatrix();
+    glm::mat4 projectionMatrix = pCamera->getProjectionMatrix();
 
     glm::mat4 modelMatrix = glm::mat4(1.0f);
     modelMatrix = glm::translate(modelMatrix, cardPosition + glm::vec3(0.0f, 0.02f, 0.0f));
@@ -197,6 +197,8 @@ int Engine::run() {
     SetupTextures();
     SetupVAOs();
 
+    pCamera = new Camera(glm::vec3(0, 3, -3));
+
     // Main loop
     glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
     
@@ -207,7 +209,7 @@ int Engine::run() {
 
         glUseProgram(shaderProgram);
 
-        viewMatrix = glm::lookAt(cameraPosition, cameraLookAtPoint, cameraUpVector );
+        viewMatrix = pCamera->getViewMatrix();
         projectionMatrix = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
         
         modelMatrix = glm::mat4(1.0f);
@@ -250,11 +252,9 @@ void Engine::handleCursorPositionEvent(double x, double y) {
         // disable the curser until they release mouse button
         glfwSetInputMode(pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-        glm::vec2 cursorMovement = cursorPosition - currentCursorPosition;
+        glm::vec2 cursorMovement = currentCursorPosition - cursorPosition;
         
-        glm::vec3 cameraTranslation = -cameraSpeed * glm::vec3(cursorMovement.x, 0, cursorMovement.y);
-        cameraPosition += cameraTranslation;
-        cameraLookAtPoint += cameraTranslation;
+        pCamera->Pan(cursorMovement);
     }
     if (leftMouseButtonState == GLFW_PRESS) {
         // Check if the mouse clicked a card, skipping this for now and just grabbing the only card
@@ -277,13 +277,5 @@ void Engine::handleMouseButtonEvent(int button, int action, int mod) {
 }
 
 void Engine::handleScrollEvent(double xOffset, double yOffset) {
-    cameraPosition += glm::vec3(0.0f, yOffset, -yOffset);
-    if (cameraPosition.y < 1.0f) {
-        cameraPosition.y = 1.0f;
-        cameraPosition.z = -1.0f;
-    }
-    else if (cameraPosition.y > 20.0f) {
-        cameraPosition.y = 20.0f;
-        cameraPosition.z = -20.0f;
-    }
+    pCamera->moveForward(yOffset);
 }

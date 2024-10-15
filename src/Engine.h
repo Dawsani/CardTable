@@ -5,50 +5,48 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <stb_image.h>
 #include "Utils.hpp"
+#include "Camera.h"
 
 class Engine {
     public:
-    int run();
-    void handleFramebufferSizeEven(int width, int height);
-    void handleCursorPositionEvent(double x, double y );  
-    void handleMouseButtonEvent(int button, int action, int mods );
-    void handleScrollEvent(double xOffset, double yOffset);  
+        int run();
+        
+        void handleFramebufferSizeEven(int width, int height);
+        void handleCursorPositionEvent(double x, double y );  
+        void handleMouseButtonEvent(int button, int action, int mods );
+        void handleScrollEvent(double xOffset, double yOffset);  
 
     private:
 
-    GLFWwindow* pWindow;
+        GLFWwindow* pWindow;
 
-    static const int NUM_TEXTURES = 2;
-    enum TEXTURE_ID {
-        GRID = 0,
-        SATYA = 1
-    };
-    unsigned int textureHandles[NUM_TEXTURES];
+        Camera* pCamera;
 
-    static const int NUM_VAOS = 2;
-    enum VAO_ID {
-        TABLE = 0,
-        CARD = 1
-    };
-    unsigned int vaoHandles[NUM_VAOS];
+        static const int NUM_TEXTURES = 2;
+        enum TEXTURE_ID {
+            GRID = 0,
+            SATYA = 1
+        };
+        unsigned int textureHandles[NUM_TEXTURES];
 
-    unsigned int shaderProgram;
+        static const int NUM_VAOS = 2;
+        enum VAO_ID {
+            TABLE = 0,
+            CARD = 1
+        };
+        unsigned int vaoHandles[NUM_VAOS];
 
-    // Camera
-    glm::vec3 cameraPosition = glm::vec3(0, 3, -3);
-    glm::vec3 cameraLookAtPoint = glm::vec3(0, 0, 0);   // looking at the origin
-    glm::vec3 cameraUpVector = glm::vec3(0, 1, 0);    
-    float cameraSpeed = 0.01f;  
+        unsigned int shaderProgram;
 
-    glm::vec2 cursorPosition;
-    GLint rightMouseButtonState = GLFW_RELEASE;
-    GLint leftMouseButtonState = GLFW_RELEASE;
+        glm::vec2 cursorPosition;
+        GLint rightMouseButtonState = GLFW_RELEASE;
+        GLint leftMouseButtonState = GLFW_RELEASE;
 
-    void SetupTextures();
-    unsigned int CreateCard();
-    unsigned int CreateTable();
-    void SetupVAOs();
-    void DrawCard(TEXTURE_ID cardTextureID, glm::vec3 cardPosition);    
+        void SetupTextures();
+        unsigned int CreateCard();
+        unsigned int CreateTable();
+        void SetupVAOs();
+        void DrawCard(TEXTURE_ID cardTextureID, glm::vec3 cardPosition);    
 };
 
 // Declare callbacks
