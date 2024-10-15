@@ -22,38 +22,10 @@ unsigned int vaoHandles[NUM_TEXTURES];
 
 unsigned int shaderProgram;
 
-unsigned int LoadTexture(const char* filename) {
-    unsigned int textureHandle = 0;
-
-    stbi_set_flip_vertically_on_load(true);
-    
-    glGenTextures(1, &textureHandle);
-    glBindTexture(GL_TEXTURE_2D, textureHandle);
-
-    // Load the texture image
-    int width, height, nrChannels;
-    unsigned char *data = stbi_load(filename, &width, &height, &nrChannels, 0);
-    if (data) {
-        // Upload the image to the GPU
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        //glGenerateMipmap(GL_TEXTURE_2D);  // Generate Mipmaps
-    } else {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-
-    stbi_image_free(data);
-
-    return textureHandle;
-}
-
 void SetupTextures() {
-    textureHandles[TEXTURE_ID::GRID] = LoadTexture("assets/textures/test.png");
+    textureHandles[TEXTURE_ID::GRID] = Utils::LoadTexture("assets/textures/test.png");
     std::cout << textureHandles[TEXTURE_ID::GRID] << std::endl;
-    textureHandles[TEXTURE_ID::SATYA] = LoadTexture("assets/textures/m3c-3-satya-aetherflux-genius.jpg");
+    textureHandles[TEXTURE_ID::SATYA] = Utils::LoadTexture("assets/textures/m3c-3-satya-aetherflux-genius.jpg");
     std::cout << textureHandles[TEXTURE_ID::SATYA] << std::endl;
 }
 
