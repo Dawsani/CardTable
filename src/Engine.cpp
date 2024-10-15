@@ -104,10 +104,10 @@ void Engine::DrawCard(TEXTURE_ID cardTextureID, glm::vec3 cardPosition) {
     modelMatrix = glm::rotate(modelMatrix, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
     glm::mat4 mvpMatrix =  projectionMatrix * viewMatrix * modelMatrix;
-    unsigned int mvpMatrixUniformLocation = glGetUniformLocation(pShaderProgram->programHandle, "mvpMatrix");
-    glProgramUniformMatrix4fv(pShaderProgram->programHandle, mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
-    unsigned int textureMapUniformLocation = glGetUniformLocation(pShaderProgram->programHandle, "textureMap");
-    glProgramUniform1i(pShaderProgram->programHandle, textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
+    unsigned int mvpMatrixUniformLocation = glGetUniformLocation(pShaderProgram->getProgramHandle(), "mvpMatrix");
+    glProgramUniformMatrix4fv(pShaderProgram->getProgramHandle(), mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
+    unsigned int textureMapUniformLocation = glGetUniformLocation(pShaderProgram->getProgramHandle(), "textureMap");
+    glProgramUniform1i(pShaderProgram->getProgramHandle(), textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
 
     glBindTexture(GL_TEXTURE_2D, textureHandles[TEXTURE_ID::SATYA]);
     glBindVertexArray(vaoHandles[VAO_ID::CARD]);
@@ -176,17 +176,17 @@ int Engine::run() {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glUseProgram(pShaderProgram->programHandle);
+        pShaderProgram->useProgram();
 
         viewMatrix = pCamera->getViewMatrix();
         projectionMatrix = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
         
         modelMatrix = glm::mat4(1.0f);
         glm::mat4 mvpMatrix =  projectionMatrix * viewMatrix * modelMatrix;
-        unsigned int mvpMatrixUniformLocation = glGetUniformLocation(pShaderProgram->programHandle, "mvpMatrix");
-        glProgramUniformMatrix4fv(pShaderProgram->programHandle, mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
-        unsigned int textureMapUniformLocation = glGetUniformLocation(pShaderProgram->programHandle, "textureMap");
-        glProgramUniform1i(pShaderProgram->programHandle, textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
+        unsigned int mvpMatrixUniformLocation = glGetUniformLocation(pShaderProgram->getProgramHandle(), "mvpMatrix");
+        glProgramUniformMatrix4fv(pShaderProgram->getProgramHandle(), mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
+        unsigned int textureMapUniformLocation = glGetUniformLocation(pShaderProgram->getProgramHandle(), "textureMap");
+        glProgramUniform1i(pShaderProgram->getProgramHandle(), textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
 
         // glActiveTexture(GL_TEXTURE0); // Not sure if this does anything
         glBindTexture(GL_TEXTURE_2D, textureHandles[TEXTURE_ID::GRID]);

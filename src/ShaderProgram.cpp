@@ -27,3 +27,7 @@ ShaderProgram::ShaderProgram(const char *vertexShaderFileName, const char *fragm
     // clean up memory
     delete fileString;
 }
+
+void ShaderProgram::useProgram(){
+    glUseProgram(programHandle);
+}

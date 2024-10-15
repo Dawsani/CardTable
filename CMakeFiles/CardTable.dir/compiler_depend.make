@@ -715,6 +715,7 @@ CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o: src/ShaderProgram.cpp \
   /usr/include/c++/13/ostream \
   /usr/include/c++/13/pstl/pstl_config.h \
   /usr/include/c++/13/stdexcept \
+  /usr/include/c++/13/stdlib.h \
   /usr/include/c++/13/streambuf \
   /usr/include/c++/13/string \
   /usr/include/c++/13/string_view \
@@ -823,7 +824,8 @@ CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o: src/ShaderProgram.cpp \
   /usr/include/x86_64-linux-gnu/sys/types.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h \
-  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h
+  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h \
+  /usr/local/include/stb_image.h
 
 CMakeFiles/CardTable.dir/src/main.cpp.o: src/main.cpp \
   src/Camera.h \

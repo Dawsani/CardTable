@@ -3,6 +3,9 @@
 class ShaderProgram {
     public:
         ShaderProgram(const char* vertexShaderFilename, const char* fragmentShaderFilename);
-        unsigned int programHandle;
+        void useProgram();
+
+        unsigned int getProgramHandle() { return programHandle; }
     private:
+        unsigned int programHandle;
 };
