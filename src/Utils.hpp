@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include "stb_image.h"
 
 class Utils {
     public:

@@ -104,10 +104,10 @@ void Engine::DrawCard(TEXTURE_ID cardTextureID, glm::vec3 cardPosition) {
     modelMatrix = glm::rotate(modelMatrix, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
     glm::mat4 mvpMatrix =  projectionMatrix * viewMatrix * modelMatrix;
-    unsigned int mvpMatrixUniformLocation = glGetUniformLocation(shaderProgram, "mvpMatrix");
-    glProgramUniformMatrix4fv(shaderProgram, mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
-    unsigned int textureMapUniformLocation = glGetUniformLocation(shaderProgram, "textureMap");
-    glProgramUniform1i(shaderProgram, textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
+    unsigned int mvpMatrixUniformLocation = glGetUniformLocation(pShaderProgram->programHandle, "mvpMatrix");
+    glProgramUniformMatrix4fv(pShaderProgram->programHandle, mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
+    unsigned int textureMapUniformLocation = glGetUniformLocation(pShaderProgram->programHandle, "textureMap");
+    glProgramUniform1i(pShaderProgram->programHandle, textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
 
     glBindTexture(GL_TEXTURE_2D, textureHandles[TEXTURE_ID::SATYA]);
     glBindVertexArray(vaoHandles[VAO_ID::CARD]);
@@ -158,38 +158,7 @@ int Engine::run() {
     glfwSetMouseButtonCallback(pWindow, mouse_button_callback);
     glfwSetScrollCallback(pWindow, scroll_callback);
 
-    // Compile and link shaders (load your own shader loading utility or use raw OpenGL shader compilation)
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-    const char* vertexShaderFileName =      "src/shaders/shader.v.glsl";
-    const char* fragmentShaderFileName =    "src/shaders/shader.f.glsl";
-
-    char* fileString;
-    if (Utils::readTextFromFile(vertexShaderFileName, fileString) == false) {
-        return -1;
-    }
-
-    glShaderSource(vertexShader, 1, (const char**)&fileString, nullptr);
-    glCompileShader(vertexShader);
-
-    if (Utils::readTextFromFile(fragmentShaderFileName, fileString) == false) {
-        std::cout << "Could not read shader file: " << fragmentShaderFileName << std::endl;
-        return -1;
-    }
-
-    glShaderSource(fragmentShader, 1, (const char**)&fileString, nullptr);
-    glCompileShader(fragmentShader);
-
-    shaderProgram = glCreateProgram();
-
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-
-    glLinkProgram(shaderProgram);
-
-    // clean up memory
-    delete fileString;
+    pShaderProgram = new ShaderProgram("src/shaders/shader.v.glsl", "src/shaders/shader.f.glsl");
 
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
@@ -207,17 +176,17 @@ int Engine::run() {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glUseProgram(shaderProgram);
+        glUseProgram(pShaderProgram->programHandle);
 
         viewMatrix = pCamera->getViewMatrix();
         projectionMatrix = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
         
         modelMatrix = glm::mat4(1.0f);
         glm::mat4 mvpMatrix =  projectionMatrix * viewMatrix * modelMatrix;
-        unsigned int mvpMatrixUniformLocation = glGetUniformLocation(shaderProgram, "mvpMatrix");
-        glProgramUniformMatrix4fv(shaderProgram, mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
-        unsigned int textureMapUniformLocation = glGetUniformLocation(shaderProgram, "textureMap");
-        glProgramUniform1i(shaderProgram, textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
+        unsigned int mvpMatrixUniformLocation = glGetUniformLocation(pShaderProgram->programHandle, "mvpMatrix");
+        glProgramUniformMatrix4fv(pShaderProgram->programHandle, mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
+        unsigned int textureMapUniformLocation = glGetUniformLocation(pShaderProgram->programHandle, "textureMap");
+        glProgramUniform1i(pShaderProgram->programHandle, textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
 
         // glActiveTexture(GL_TEXTURE0); // Not sure if this does anything
         glBindTexture(GL_TEXTURE_2D, textureHandles[TEXTURE_ID::GRID]);

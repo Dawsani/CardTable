@@ -1,1 +1,1 @@
-/usr/bin/c++ CMakeFiles/CardTable.dir/src/main.cpp.o CMakeFiles/CardTable.dir/src/Engine.cpp.o CMakeFiles/CardTable.dir/src/Camera.cpp.o -o CardTable  -lGL -lglfw -lGLEW -lstbimage 
+/usr/bin/c++ CMakeFiles/CardTable.dir/src/main.cpp.o CMakeFiles/CardTable.dir/src/Engine.cpp.o CMakeFiles/CardTable.dir/src/Camera.cpp.o CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o -o CardTable  -lGL -lglfw -lGLEW -lstbimage 

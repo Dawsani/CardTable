@@ -9,7 +9,8 @@ fix camera width height on window
 bugs:
 textures are flipped horizontally
 
-refactor/clean up code!
+refactor/clean up code:
+add a method to read in a vao from file
 
 polish:
 add mipmapping

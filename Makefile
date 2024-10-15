@@ -177,6 +177,30 @@ src/Engine.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/Engine.cpp.s
 .PHONY : src/Engine.cpp.s
 
+src/ShaderProgram.o: src/ShaderProgram.cpp.o
+.PHONY : src/ShaderProgram.o
+
+# target to build an object file
+src/ShaderProgram.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o
+.PHONY : src/ShaderProgram.cpp.o
+
+src/ShaderProgram.i: src/ShaderProgram.cpp.i
+.PHONY : src/ShaderProgram.i
+
+# target to preprocess a source file
+src/ShaderProgram.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.i
+.PHONY : src/ShaderProgram.cpp.i
+
+src/ShaderProgram.s: src/ShaderProgram.cpp.s
+.PHONY : src/ShaderProgram.s
+
+# target to generate assembly for a file
+src/ShaderProgram.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.s
+.PHONY : src/ShaderProgram.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -216,6 +240,9 @@ help:
 	@echo "... src/Engine.o"
 	@echo "... src/Engine.i"
 	@echo "... src/Engine.s"
+	@echo "... src/ShaderProgram.o"
+	@echo "... src/ShaderProgram.i"
+	@echo "... src/ShaderProgram.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

@@ -6,6 +6,7 @@
 #include <stb_image.h>
 #include "Utils.hpp"
 #include "Camera.h"
+#include "ShaderProgram.h"
 
 class Engine {
     public:
@@ -19,6 +20,8 @@ class Engine {
     private:
 
         GLFWwindow* pWindow;
+
+        ShaderProgram* pShaderProgram;
 
         Camera* pCamera;
 
@@ -35,8 +38,6 @@ class Engine {
             CARD = 1
         };
         unsigned int vaoHandles[NUM_VAOS];
-
-        unsigned int shaderProgram;
 
         glm::vec2 cursorPosition;
         GLint rightMouseButtonState = GLFW_RELEASE;
