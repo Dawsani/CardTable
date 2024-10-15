@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/dawson/Desktop/projects/card_table/src/Engine.cpp" "CMakeFiles/CardTable.dir/src/Engine.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/Engine.cpp.o.d"
   "/home/dawson/Desktop/projects/card_table/src/main.cpp" "CMakeFiles/CardTable.dir/src/main.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/main.cpp.o.d"
   )
 

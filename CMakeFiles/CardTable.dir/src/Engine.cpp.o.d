@@ -1,5 +1,5 @@
-CMakeFiles/CardTable.dir/src/main.cpp.o: \
- /home/dawson/Desktop/projects/card_table/src/main.cpp \
+CMakeFiles/CardTable.dir/src/Engine.cpp.o: \
+ /home/dawson/Desktop/projects/card_table/src/Engine.cpp \
  /usr/include/stdc-predef.h \
  /home/dawson/Desktop/projects/card_table/src/Engine.h \
  /usr/include/GL/glew.h /usr/include/c++/13/cstddef \

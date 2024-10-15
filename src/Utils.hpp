@@ -10,7 +10,7 @@ class Utils {
     static unsigned int LoadTexture(const char* filename);
 };
 
-unsigned int Utils::LoadTexture(const char* filename) {
+inline unsigned int Utils::LoadTexture(const char* filename) {
     unsigned int textureHandle = 0;
 
     stbi_set_flip_vertically_on_load(true);
@@ -38,7 +38,7 @@ unsigned int Utils::LoadTexture(const char* filename) {
     return textureHandle;
 }
 
-bool Utils::readTextFromFile(const char *filename, char* &output) {
+inline bool Utils::readTextFromFile(const char *filename, char* &output) {
     std::string buf = std::string("");
     std::string line;
 
