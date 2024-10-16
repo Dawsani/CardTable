@@ -12,6 +12,8 @@ public:
     void setRotation(glm::vec3 rotation);
     void setScale(glm::vec3 scale);
 
+    glm::vec3 getPosition() { return position; }
+
     void draw(Camera* pCamera);
 private:
     ShaderProgram* pShaderProgram;

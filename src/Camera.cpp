@@ -3,7 +3,7 @@
 Camera::Camera(glm::vec3 position) {
     this->position = position;
     lookAtPoint = glm::vec3(0, 0, 0);
-    upVector = glm::vec3(0, 1, 0);
+    upVector = glm::vec3(0.0f, 0.0f, -1.0f);
     moveSpeed = 0.01f;
     zoomSpeed = 0.1f;
     updateViewMatrix();

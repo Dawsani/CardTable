@@ -12,6 +12,7 @@ class Camera {
         void Pan(glm::vec2 panMovement);
         void moveForward(float movement);
 
+        glm::vec3 getPosition() { return position; }
         glm::mat4 getViewMatrix() { return viewMatrix; }
         glm::mat4 getProjectionMatrix() { return projectionMatrix; }
 

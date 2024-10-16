@@ -20,6 +20,9 @@ class Engine {
 
     private:
 
+        glm::vec3 calculateCursorRay();
+        glm::vec3 calculateRayIntersection(glm::vec3 rayOrigin, glm::vec3 rayDirection);
+
         GLFWwindow* pWindow;
 
         ShaderProgram* pShaderProgram;
@@ -48,7 +51,8 @@ class Engine {
         unsigned int CreateCard();
         unsigned int CreateTable();
         void SetupVAOs();
-        void DrawCard(TEXTURE_ID cardTextureID, glm::vec3 cardPosition);    
+
+        GameObject* pCard;
 };
 
 // Declare callbacks

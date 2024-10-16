@@ -146,17 +146,16 @@ int Engine::run() {
     SetupTextures();
     SetupVAOs();
 
-    pCamera = new Camera(glm::vec3(0, 3, -3));
+    pCamera = new Camera(glm::vec3(0.0f, 3.0f, 3.0f));
 
     // Main loop
     glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
 
 
-    GameObject* card = new GameObject(  pShaderProgram, 
+    pCard = new GameObject(  pShaderProgram, 
                                         vaoHandles[VAO_ID::CARD],
                                         textureHandles[TEXTURE_ID::SATYA]);
-    card->setPosition(glm::vec3(0.0f, 0.02f, 0.0f));
-    card->setRotation(glm::vec3(glm::radians(90.0f), 0.0f, 0.0f));
+    pCard->setPosition(glm::vec3(1.0f, 0.02f, 1.0f));
     
     while (!glfwWindowShouldClose(pWindow)) {
         // Clear the screen to a color (e.g., black)
@@ -180,7 +179,7 @@ int Engine::run() {
         glBindVertexArray(vaoHandles[VAO_ID::TABLE]);
         glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
 
-        card->draw(pCamera);
+        pCard->draw(pCamera);
 
         // Swap front and back buffers
         glfwSwapBuffers(pWindow);
@@ -226,11 +225,46 @@ void Engine::handleMouseButtonEvent(int button, int action, int mod) {
             glfwSetInputMode(pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
     }
-    else if (button == GLFW_MOUSE_BUTTON_LEFT) {
+    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
         leftMouseButtonState = action;
+        glm::vec3 cursorRay = calculateCursorRay();
+        std::cout << "Cursor Ray: <" << cursorRay.x << ", " << cursorRay.y << ", " << cursorRay.z << ">" << std::endl;
+        glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
+        std::cout << "Intersection Point: (" << intersectionPoint.x << ", " << intersectionPoint.y << ", " << intersectionPoint.z << ")" << std::endl;
+        pCard->setPosition(intersectionPoint + glm::vec3(0.0f, 0.02f, 0.0f));
     }
 }
 
 void Engine::handleScrollEvent(double xOffset, double yOffset) {
     pCamera->moveForward(yOffset);
+}
+
+glm::vec3 Engine::calculateCursorRay()
+{
+    // get mouse coordinates in normalized device coords, but really clip space
+    int width, height;
+    glfwGetFramebufferSize(pWindow, &width, &height);
+    glm::vec2 cursorPositionNDC = glm::vec2(2 * cursorPosition.x / width - 1, 1 - 2 * cursorPosition.y / height);
+    std::cout << "Cursor Position: (" << cursorPositionNDC.x << ", " << cursorPositionNDC.y << ")" << std::endl;
+    glm::vec4 cursorPositionClipSpace = glm::vec4(cursorPositionNDC.x, cursorPositionNDC.y, -1.0f, 1.0f);
+    glm::mat4 inverseProjectionMatrix = glm::inverse(pCamera->getProjectionMatrix());
+    glm::vec4 cursorPositionViewSpace = inverseProjectionMatrix * cursorPositionClipSpace;
+    glm::vec4 cursorRayViewSpace = glm::vec4(cursorPositionViewSpace.x, cursorPositionViewSpace.y, -1.0f, 0.0f);
+
+    glm::mat4 inverseViewMatrix = glm::inverse(pCamera->getViewMatrix());
+    glm::vec3 cursorRay = glm::normalize(inverseViewMatrix * cursorRayViewSpace);
+
+    // flip some directions for some reasson
+    return cursorRay;
+}
+
+glm::vec3 Engine::calculateRayIntersection(glm::vec3 rayOrigin, glm::vec3 rayDirection)
+{
+    rayDirection = glm::normalize(rayDirection);
+    float t = - rayOrigin.y / rayDirection.y;
+    std::cout << "t = " << t << std::endl;
+    glm::vec3 intersectionPoint = rayOrigin + rayDirection * t;
+
+    // TODO: FIGURE OUT WHY I NEED TO MULTIPLY BY 2 RN.
+    return intersectionPoint;
 }
