@@ -31,6 +31,9 @@ class Engine {
 
         Camera* pCamera;
 
+        GameObject* pSelectedGameObject;
+        glm::vec3 grabPoint;
+
         static const int NUM_TEXTURES = 2;
         enum TEXTURE_ID {
             GRID = 0,

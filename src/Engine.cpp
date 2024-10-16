@@ -2,9 +2,7 @@
 
 void Engine::SetupTextures() {
     textureHandles[TEXTURE_ID::GRID] = Utils::LoadTexture("assets/textures/test.png");
-    std::cout << textureHandles[TEXTURE_ID::GRID] << std::endl;
     textureHandles[TEXTURE_ID::SATYA] = Utils::LoadTexture("assets/textures/m3c-3-satya-aetherflux-genius.jpg");
-    std::cout << textureHandles[TEXTURE_ID::SATYA] << std::endl;
 }
 
 unsigned int Engine::CreateCard() {
@@ -157,6 +155,8 @@ int Engine::run() {
                                         textureHandles[TEXTURE_ID::SATYA]);
     pCard->setPosition(glm::vec3(0.0f, 0.02f, 0.0f));
     pCard->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
+
+    pSelectedGameObject = nullptr;
     
     while (!glfwWindowShouldClose(pWindow)) {
         // Clear the screen to a color (e.g., black)
@@ -180,6 +180,29 @@ int Engine::run() {
         glBindVertexArray(vaoHandles[VAO_ID::TABLE]);
         glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
 
+        glm::vec3 cursorRay = calculateCursorRay();
+        glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
+
+        if (leftMouseButtonState == GLFW_PRESS && pSelectedGameObject == nullptr) {
+
+        
+            // check to see if the click selected a card
+            glm::vec2 groundIntersection = glm::vec2(intersectionPoint.x, intersectionPoint.z);
+            if (groundIntersection.x < pCard->getPosition().x + pCard->width && groundIntersection.x > pCard->getPosition().x && 
+                intersectionPoint.z > pCard->getPosition().z - pCard->height && intersectionPoint.z < pCard->getPosition().z) {
+                pSelectedGameObject = pCard;
+                grabPoint = glm::vec3(pSelectedGameObject->getPosition().x - intersectionPoint.x, 0.0f, pSelectedGameObject->getPosition().z - intersectionPoint.z);
+                std::cout << "Selected card" << std::endl;
+            }
+        }
+        else if (leftMouseButtonState == GLFW_RELEASE && pSelectedGameObject != nullptr) {
+            pSelectedGameObject = nullptr;
+            std::cout << "Deselected card" << std::endl;
+        }
+
+        if (pSelectedGameObject != nullptr) {
+            pSelectedGameObject->setPosition(intersectionPoint + glm::vec3(0.0f, 0.02f, 0.0f) + grabPoint);
+        }
         pCard->draw(pCamera);
 
         // Swap front and back buffers
@@ -226,19 +249,8 @@ void Engine::handleMouseButtonEvent(int button, int action, int mod) {
             glfwSetInputMode(pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
     }
-    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+    else if (button == GLFW_MOUSE_BUTTON_LEFT) {
         leftMouseButtonState = action;
-        glm::vec3 cursorRay = calculateCursorRay();
-        glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
-    
-        std::cout << "Intersection Point: (" << intersectionPoint.x << ", " << intersectionPoint.y << ", " << intersectionPoint.z << ")" << std::endl;
-
-        // check to see if the click selected a card
-        glm::vec2 groundIntersection = glm::vec2(intersectionPoint.x, intersectionPoint.z);
-        if (groundIntersection.x < pCard->getPosition().x + pCard->width && groundIntersection.x > pCard->getPosition().x && 
-            -intersectionPoint.z < pCard->getPosition().z + pCard->height && -intersectionPoint.z > pCard->getPosition().z) {
-            std::cout << "Clicked Card!" << std::endl;
-        }
     }
 }
 
@@ -252,7 +264,6 @@ glm::vec3 Engine::calculateCursorRay()
     int width, height;
     glfwGetFramebufferSize(pWindow, &width, &height);
     glm::vec2 cursorPositionNDC = glm::vec2(2 * cursorPosition.x / width - 1, 1 - 2 * cursorPosition.y / height);
-    std::cout << "Cursor Position: (" << cursorPositionNDC.x << ", " << cursorPositionNDC.y << ")" << std::endl;
     glm::vec4 cursorPositionClipSpace = glm::vec4(cursorPositionNDC.x, cursorPositionNDC.y, -1.0f, 1.0f);
     glm::mat4 inverseProjectionMatrix = glm::inverse(pCamera->getProjectionMatrix());
     glm::vec4 cursorPositionViewSpace = inverseProjectionMatrix * cursorPositionClipSpace;
@@ -269,7 +280,6 @@ glm::vec3 Engine::calculateRayIntersection(glm::vec3 rayOrigin, glm::vec3 rayDir
 {
     rayDirection = glm::normalize(rayDirection);
     float t = - rayOrigin.y / rayDirection.y;
-    std::cout << "t = " << t << std::endl;
     glm::vec3 intersectionPoint = rayOrigin + rayDirection * t;
 
     // TODO: FIGURE OUT WHY I NEED TO MULTIPLY BY 2 RN.
