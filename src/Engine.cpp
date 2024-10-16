@@ -149,6 +149,8 @@ int Engine::run() {
     // Main loop
     glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
 
+    GameObject* table = new GameObject(pShaderProgram, vaoHandles[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
+
     for (int i = 0; i < 16; i++) {
         Card* card = new Card(  pShaderProgram, 
                                             vaoHandles[VAO_ID::CARD],
@@ -168,20 +170,7 @@ int Engine::run() {
 
         pShaderProgram->useProgram();
 
-        viewMatrix = pCamera->getViewMatrix();
-        projectionMatrix = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-        
-        modelMatrix = glm::mat4(1.0f);
-        glm::mat4 mvpMatrix =  projectionMatrix * viewMatrix * modelMatrix;
-        unsigned int mvpMatrixUniformLocation = glGetUniformLocation(pShaderProgram->getProgramHandle(), "mvpMatrix");
-        glProgramUniformMatrix4fv(pShaderProgram->getProgramHandle(), mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
-        unsigned int textureMapUniformLocation = glGetUniformLocation(pShaderProgram->getProgramHandle(), "textureMap");
-        glProgramUniform1i(pShaderProgram->getProgramHandle(), textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
-
-        // glActiveTexture(GL_TEXTURE0); // Not sure if this does anything
-        glBindTexture(GL_TEXTURE_2D, textureHandles[TEXTURE_ID::GRID]);
-        glBindVertexArray(vaoHandles[VAO_ID::TABLE]);
-        glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
+        table->draw(pCamera);
 
         glm::vec3 cursorRay = calculateCursorRay();
         glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
