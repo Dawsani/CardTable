@@ -223,9 +223,6 @@ CardTable_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 CardTable_SOURCE_DIR:STATIC=/home/dawson/Desktop/projects/card_table
 
-//The directory containing a CMake configuration file for GLFW3.
-GLFW3_DIR:PATH=GLFW3_DIR-NOTFOUND
-
 
 ########################
 # INTERNAL cache entries

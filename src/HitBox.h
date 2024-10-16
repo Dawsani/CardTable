@@ -3,7 +3,7 @@
 class HitBox {
 public:
     HitBox(class GameObject* pGameObject, glm::vec2 size);
-    bool CheckCollision(HitBox other);
+    bool CheckCollision(HitBox* pOther);
     class GameObject* getGameObject() { return pGameObject; }
     glm::vec2 getSize() { return size; }
 private:

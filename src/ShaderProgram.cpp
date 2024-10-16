@@ -24,9 +24,6 @@ ShaderProgram::ShaderProgram(const char *vertexShaderFileName, const char *fragm
 
     glLinkProgram(programHandle);
 
-    // clean up memory
-    delete fileString;
-
     // Get program uniforms
     mvpMatrixUniformLocation = glGetUniformLocation(programHandle, "mvpMatrix");
     textureMapUniformLocation = glGetUniformLocation(programHandle, "textureMap");

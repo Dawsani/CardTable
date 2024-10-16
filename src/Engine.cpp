@@ -92,6 +92,23 @@ void Engine::SetupVAOs() {
     vaoHandles[VAO_ID::CARD] = CreateCard();
 }
 
+Card* findHighestCard(std::vector<Card*> cards) {
+
+    if (cards.size() == 0) {
+        return nullptr;
+    }
+
+    Card* highestCard = cards[0];
+    for (int i = 0; i < cards.size(); i++) {
+        Card* card = cards[i];
+        if (card->getPosition().y > highestCard->getPosition().y) {
+            highestCard = card;
+        }
+    }
+
+    return highestCard;
+}
+
 int Engine::run() {
     // Initialize GLFW
     if (!glfwInit()) {
@@ -186,28 +203,37 @@ int Engine::run() {
                         cardsUnderCursor.push_back(card);
                 }
             }
-            if (cardsUnderCursor.size() > 0) {
-                Card* highestCard = cardsUnderCursor[0];
-                for (int i = 0; i < cardsUnderCursor.size(); i++) {
-                    Card* card = cardsUnderCursor[i];
-                    if (card->getPosition().y > highestCard->getPosition().y) {
-                        highestCard = card;
-                    }
-                }
+            Card* highestCard = findHighestCard(cardsUnderCursor);
 
+            if (highestCard != nullptr) {
                 pSelectedCard = highestCard;
                 grabPoint = glm::vec3(pSelectedCard->getPosition().x - intersectionPoint.x, 0.0f, pSelectedCard->getPosition().z - intersectionPoint.z);
             }
         }
         else if (leftMouseButtonState == GLFW_RELEASE && pSelectedCard != nullptr) {
 
+            std::vector<Card*> cardsUnderSelectedCard;
             for (int i = 0; i < cards.size(); i++) {
-                auto card = cards[i];
+                Card* card = cards[i];
+                if (pSelectedCard == card) {
+                    continue;
+                }
                 // check quad collision!
+                if (pSelectedCard->getHitBox()->CheckCollision(card->getHitBox())) {
+                    cardsUnderSelectedCard.push_back(card);
+                }
             }
 
-            pSelectedCard->setPosition(glm::vec3(pSelectedCard->getPosition().x, 0.02f, pSelectedCard->getPosition().z));
+            Card* highestCardBelowSelectedCard = findHighestCard(cardsUnderSelectedCard);
+
+            if (highestCardBelowSelectedCard != nullptr) {
+                float highestYPosition = highestCardBelowSelectedCard->getPosition().y;
             
+                pSelectedCard->setPosition(glm::vec3(pSelectedCard->getPosition().x, highestYPosition + 0.02f, pSelectedCard->getPosition().z));
+            }
+            else {
+                pSelectedCard->setPosition(glm::vec3(pSelectedCard->getPosition().x, 0.02f, pSelectedCard->getPosition().z));
+            }
             pSelectedCard = nullptr;
             std::cout << "Deselected card" << std::endl;
         }
