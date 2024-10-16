@@ -94,26 +94,6 @@ void Engine::SetupVAOs() {
     vaoHandles[VAO_ID::CARD] = CreateCard();
 }
 
-void Engine::DrawCard(TEXTURE_ID cardTextureID, glm::vec3 cardPosition) {
-
-    glm::mat4 viewMatrix = pCamera->getViewMatrix();
-    glm::mat4 projectionMatrix = pCamera->getProjectionMatrix();
-
-    glm::mat4 modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::translate(modelMatrix, cardPosition + glm::vec3(0.0f, 0.02f, 0.0f));
-    modelMatrix = glm::rotate(modelMatrix, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
-    glm::mat4 mvpMatrix =  projectionMatrix * viewMatrix * modelMatrix;
-    unsigned int mvpMatrixUniformLocation = glGetUniformLocation(pShaderProgram->getProgramHandle(), "mvpMatrix");
-    glProgramUniformMatrix4fv(pShaderProgram->getProgramHandle(), mvpMatrixUniformLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
-    unsigned int textureMapUniformLocation = glGetUniformLocation(pShaderProgram->getProgramHandle(), "textureMap");
-    glProgramUniform1i(pShaderProgram->getProgramHandle(), textureMapUniformLocation, 0); // Set the texture to texture 0 for now, while we only have one texture
-
-    glBindTexture(GL_TEXTURE_2D, textureHandles[TEXTURE_ID::SATYA]);
-    glBindVertexArray(vaoHandles[VAO_ID::CARD]);
-    glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
-}
-
 int Engine::run() {
     // Initialize GLFW
     if (!glfwInit()) {
@@ -170,6 +150,13 @@ int Engine::run() {
 
     // Main loop
     glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
+
+
+    GameObject* card = new GameObject(  pShaderProgram, 
+                                        vaoHandles[VAO_ID::CARD],
+                                        textureHandles[TEXTURE_ID::SATYA]);
+    card->setPosition(glm::vec3(0.0f, 0.02f, 0.0f));
+    card->setRotation(glm::vec3(glm::radians(90.0f), 0.0f, 0.0f));
     
     while (!glfwWindowShouldClose(pWindow)) {
         // Clear the screen to a color (e.g., black)
@@ -193,8 +180,7 @@ int Engine::run() {
         glBindVertexArray(vaoHandles[VAO_ID::TABLE]);
         glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
 
-        DrawCard(TEXTURE_ID::SATYA, glm::vec3(0.0f, 0.0f, 0.0f));
-        DrawCard(TEXTURE_ID::SATYA, glm::vec3(2.0f, 0.0f, 1.0f));
+        card->draw(pCamera);
 
         // Swap front and back buffers
         glfwSwapBuffers(pWindow);

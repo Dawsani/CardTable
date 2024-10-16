@@ -1,5 +1,5 @@
-#include <GL/glew.h>    // Include GLEW for OpenGL function loading
-#include <GLFW/glfw3.h> // Include GLFW for window management
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <iostream>
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -7,6 +7,7 @@
 #include "Utils.hpp"
 #include "Camera.h"
 #include "ShaderProgram.h"
+#include "GameObject.h"
 
 class Engine {
     public:

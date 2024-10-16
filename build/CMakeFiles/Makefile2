@@ -81,12 +81,12 @@ clean: CMakeFiles/CardTable.dir/clean
 CMakeFiles/CardTable.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/dawson/Desktop/projects/card_table/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target CardTable"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/dawson/Desktop/projects/card_table/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target CardTable"
 .PHONY : CMakeFiles/CardTable.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/CardTable.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dawson/Desktop/projects/card_table/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dawson/Desktop/projects/card_table/build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/CardTable.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/dawson/Desktop/projects/card_table/build/CMakeFiles 0
 .PHONY : CMakeFiles/CardTable.dir/rule

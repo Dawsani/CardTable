@@ -8,6 +8,7 @@ include_directories("/usr/local/lib")
 add_executable(CardTable 
                 src/main.cpp
                 src/Engine.cpp src/Engine.h
+                src/GameObject.cpp src/GameObject.h
                 src/Camera.cpp src/Camera.h
                 src/ShaderProgram.cpp src/ShaderProgram.h
                 src/Utils.hpp)
