@@ -144,18 +144,20 @@ int Engine::run() {
     SetupTextures();
     SetupVAOs();
 
-    pCamera = new Camera(glm::vec3(0.0f, 3.0f, 3.0f));
+    pCamera = new Camera(glm::vec3(0.0f, 3.0f, 2.0f));
 
     // Main loop
     glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
 
+    for (int i = 0; i < 16; i++) {
+        GameObject* card = new GameObject(  pShaderProgram, 
+                                            vaoHandles[VAO_ID::CARD],
+                                            textureHandles[TEXTURE_ID::SATYA]);
+        card->setPosition(glm::vec3(i, 0.02f, 0.0f));
+        card->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
 
-    pCard = new GameObject(  pShaderProgram, 
-                                        vaoHandles[VAO_ID::CARD],
-                                        textureHandles[TEXTURE_ID::SATYA]);
-    pCard->setPosition(glm::vec3(0.0f, 0.02f, 0.0f));
-    pCard->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
-
+        cards.push_back(card);
+    }
     pSelectedGameObject = nullptr;
     
     while (!glfwWindowShouldClose(pWindow)) {
@@ -184,26 +186,50 @@ int Engine::run() {
         glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
 
         if (leftMouseButtonState == GLFW_PRESS && pSelectedGameObject == nullptr) {
+            std::vector<GameObject*> cardsUnderCursor;
+            for (int i = 0; i < cards.size(); i++) {
+                GameObject* card = cards[i];
+                // check to see if the click selected a card
+                glm::vec2 groundIntersection = glm::vec2(intersectionPoint.x, intersectionPoint.z);
+                if (groundIntersection.x < card->getPosition().x + card->width && groundIntersection.x > card->getPosition().x && 
+                    intersectionPoint.z > card->getPosition().z - card->height && intersectionPoint.z < card->getPosition().z) {
+                        cardsUnderCursor.push_back(card);
+                }
+            }
+            if (cardsUnderCursor.size() > 0) {
+                GameObject* highestCard = cardsUnderCursor[0];
+                for (int i = 0; i < cardsUnderCursor.size(); i++) {
+                    GameObject* card = cardsUnderCursor[i];
+                    if (card->getPosition().y > highestCard->getPosition().y) {
+                        highestCard = card;
+                    }
+                }
 
-        
-            // check to see if the click selected a card
-            glm::vec2 groundIntersection = glm::vec2(intersectionPoint.x, intersectionPoint.z);
-            if (groundIntersection.x < pCard->getPosition().x + pCard->width && groundIntersection.x > pCard->getPosition().x && 
-                intersectionPoint.z > pCard->getPosition().z - pCard->height && intersectionPoint.z < pCard->getPosition().z) {
-                pSelectedGameObject = pCard;
+                pSelectedGameObject = highestCard;
                 grabPoint = glm::vec3(pSelectedGameObject->getPosition().x - intersectionPoint.x, 0.0f, pSelectedGameObject->getPosition().z - intersectionPoint.z);
-                std::cout << "Selected card" << std::endl;
             }
         }
         else if (leftMouseButtonState == GLFW_RELEASE && pSelectedGameObject != nullptr) {
+
+            for (int i = 0; i < cards.size(); i++) {
+                auto card = cards[i];
+                // check quad collision!
+            }
+
+            pSelectedGameObject->setPosition(glm::vec3(pSelectedGameObject->getPosition().x, 0.02f, pSelectedGameObject->getPosition().z));
+            
             pSelectedGameObject = nullptr;
             std::cout << "Deselected card" << std::endl;
         }
 
         if (pSelectedGameObject != nullptr) {
-            pSelectedGameObject->setPosition(intersectionPoint + glm::vec3(0.0f, 0.02f, 0.0f) + grabPoint);
+            pSelectedGameObject->setPosition(intersectionPoint + glm::vec3(0.0f, 0.2f, 0.0f) + grabPoint);
         }
-        pCard->draw(pCamera);
+
+        for (int i = 0; i < cards.size(); i++) {
+            GameObject* card = cards[i];
+            card->draw(pCamera);
+        }
 
         // Swap front and back buffers
         glfwSwapBuffers(pWindow);
@@ -230,7 +256,7 @@ void Engine::handleCursorPositionEvent(double x, double y) {
         // disable the curser until they release mouse button
         glfwSetInputMode(pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-        glm::vec2 cursorMovement = currentCursorPosition - cursorPosition;
+        glm::vec2 cursorMovement = cursorPosition - currentCursorPosition;
         
         pCamera->Pan(cursorMovement);
     }

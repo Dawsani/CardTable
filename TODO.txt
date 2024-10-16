@@ -1,17 +1,18 @@
-move card objects when they are clicked and dragged
 allow a deck of stacked cards to be created from a file full of card names, each with a corresponding image file
 create the hand in screen space
 allow cards to be dragged to and from the hand and the board
-add lighting to shaders
+add counters
+add tokens
+show close up of a card on hover
 networks, client/server multiplayer
-fix camera width height on window
 
 bugs:
-textures are flipped horizontally
+z axis is backwards? maybe?
+fix camera width height on window
 
 refactor/clean up code:
 add a method to read in a vao from file
 
 polish:
-add mipmapping
 add a border around hovered cards
+add lighting to shaders

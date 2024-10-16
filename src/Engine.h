@@ -4,8 +4,7 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <stb_image.h>
-#include <array>
-#include <list>
+#include <vector>
 #include "Utils.hpp"
 #include "Camera.h"
 #include "ShaderProgram.h"
@@ -30,6 +29,8 @@ class Engine {
         ShaderProgram* pShaderProgram;
 
         Camera* pCamera;
+
+        std::vector<GameObject*> cards;
 
         GameObject* pSelectedGameObject;
         glm::vec3 grabPoint;
@@ -56,8 +57,6 @@ class Engine {
         unsigned int CreateCard();
         unsigned int CreateTable();
         void SetupVAOs();
-
-        GameObject* pCard;
 };
 
 // Declare callbacks
