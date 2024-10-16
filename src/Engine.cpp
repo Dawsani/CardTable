@@ -150,15 +150,16 @@ int Engine::run() {
     glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
 
     for (int i = 0; i < 16; i++) {
-        GameObject* card = new GameObject(  pShaderProgram, 
+        Card* card = new Card(  pShaderProgram, 
                                             vaoHandles[VAO_ID::CARD],
-                                            textureHandles[TEXTURE_ID::SATYA]);
+                                            textureHandles[TEXTURE_ID::SATYA],
+                                            glm::vec2(0.63f, 0.88f));
         card->setPosition(glm::vec3(i, 0.02f, 0.0f));
         card->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
 
         cards.push_back(card);
     }
-    pSelectedGameObject = nullptr;
+    pSelectedCard = nullptr;
     
     while (!glfwWindowShouldClose(pWindow)) {
         // Clear the screen to a color (e.g., black)
@@ -185,45 +186,45 @@ int Engine::run() {
         glm::vec3 cursorRay = calculateCursorRay();
         glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
 
-        if (leftMouseButtonState == GLFW_PRESS && pSelectedGameObject == nullptr) {
-            std::vector<GameObject*> cardsUnderCursor;
+        if (leftMouseButtonState == GLFW_PRESS && pSelectedCard == nullptr) {
+            std::vector<Card*> cardsUnderCursor;
             for (int i = 0; i < cards.size(); i++) {
-                GameObject* card = cards[i];
+                Card* card = cards[i];
                 // check to see if the click selected a card
                 glm::vec2 groundIntersection = glm::vec2(intersectionPoint.x, intersectionPoint.z);
-                if (groundIntersection.x < card->getPosition().x + card->width && groundIntersection.x > card->getPosition().x && 
-                    intersectionPoint.z > card->getPosition().z - card->height && intersectionPoint.z < card->getPosition().z) {
+                if (groundIntersection.x < card->getPosition().x + card->getHitBox()->getSize().x && groundIntersection.x > card->getPosition().x && 
+                    intersectionPoint.z > card->getPosition().z - card->getHitBox()->getSize().y && intersectionPoint.z < card->getPosition().z) {
                         cardsUnderCursor.push_back(card);
                 }
             }
             if (cardsUnderCursor.size() > 0) {
-                GameObject* highestCard = cardsUnderCursor[0];
+                Card* highestCard = cardsUnderCursor[0];
                 for (int i = 0; i < cardsUnderCursor.size(); i++) {
-                    GameObject* card = cardsUnderCursor[i];
+                    Card* card = cardsUnderCursor[i];
                     if (card->getPosition().y > highestCard->getPosition().y) {
                         highestCard = card;
                     }
                 }
 
-                pSelectedGameObject = highestCard;
-                grabPoint = glm::vec3(pSelectedGameObject->getPosition().x - intersectionPoint.x, 0.0f, pSelectedGameObject->getPosition().z - intersectionPoint.z);
+                pSelectedCard = highestCard;
+                grabPoint = glm::vec3(pSelectedCard->getPosition().x - intersectionPoint.x, 0.0f, pSelectedCard->getPosition().z - intersectionPoint.z);
             }
         }
-        else if (leftMouseButtonState == GLFW_RELEASE && pSelectedGameObject != nullptr) {
+        else if (leftMouseButtonState == GLFW_RELEASE && pSelectedCard != nullptr) {
 
             for (int i = 0; i < cards.size(); i++) {
                 auto card = cards[i];
                 // check quad collision!
             }
 
-            pSelectedGameObject->setPosition(glm::vec3(pSelectedGameObject->getPosition().x, 0.02f, pSelectedGameObject->getPosition().z));
+            pSelectedCard->setPosition(glm::vec3(pSelectedCard->getPosition().x, 0.02f, pSelectedCard->getPosition().z));
             
-            pSelectedGameObject = nullptr;
+            pSelectedCard = nullptr;
             std::cout << "Deselected card" << std::endl;
         }
 
-        if (pSelectedGameObject != nullptr) {
-            pSelectedGameObject->setPosition(intersectionPoint + glm::vec3(0.0f, 0.2f, 0.0f) + grabPoint);
+        if (pSelectedCard != nullptr) {
+            pSelectedCard->setPosition(intersectionPoint + glm::vec3(0.0f, 0.2f, 0.0f) + grabPoint);
         }
 
         for (int i = 0; i < cards.size(); i++) {

@@ -153,6 +153,30 @@ src/Camera.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/Camera.cpp.s
 .PHONY : src/Camera.cpp.s
 
+src/Card.o: src/Card.cpp.o
+.PHONY : src/Card.o
+
+# target to build an object file
+src/Card.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/Card.cpp.o
+.PHONY : src/Card.cpp.o
+
+src/Card.i: src/Card.cpp.i
+.PHONY : src/Card.i
+
+# target to preprocess a source file
+src/Card.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/Card.cpp.i
+.PHONY : src/Card.cpp.i
+
+src/Card.s: src/Card.cpp.s
+.PHONY : src/Card.s
+
+# target to generate assembly for a file
+src/Card.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/Card.cpp.s
+.PHONY : src/Card.cpp.s
+
 src/Engine.o: src/Engine.cpp.o
 .PHONY : src/Engine.o
 
@@ -200,6 +224,30 @@ src/GameObject.s: src/GameObject.cpp.s
 src/GameObject.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/GameObject.cpp.s
 .PHONY : src/GameObject.cpp.s
+
+src/HitBox.o: src/HitBox.cpp.o
+.PHONY : src/HitBox.o
+
+# target to build an object file
+src/HitBox.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/HitBox.cpp.o
+.PHONY : src/HitBox.cpp.o
+
+src/HitBox.i: src/HitBox.cpp.i
+.PHONY : src/HitBox.i
+
+# target to preprocess a source file
+src/HitBox.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/HitBox.cpp.i
+.PHONY : src/HitBox.cpp.i
+
+src/HitBox.s: src/HitBox.cpp.s
+.PHONY : src/HitBox.s
+
+# target to generate assembly for a file
+src/HitBox.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/HitBox.cpp.s
+.PHONY : src/HitBox.cpp.s
 
 src/ShaderProgram.o: src/ShaderProgram.cpp.o
 .PHONY : src/ShaderProgram.o
@@ -261,12 +309,18 @@ help:
 	@echo "... src/Camera.o"
 	@echo "... src/Camera.i"
 	@echo "... src/Camera.s"
+	@echo "... src/Card.o"
+	@echo "... src/Card.i"
+	@echo "... src/Card.s"
 	@echo "... src/Engine.o"
 	@echo "... src/Engine.i"
 	@echo "... src/Engine.s"
 	@echo "... src/GameObject.o"
 	@echo "... src/GameObject.i"
 	@echo "... src/GameObject.s"
+	@echo "... src/HitBox.o"
+	@echo "... src/HitBox.i"
+	@echo "... src/HitBox.s"
 	@echo "... src/ShaderProgram.o"
 	@echo "... src/ShaderProgram.i"
 	@echo "... src/ShaderProgram.s"

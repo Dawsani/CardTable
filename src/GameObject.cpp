@@ -10,9 +10,6 @@ GameObject::GameObject(ShaderProgram* pShaderProgram, unsigned int vaoHandle, un
     rotation = glm::vec3(0.0f, 0.0f, 0.0f);
     scale = glm::vec3(1.0f, 1.0f, 1.0f);
 
-    width = 0.63f;
-    height = 0.88f;
-
     updateModelMatrix();
 }
 

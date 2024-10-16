@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "ShaderProgram.h"
 #include "GameObject.h"
+#include "Card.h"
 
 class Engine {
     public:
@@ -30,9 +31,9 @@ class Engine {
 
         Camera* pCamera;
 
-        std::vector<GameObject*> cards;
+        std::vector<Card*> cards;
 
-        GameObject* pSelectedGameObject;
+        Card* pSelectedCard;
         glm::vec3 grabPoint;
 
         static const int NUM_TEXTURES = 2;

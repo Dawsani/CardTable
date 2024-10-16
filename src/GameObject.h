@@ -1,3 +1,6 @@
+#ifndef GAME_OBJECT_H
+#define GAME_OBJECT_H
+
 #include <GL/glew.h>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
@@ -14,12 +17,8 @@ public:
 
     glm::vec3 getPosition() { return position; }
 
-    // 2D hitbox
-    float width;
-    float height;
-
     void draw(Camera* pCamera);
-private:
+protected:
     ShaderProgram* pShaderProgram;
 
     glm::vec3 position;
@@ -33,3 +32,5 @@ private:
 
     void updateModelMatrix();
 };
+
+#endif

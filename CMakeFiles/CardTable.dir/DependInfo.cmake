@@ -9,8 +9,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/dawson/Desktop/projects/card_table/src/Camera.cpp" "CMakeFiles/CardTable.dir/src/Camera.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/Camera.cpp.o.d"
+  "/home/dawson/Desktop/projects/card_table/src/Card.cpp" "CMakeFiles/CardTable.dir/src/Card.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/Card.cpp.o.d"
   "/home/dawson/Desktop/projects/card_table/src/Engine.cpp" "CMakeFiles/CardTable.dir/src/Engine.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/Engine.cpp.o.d"
   "/home/dawson/Desktop/projects/card_table/src/GameObject.cpp" "CMakeFiles/CardTable.dir/src/GameObject.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/GameObject.cpp.o.d"
+  "/home/dawson/Desktop/projects/card_table/src/HitBox.cpp" "CMakeFiles/CardTable.dir/src/HitBox.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/HitBox.cpp.o.d"
   "/home/dawson/Desktop/projects/card_table/src/ShaderProgram.cpp" "CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o.d"
   "/home/dawson/Desktop/projects/card_table/src/main.cpp" "CMakeFiles/CardTable.dir/src/main.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/main.cpp.o.d"
   )

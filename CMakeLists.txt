@@ -9,8 +9,10 @@ add_executable(CardTable
                 src/main.cpp
                 src/Engine.cpp src/Engine.h
                 src/GameObject.cpp src/GameObject.h
+                src/Card.cpp src/Card.h
                 src/Camera.cpp src/Camera.h
                 src/ShaderProgram.cpp src/ShaderProgram.h
+                src/HitBox.cpp src/HitBox.h
                 src/Utils.hpp)
 
 target_link_libraries(CardTable GL glfw GLEW stbimage)

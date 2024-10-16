@@ -311,4 +311,6 @@ CMakeFiles/CardTable.dir/src/main.cpp.o: \
  /usr/include/string.h /usr/include/strings.h \
  /home/dawson/Desktop/projects/card_table/src/Camera.h \
  /home/dawson/Desktop/projects/card_table/src/ShaderProgram.h \
- /home/dawson/Desktop/projects/card_table/src/GameObject.h
+ /home/dawson/Desktop/projects/card_table/src/GameObject.h \
+ /home/dawson/Desktop/projects/card_table/src/Card.h \
+ /home/dawson/Desktop/projects/card_table/src/HitBox.h
