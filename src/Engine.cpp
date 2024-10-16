@@ -155,7 +155,8 @@ int Engine::run() {
     pCard = new GameObject(  pShaderProgram, 
                                         vaoHandles[VAO_ID::CARD],
                                         textureHandles[TEXTURE_ID::SATYA]);
-    pCard->setPosition(glm::vec3(1.0f, 0.02f, 1.0f));
+    pCard->setPosition(glm::vec3(0.0f, 0.02f, 0.0f));
+    pCard->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
     
     while (!glfwWindowShouldClose(pWindow)) {
         // Clear the screen to a color (e.g., black)
@@ -228,10 +229,16 @@ void Engine::handleMouseButtonEvent(int button, int action, int mod) {
     else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
         leftMouseButtonState = action;
         glm::vec3 cursorRay = calculateCursorRay();
-        std::cout << "Cursor Ray: <" << cursorRay.x << ", " << cursorRay.y << ", " << cursorRay.z << ">" << std::endl;
         glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
+    
         std::cout << "Intersection Point: (" << intersectionPoint.x << ", " << intersectionPoint.y << ", " << intersectionPoint.z << ")" << std::endl;
-        pCard->setPosition(intersectionPoint + glm::vec3(0.0f, 0.02f, 0.0f));
+
+        // check to see if the click selected a card
+        glm::vec2 groundIntersection = glm::vec2(intersectionPoint.x, intersectionPoint.z);
+        if (groundIntersection.x < pCard->getPosition().x + pCard->width && groundIntersection.x > pCard->getPosition().x && 
+            -intersectionPoint.z < pCard->getPosition().z + pCard->height && -intersectionPoint.z > pCard->getPosition().z) {
+            std::cout << "Clicked Card!" << std::endl;
+        }
     }
 }
 

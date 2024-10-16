@@ -14,6 +14,10 @@ public:
 
     glm::vec3 getPosition() { return position; }
 
+    // 2D hitbox
+    float width;
+    float height;
+
     void draw(Camera* pCamera);
 private:
     ShaderProgram* pShaderProgram;

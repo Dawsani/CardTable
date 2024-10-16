@@ -298,7 +298,12 @@ CMakeFiles/CardTable.dir/src/Engine.cpp.o: \
  /usr/include/glm/ext/matrix_transform.hpp \
  /usr/include/glm/ext/matrix_transform.inl \
  /usr/include/glm/gtc/matrix_transform.inl /usr/local/include/stb_image.h \
- /usr/include/c++/13/stdlib.h \
+ /usr/include/c++/13/stdlib.h /usr/include/c++/13/array \
+ /usr/include/c++/13/compare /usr/include/c++/13/list \
+ /usr/include/c++/13/bits/stl_list.h \
+ /usr/include/c++/13/bits/allocated_ptr.h \
+ /usr/include/c++/13/ext/aligned_buffer.h \
+ /usr/include/c++/13/bits/list.tcc \
  /home/dawson/Desktop/projects/card_table/src/Utils.hpp \
  /usr/include/c++/13/fstream /usr/include/c++/13/bits/codecvt.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h \
