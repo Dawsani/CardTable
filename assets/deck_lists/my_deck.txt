@@ -1,0 +1,5 @@
+// My deck!
+1x ace_of_spades.png
+2x 1_of_hearts.png
+3x 3_of_clubs.png
+4x 2_of_diamonds.png
