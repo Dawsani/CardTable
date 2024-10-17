@@ -5,7 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <stb_image.h>
 #include <vector>
-#include "Utils.hpp"
+#include "Utils.h"
 #include "Camera.h"
 #include "ShaderProgram.h"
 #include "GameObject.h"

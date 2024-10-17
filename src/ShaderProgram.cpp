@@ -1,5 +1,5 @@
 #include "ShaderProgram.h"
-#include "Utils.hpp"
+#include "Utils.h"
 
 ShaderProgram::ShaderProgram(const char *vertexShaderFileName, const char *fragmentShaderFileName)
 {

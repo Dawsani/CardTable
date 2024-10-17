@@ -1,3 +1,6 @@
+#ifndef CARD_H
+#define CARD_H
+
 #include "GameObject.h"
 #include "HitBox.h"
 
@@ -8,3 +11,5 @@ class Card : public GameObject {
     private:
         HitBox* pHitBox;
 };
+
+#endif
