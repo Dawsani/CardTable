@@ -36,17 +36,19 @@ class Engine {
         Card* pSelectedCard;
         glm::vec3 grabPoint;
 
-        static const int NUM_TEXTURES = 2;
+        static const int NUM_TEXTURES = 3;
         enum TEXTURE_ID {
             GRID = 0,
-            SATYA = 1
+            SATYA = 1,
+            BACK = 2
         };
         unsigned int textureHandles[NUM_TEXTURES];
 
-        static const int NUM_VAOS = 2;
+        static const int NUM_VAOS = 3;
         enum VAO_ID {
             TABLE = 0,
-            CARD = 1
+            CARD = 1,
+            DECK = 2
         };
         unsigned int vaoHandles[NUM_VAOS];
         unsigned int numVAOPoints[NUM_VAOS];
@@ -56,8 +58,6 @@ class Engine {
         GLint leftMouseButtonState = GLFW_RELEASE;
 
         void SetupTextures();
-        unsigned int CreateCard();
-        unsigned int CreateTable();
         void SetupVAOs();
 };
 

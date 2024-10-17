@@ -3,95 +3,13 @@
 void Engine::SetupTextures() {
     textureHandles[TEXTURE_ID::GRID] = Utils::LoadTexture("assets/textures/test.png");
     textureHandles[TEXTURE_ID::SATYA] = Utils::LoadTexture("assets/textures/m3c-3-satya-aetherflux-genius.jpg");
-}
-
-unsigned int Engine::CreateCard() {
-    // Vertex data for the table
-    float vertices[] = {
-        0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-        0.63f, 0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f,  0.88f, 0.0f, 0.0f, 1.0f,
-        0.63f,  0.88f, 0.0f, 1.0f, 1.0f
-    };
-
-    unsigned int indices[] = {
-        0, 1, 2, 3
-    };
-
-    // Generate vertex array and buffers
-    unsigned int VAO, VBO, IBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &IBO);
-
-    // Bind VAO and VBO
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // Vertex attributes
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);   // vertex postion
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))); // texture coordinate
-    glEnableVertexAttribArray(1);
-
-    // Unbind VBO and VAO (optional)
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
-    glBindVertexArray(0);
-
-    return VAO;
-}
-
-unsigned int Engine::CreateTable() {
-
-
-    // Vertex data for the table
-    float vertices[] = {
-        -10.0f, 0.0f, -10.0f, 0.0f, 0.0f,
-        10.0f, 0.0f, -10.0f, 20.0f, 0.0f,
-        -10.0f,  0.0f, 10.0f, 0.0f, 20.0f,
-        10.0f, 0.0f, 10.0f, 20.0f, 20.0f
-    };
-
-    unsigned int indices[] = {
-        0, 1, 2, 1, 2, 3
-    };
-
-    // Generate vertex array and buffers
-    unsigned int VAO, VBO, IBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &IBO);
-
-    // Bind VAO and VBO
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // Vertex attributes
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);   // vertex postion
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))); // texture coordinate
-    glEnableVertexAttribArray(1);
-
-    // Unbind VBO and VAO (optional)
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
-    glBindVertexArray(0);
-
-    return VAO;
+    textureHandles[TEXTURE_ID::BACK] = Utils::LoadTexture("assets/textures/playing_cards/back.png");
 }
 
 void Engine::SetupVAOs() {
     Utils::loadModel("assets/models/table.obj", vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE]);
     Utils::loadModel("assets/models/card.obj", vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD]);
+    Utils::loadModel("assets/models/deck.obj", vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK]);
 }
 
 Card* findHighestCard(std::vector<Card*> cards) {
@@ -170,6 +88,9 @@ int Engine::run() {
 
     GameObject* table = new GameObject(pShaderProgram, vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
 
+    GameObject* deck = new GameObject(pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK]);
+    deck->setScale(glm::vec3(1.0f, 100.0f, 1.0f));
+
     for (int i = 0; i < 16; i++) {
         Card* card = new Card(  pShaderProgram, 
                                             vaoHandles[VAO_ID::CARD],
@@ -191,6 +112,7 @@ int Engine::run() {
         pShaderProgram->useProgram();
 
         table->draw(pCamera);
+        deck->draw(pCamera);
 
         glm::vec3 cursorRay = calculateCursorRay();
         glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
