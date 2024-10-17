@@ -1,5 +1,45 @@
 #include "Utils.h"
 
+Card* Utils::findHighestCard(std::vector<Card*> cards) {
+    if (cards.size() == 0) {
+        return nullptr;
+    }
+
+    Card* highestCard = cards[0];
+    for (int i = 0; i < cards.size(); i++) {
+        Card* card = cards[i];
+        if (card->getPosition().y > highestCard->getPosition().y) {
+            highestCard = card;
+        }
+    }
+
+    return highestCard;
+}
+
+std::vector<Card *> Utils::readCardsFromFile(std::string filename)
+{
+    std::vector<Card*> cards;
+
+    std::ifstream file(filename);
+
+    std::string line;
+
+    if (!file.is_open()) {
+        std::cerr << "Unable to open file " << filename << std::endl;
+        return cards;
+    }
+
+    while (getline(file, line)) {
+        
+    }
+
+    // Close the file stream once all lines have been
+    // read.
+    file.close();
+
+    return cards;
+}
+
 std::vector<std::string> Utils::splitString(std::string string, char delimiter) {
     std::vector<std::string> subStrings;
     std::string subString = "";

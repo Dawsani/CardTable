@@ -10,6 +10,7 @@
 #include "ShaderProgram.h"
 #include "GameObject.h"
 #include "Card.h"
+#include "Deck.h"
 
 class Engine {
     public:
@@ -57,6 +58,7 @@ class Engine {
         GLint rightMouseButtonState = GLFW_RELEASE;
         GLint leftMouseButtonState = GLFW_RELEASE;
 
+        int setupOpenGL();
         void SetupTextures();
         void SetupVAOs();
 };

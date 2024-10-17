@@ -19,4 +19,8 @@ class Utils {
     static void loadModel(const char* filename, unsigned int& vao, unsigned int& numVAOPoints);
 
     static std::vector<std::string> splitString(std::string string, char delimiter);
+    
+    static Card* findHighestCard(std::vector<Card*> cards);
+
+    static std::vector<Card*> readCardsFromFile(std::string filename);
 };

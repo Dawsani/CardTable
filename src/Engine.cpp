@@ -1,34 +1,6 @@
 #include "Engine.h"
 
-void Engine::SetupTextures() {
-    textureHandles[TEXTURE_ID::GRID] = Utils::LoadTexture("assets/textures/test.png");
-    textureHandles[TEXTURE_ID::SATYA] = Utils::LoadTexture("assets/textures/m3c-3-satya-aetherflux-genius.jpg");
-    textureHandles[TEXTURE_ID::BACK] = Utils::LoadTexture("assets/textures/playing_cards/back.png");
-}
-
-void Engine::SetupVAOs() {
-    Utils::loadModel("assets/models/table.obj", vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE]);
-    Utils::loadModel("assets/models/card.obj", vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD]);
-    Utils::loadModel("assets/models/deck.obj", vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK]);
-}
-
-Card* findHighestCard(std::vector<Card*> cards) {
-    if (cards.size() == 0) {
-        return nullptr;
-    }
-
-    Card* highestCard = cards[0];
-    for (int i = 0; i < cards.size(); i++) {
-        Card* card = cards[i];
-        if (card->getPosition().y > highestCard->getPosition().y) {
-            highestCard = card;
-        }
-    }
-
-    return highestCard;
-}
-
-int Engine::run() {
+int Engine::setupOpenGL() {
     // Initialize GLFW
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW" << std::endl;
@@ -72,14 +44,31 @@ int Engine::run() {
     glfwSetMouseButtonCallback(pWindow, mouse_button_callback);
     glfwSetScrollCallback(pWindow, scroll_callback);
 
-    pShaderProgram = new ShaderProgram("src/shaders/shader.v.glsl", "src/shaders/shader.f.glsl");
-
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
 
+    return 0;
+}
+
+void Engine::SetupTextures() {
+    textureHandles[TEXTURE_ID::GRID] = Utils::LoadTexture("assets/textures/test.png");
+    textureHandles[TEXTURE_ID::SATYA] = Utils::LoadTexture("assets/textures/m3c-3-satya-aetherflux-genius.jpg");
+    textureHandles[TEXTURE_ID::BACK] = Utils::LoadTexture("assets/textures/playing_cards/back.png");
+}
+
+void Engine::SetupVAOs() {
+    Utils::loadModel("assets/models/table.obj", vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE]);
+    Utils::loadModel("assets/models/card.obj", vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD]);
+    Utils::loadModel("assets/models/deck.obj", vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK]);
+}
+
+int Engine::run() {
+
+    setupOpenGL();
     SetupTextures();
     SetupVAOs();
 
+    pShaderProgram = new ShaderProgram("src/shaders/shader.v.glsl", "src/shaders/shader.f.glsl");
     pCamera = new Camera(glm::vec3(0.0f, 3.0f, 2.0f));
 
     // Main loop
@@ -87,8 +76,8 @@ int Engine::run() {
 
     GameObject* table = new GameObject(pShaderProgram, vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
 
-    GameObject* deck = new GameObject(pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK]);
-    deck->setScale(glm::vec3(1.0f, 100.0f, 1.0f));
+    std::vector<Card*> deckCards = Utils::readCardsFromFile("assets/deck_lists/my_deck.txt");
+    Deck* deck = new Deck(pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
 
     for (int i = 0; i < 16; i++) {
         Card* card = new Card(  pShaderProgram, 
@@ -127,7 +116,7 @@ int Engine::run() {
                         cardsUnderCursor.push_back(card);
                 }
             }
-            Card* highestCard = findHighestCard(cardsUnderCursor);
+            Card* highestCard = Utils::findHighestCard(cardsUnderCursor);
 
             if (highestCard != nullptr) {
                 pSelectedCard = highestCard;
@@ -148,7 +137,7 @@ int Engine::run() {
                 }
             }
 
-            Card* highestCardBelowSelectedCard = findHighestCard(cardsUnderSelectedCard);
+            Card* highestCardBelowSelectedCard = Utils::findHighestCard(cardsUnderSelectedCard);
 
             if (highestCardBelowSelectedCard != nullptr) {
                 float highestYPosition = highestCardBelowSelectedCard->getPosition().y;
