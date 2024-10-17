@@ -14,7 +14,7 @@ class Utils {
 
     static unsigned int LoadTexture(const char* filename);
 
-    static unsigned int loadModel(const char* filename);
+    static void loadModel(const char* filename, unsigned int& vao, unsigned int& numVAOPoints);
 
     static std::vector<std::string> splitString(std::string string, char delimiter);
 };
@@ -40,7 +40,7 @@ inline std::vector<std::string> Utils::splitString(std::string string, char deli
     return subStrings;
 }
 
-inline unsigned int Utils::loadModel(const char* filename) {
+inline void Utils::loadModel(const char* filename, unsigned int& vao, unsigned int& numVAOPoints) {
 
     std::cout << "Loading model " << filename << std::endl;
 
@@ -135,14 +135,6 @@ inline unsigned int Utils::loadModel(const char* filename) {
         }
     }
 
-
-    for (int i = 0; i < finalVerticesSize; i++) {
-        if (i % 5 == 0) {
-            std::cout << std::endl;
-        }
-        std::cout << finalVertices[i] << " ";
-    }
-
     // set up the indices just in case
     unsigned int indices[finalVerticesSize / 5];
     for (int i = 0; i < finalVerticesSize / 5; i++) {
@@ -174,7 +166,8 @@ inline unsigned int Utils::loadModel(const char* filename) {
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
     glBindVertexArray(0);
 
-    return VAO;
+    vao = VAO;
+    numVAOPoints = finalVerticesSize;
 }
 
 inline unsigned int Utils::LoadTexture(const char* filename) {

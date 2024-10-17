@@ -49,6 +49,7 @@ class Engine {
             CARD = 1
         };
         unsigned int vaoHandles[NUM_VAOS];
+        unsigned int numVAOPoints[NUM_VAOS];
 
         glm::vec2 cursorPosition;
         GLint rightMouseButtonState = GLFW_RELEASE;

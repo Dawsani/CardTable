@@ -4,7 +4,7 @@
 
 class Deck : public GameObject {
 public:
-    Deck(ShaderProgram* pShaderProgram, unsigned int vaoHandle, unsigned int textureHandle, std::vector<Card*> cards);
+    Deck(ShaderProgram* pShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, unsigned int textureHandle, std::vector<Card*> cards);
 private:
     std::vector<Card*> cards;
 };

@@ -9,7 +9,7 @@
 
 class GameObject {
 public:
-    GameObject(ShaderProgram* pShaderProgram, unsigned int vaoHandle, unsigned int textureHandle);
+    GameObject(ShaderProgram* pShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, unsigned int textureHandle);
 
     void setPosition(glm::vec3 position);
     void setRotation(glm::vec3 rotation);
@@ -27,6 +27,7 @@ protected:
 
     unsigned int textureHandle;
     unsigned int vaoHandle;
+    unsigned int numVAOPoints;
 
     glm::mat4 modelMatrix;
 

@@ -1,9 +1,10 @@
 #include "GameObject.h"
 
-GameObject::GameObject(ShaderProgram* pShaderProgram, unsigned int vaoHandle, unsigned int textureHandle) {
+GameObject::GameObject(ShaderProgram* pShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, unsigned int textureHandle) {
 
     this->pShaderProgram = pShaderProgram;
     this->vaoHandle = vaoHandle;
+    this->numVAOPoints = numVAOPoints;
     this->textureHandle = textureHandle;
 
     position = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -42,7 +43,7 @@ void GameObject::draw(Camera *pCamera)
 
     glBindTexture(GL_TEXTURE_2D, textureHandle);
     glBindVertexArray(vaoHandle);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, numVAOPoints, GL_UNSIGNED_INT, 0);
 }
 
 void GameObject::updateModelMatrix()

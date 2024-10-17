@@ -90,8 +90,8 @@ unsigned int Engine::CreateTable() {
 }
 
 void Engine::SetupVAOs() {
-    vaoHandles[VAO_ID::TABLE] = Utils::loadModel("assets/models/table.obj");
-    vaoHandles[VAO_ID::CARD] = CreateCard();
+    Utils::loadModel("assets/models/table.obj", vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE]);
+    Utils::loadModel("assets/models/card.obj", vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD]);
 }
 
 Card* findHighestCard(std::vector<Card*> cards) {
@@ -168,11 +168,12 @@ int Engine::run() {
     // Main loop
     glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
 
-    GameObject* table = new GameObject(pShaderProgram, vaoHandles[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
+    GameObject* table = new GameObject(pShaderProgram, vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
 
     for (int i = 0; i < 16; i++) {
         Card* card = new Card(  pShaderProgram, 
                                             vaoHandles[VAO_ID::CARD],
+                                            numVAOPoints[VAO_ID::CARD],
                                             textureHandles[TEXTURE_ID::SATYA],
                                             glm::vec2(0.63f, 0.88f));
         card->setPosition(glm::vec3(i, 0.02f, 0.0f));
