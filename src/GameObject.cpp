@@ -42,7 +42,7 @@ void GameObject::draw(Camera *pCamera)
 
     glBindTexture(GL_TEXTURE_2D, textureHandle);
     glBindVertexArray(vaoHandle);
-    glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 void GameObject::updateModelMatrix()

@@ -118,24 +118,25 @@ inline unsigned int Utils::loadModel(const char* filename) {
     std::cout << "Read in " << faces.size() << " faces." << std::endl;
     
     // x vertices and 5 floats ver vertex
-    float finalVertices[5 * 3 * faces.size()];
+    const int finalVerticesSize = 5 * 3 * faces.size();
+    float finalVertices[finalVerticesSize];
     for (unsigned int i = 0; i < faces.size(); i++) {
         Face f = faces[i];
         for (unsigned int j = 0; j < 3; j++) {
-            unsigned int vertexIndex = f.vertices[j].vertexIndex;
-            unsigned int textureCoordinateIndex = f.vertices[j].textureCoordinateIndex;
+            unsigned int vertexIndex = f.vertices[j].vertexIndex - 1;
+            unsigned int textureCoordinateIndex = f.vertices[j].textureCoordinateIndex - 1;
             glm::vec3 v = vertices[vertexIndex];
             glm::vec2 vt = textureCoordinates[textureCoordinateIndex];
-            finalVertices[15 * i + 0] = v.x;
-            finalVertices[15 * i + 1] = v.y;
-            finalVertices[15 * i + 2] = v.z;
-            finalVertices[15 * i + 3] = vt.x;
-            finalVertices[15 * i + 4] = vt.y;
+            finalVertices[5 * j + 15 * i + 0] = v.x;
+            finalVertices[5 * j + 15 * i + 1] = v.y;
+            finalVertices[5 * j + 15 * i + 2] = v.z;
+            finalVertices[5 * j + 15 * i + 3] = vt.x;
+            finalVertices[5 * j + 15 * i + 4] = vt.y;
         }
     }
 
 
-    for (int i = 0; i < sizeof(finalVertices); i++) {
+    for (int i = 0; i < finalVerticesSize; i++) {
         if (i % 5 == 0) {
             std::cout << std::endl;
         }
@@ -143,8 +144,8 @@ inline unsigned int Utils::loadModel(const char* filename) {
     }
 
     // set up the indices just in case
-    unsigned int indices[sizeof(finalVertices)];
-    for (int i = 0; i < sizeof(finalVertices); i++) {
+    unsigned int indices[finalVerticesSize / 5];
+    for (int i = 0; i < finalVerticesSize / 5; i++) {
         indices[i] = i;
     }
 
@@ -158,7 +159,7 @@ inline unsigned int Utils::loadModel(const char* filename) {
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), finalVertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(finalVertices), finalVertices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
