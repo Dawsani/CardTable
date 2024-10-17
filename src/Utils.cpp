@@ -1,25 +1,6 @@
-#include <iostream>
-#include <fstream>
-#include <cstring>
-#include <string>
-#include <vector>
-#include "glm/vec3.hpp"
-#include "glm/vec2.hpp"
-#include "stb_image.h"
+#include "Utils.h"
 
-class Utils {
-    public:
-    // Reads the data in file filename, puts the data in output, returns false if data cannot be read.
-    static bool readTextFromFile(const char *filename, char* &output);
-
-    static unsigned int LoadTexture(const char* filename);
-
-    static void loadModel(const char* filename, unsigned int& vao, unsigned int& numVAOPoints);
-
-    static std::vector<std::string> splitString(std::string string, char delimiter);
-};
-
-inline std::vector<std::string> Utils::splitString(std::string string, char delimiter) {
+std::vector<std::string> Utils::splitString(std::string string, char delimiter) {
     std::vector<std::string> subStrings;
     std::string subString = "";
     for (char letter : string) {
@@ -40,7 +21,7 @@ inline std::vector<std::string> Utils::splitString(std::string string, char deli
     return subStrings;
 }
 
-inline void Utils::loadModel(const char* filename, unsigned int& vao, unsigned int& numVAOPoints) {
+void Utils::loadModel(const char* filename, unsigned int& vao, unsigned int& numVAOPoints) {
 
     std::cout << "Loading model " << filename << std::endl;
 
@@ -170,7 +151,7 @@ inline void Utils::loadModel(const char* filename, unsigned int& vao, unsigned i
     numVAOPoints = finalVerticesSize;
 }
 
-inline unsigned int Utils::LoadTexture(const char* filename) {
+unsigned int Utils::LoadTexture(const char* filename) {
     unsigned int textureHandle = 0;
 
     stbi_set_flip_vertically_on_load(true);
@@ -198,7 +179,8 @@ inline unsigned int Utils::LoadTexture(const char* filename) {
     return textureHandle;
 }
 
-inline bool Utils::readTextFromFile(const char *filename, char* &output) {
+bool Utils::readTextFromFile(const char *filename, char *&output)
+{
     std::string buf = std::string("");
     std::string line;
 

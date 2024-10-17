@@ -14,6 +14,6 @@ add_executable(CardTable
                 src/Camera.cpp src/Camera.h
                 src/ShaderProgram.cpp src/ShaderProgram.h
                 src/HitBox.cpp src/HitBox.h
-                src/Utils.hpp)
+                src/Utils.cpp src/Utils.h)
 
 target_link_libraries(CardTable GL glfw GLEW stbimage)

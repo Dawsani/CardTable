@@ -13,7 +13,6 @@ void Engine::SetupVAOs() {
 }
 
 Card* findHighestCard(std::vector<Card*> cards) {
-
     if (cards.size() == 0) {
         return nullptr;
     }
