@@ -177,6 +177,30 @@ src/Card.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/Card.cpp.s
 .PHONY : src/Card.cpp.s
 
+src/Deck.o: src/Deck.cpp.o
+.PHONY : src/Deck.o
+
+# target to build an object file
+src/Deck.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/Deck.cpp.o
+.PHONY : src/Deck.cpp.o
+
+src/Deck.i: src/Deck.cpp.i
+.PHONY : src/Deck.i
+
+# target to preprocess a source file
+src/Deck.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/Deck.cpp.i
+.PHONY : src/Deck.cpp.i
+
+src/Deck.s: src/Deck.cpp.s
+.PHONY : src/Deck.s
+
+# target to generate assembly for a file
+src/Deck.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CardTable.dir/build.make CMakeFiles/CardTable.dir/src/Deck.cpp.s
+.PHONY : src/Deck.cpp.s
+
 src/Engine.o: src/Engine.cpp.o
 .PHONY : src/Engine.o
 
@@ -312,6 +336,9 @@ help:
 	@echo "... src/Card.o"
 	@echo "... src/Card.i"
 	@echo "... src/Card.s"
+	@echo "... src/Deck.o"
+	@echo "... src/Deck.i"
+	@echo "... src/Deck.s"
 	@echo "... src/Engine.o"
 	@echo "... src/Engine.i"
 	@echo "... src/Engine.s"

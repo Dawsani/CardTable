@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/dawson/Desktop/projects/card_table/src/Camera.cpp" "CMakeFiles/CardTable.dir/src/Camera.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/Camera.cpp.o.d"
   "/home/dawson/Desktop/projects/card_table/src/Card.cpp" "CMakeFiles/CardTable.dir/src/Card.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/Card.cpp.o.d"
+  "/home/dawson/Desktop/projects/card_table/src/Deck.cpp" "CMakeFiles/CardTable.dir/src/Deck.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/Deck.cpp.o.d"
   "/home/dawson/Desktop/projects/card_table/src/Engine.cpp" "CMakeFiles/CardTable.dir/src/Engine.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/Engine.cpp.o.d"
   "/home/dawson/Desktop/projects/card_table/src/GameObject.cpp" "CMakeFiles/CardTable.dir/src/GameObject.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/GameObject.cpp.o.d"
   "/home/dawson/Desktop/projects/card_table/src/HitBox.cpp" "CMakeFiles/CardTable.dir/src/HitBox.cpp.o" "gcc" "CMakeFiles/CardTable.dir/src/HitBox.cpp.o.d"

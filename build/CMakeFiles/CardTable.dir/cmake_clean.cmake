@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/CardTable.dir/src/Camera.cpp.o.d"
   "CMakeFiles/CardTable.dir/src/Card.cpp.o"
   "CMakeFiles/CardTable.dir/src/Card.cpp.o.d"
+  "CMakeFiles/CardTable.dir/src/Deck.cpp.o"
+  "CMakeFiles/CardTable.dir/src/Deck.cpp.o.d"
   "CMakeFiles/CardTable.dir/src/Engine.cpp.o"
   "CMakeFiles/CardTable.dir/src/Engine.cpp.o.d"
   "CMakeFiles/CardTable.dir/src/GameObject.cpp.o"

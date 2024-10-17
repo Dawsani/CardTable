@@ -125,10 +125,24 @@ CMakeFiles/CardTable.dir/src/Card.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CardTable.dir/src/Card.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dawson/Desktop/projects/card_table/src/Card.cpp -o CMakeFiles/CardTable.dir/src/Card.cpp.s
 
+CMakeFiles/CardTable.dir/src/Deck.cpp.o: CMakeFiles/CardTable.dir/flags.make
+CMakeFiles/CardTable.dir/src/Deck.cpp.o: src/Deck.cpp
+CMakeFiles/CardTable.dir/src/Deck.cpp.o: CMakeFiles/CardTable.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dawson/Desktop/projects/card_table/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/CardTable.dir/src/Deck.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CardTable.dir/src/Deck.cpp.o -MF CMakeFiles/CardTable.dir/src/Deck.cpp.o.d -o CMakeFiles/CardTable.dir/src/Deck.cpp.o -c /home/dawson/Desktop/projects/card_table/src/Deck.cpp
+
+CMakeFiles/CardTable.dir/src/Deck.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CardTable.dir/src/Deck.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dawson/Desktop/projects/card_table/src/Deck.cpp > CMakeFiles/CardTable.dir/src/Deck.cpp.i
+
+CMakeFiles/CardTable.dir/src/Deck.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CardTable.dir/src/Deck.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dawson/Desktop/projects/card_table/src/Deck.cpp -o CMakeFiles/CardTable.dir/src/Deck.cpp.s
+
 CMakeFiles/CardTable.dir/src/Camera.cpp.o: CMakeFiles/CardTable.dir/flags.make
 CMakeFiles/CardTable.dir/src/Camera.cpp.o: src/Camera.cpp
 CMakeFiles/CardTable.dir/src/Camera.cpp.o: CMakeFiles/CardTable.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dawson/Desktop/projects/card_table/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/CardTable.dir/src/Camera.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dawson/Desktop/projects/card_table/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/CardTable.dir/src/Camera.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CardTable.dir/src/Camera.cpp.o -MF CMakeFiles/CardTable.dir/src/Camera.cpp.o.d -o CMakeFiles/CardTable.dir/src/Camera.cpp.o -c /home/dawson/Desktop/projects/card_table/src/Camera.cpp
 
 CMakeFiles/CardTable.dir/src/Camera.cpp.i: cmake_force
@@ -142,7 +156,7 @@ CMakeFiles/CardTable.dir/src/Camera.cpp.s: cmake_force
 CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o: CMakeFiles/CardTable.dir/flags.make
 CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o: src/ShaderProgram.cpp
 CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o: CMakeFiles/CardTable.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dawson/Desktop/projects/card_table/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dawson/Desktop/projects/card_table/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o -MF CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o.d -o CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o -c /home/dawson/Desktop/projects/card_table/src/ShaderProgram.cpp
 
 CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.i: cmake_force
@@ -156,7 +170,7 @@ CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.s: cmake_force
 CMakeFiles/CardTable.dir/src/HitBox.cpp.o: CMakeFiles/CardTable.dir/flags.make
 CMakeFiles/CardTable.dir/src/HitBox.cpp.o: src/HitBox.cpp
 CMakeFiles/CardTable.dir/src/HitBox.cpp.o: CMakeFiles/CardTable.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dawson/Desktop/projects/card_table/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/CardTable.dir/src/HitBox.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dawson/Desktop/projects/card_table/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/CardTable.dir/src/HitBox.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CardTable.dir/src/HitBox.cpp.o -MF CMakeFiles/CardTable.dir/src/HitBox.cpp.o.d -o CMakeFiles/CardTable.dir/src/HitBox.cpp.o -c /home/dawson/Desktop/projects/card_table/src/HitBox.cpp
 
 CMakeFiles/CardTable.dir/src/HitBox.cpp.i: cmake_force
@@ -173,6 +187,7 @@ CardTable_OBJECTS = \
 "CMakeFiles/CardTable.dir/src/Engine.cpp.o" \
 "CMakeFiles/CardTable.dir/src/GameObject.cpp.o" \
 "CMakeFiles/CardTable.dir/src/Card.cpp.o" \
+"CMakeFiles/CardTable.dir/src/Deck.cpp.o" \
 "CMakeFiles/CardTable.dir/src/Camera.cpp.o" \
 "CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o" \
 "CMakeFiles/CardTable.dir/src/HitBox.cpp.o"
@@ -184,12 +199,13 @@ CardTable: CMakeFiles/CardTable.dir/src/main.cpp.o
 CardTable: CMakeFiles/CardTable.dir/src/Engine.cpp.o
 CardTable: CMakeFiles/CardTable.dir/src/GameObject.cpp.o
 CardTable: CMakeFiles/CardTable.dir/src/Card.cpp.o
+CardTable: CMakeFiles/CardTable.dir/src/Deck.cpp.o
 CardTable: CMakeFiles/CardTable.dir/src/Camera.cpp.o
 CardTable: CMakeFiles/CardTable.dir/src/ShaderProgram.cpp.o
 CardTable: CMakeFiles/CardTable.dir/src/HitBox.cpp.o
 CardTable: CMakeFiles/CardTable.dir/build.make
 CardTable: CMakeFiles/CardTable.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/dawson/Desktop/projects/card_table/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable CardTable"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/dawson/Desktop/projects/card_table/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable CardTable"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CardTable.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

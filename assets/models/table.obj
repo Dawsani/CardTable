@@ -1,0 +1,11 @@
+# vertices
+v -10.0 0.0 -10.0
+v 10.0 0.0 -10.0
+v -10.0  0.0 10.0
+v 10.0 0.0 10.0
+
+# texture coordinates
+vt 0 0
+vt 20 0
+vt 0 20
+vt 20 20

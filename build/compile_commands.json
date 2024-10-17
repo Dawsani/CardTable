@@ -25,6 +25,12 @@
 },
 {
   "directory": "/home/dawson/Desktop/projects/card_table/build",
+  "command": "/usr/bin/g++  -I/usr/local/lib -g -o CMakeFiles/CardTable.dir/src/Deck.cpp.o -c /home/dawson/Desktop/projects/card_table/src/Deck.cpp",
+  "file": "/home/dawson/Desktop/projects/card_table/src/Deck.cpp",
+  "output": "CMakeFiles/CardTable.dir/src/Deck.cpp.o"
+},
+{
+  "directory": "/home/dawson/Desktop/projects/card_table/build",
   "command": "/usr/bin/g++  -I/usr/local/lib -g -o CMakeFiles/CardTable.dir/src/Camera.cpp.o -c /home/dawson/Desktop/projects/card_table/src/Camera.cpp",
   "file": "/home/dawson/Desktop/projects/card_table/src/Camera.cpp",
   "output": "CMakeFiles/CardTable.dir/src/Camera.cpp.o"

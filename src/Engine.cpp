@@ -47,6 +47,9 @@ unsigned int Engine::CreateCard() {
 }
 
 unsigned int Engine::CreateTable() {
+
+    Utils::loadModel("assets/models/table.obj");
+
     // Vertex data for the table
     float vertices[] = {
         -10.0f, 0.0f, -10.0f, 0.0f, 0.0f,
