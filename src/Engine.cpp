@@ -48,7 +48,6 @@ unsigned int Engine::CreateCard() {
 
 unsigned int Engine::CreateTable() {
 
-    Utils::loadModel("assets/models/table.obj");
 
     // Vertex data for the table
     float vertices[] = {
@@ -91,7 +90,7 @@ unsigned int Engine::CreateTable() {
 }
 
 void Engine::SetupVAOs() {
-    vaoHandles[VAO_ID::TABLE] = CreateTable();
+    vaoHandles[VAO_ID::TABLE] = Utils::loadModel("assets/models/table.obj");
     vaoHandles[VAO_ID::CARD] = CreateCard();
 }
 

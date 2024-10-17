@@ -41,6 +41,9 @@ inline std::vector<std::string> Utils::splitString(std::string string, char deli
 }
 
 inline unsigned int Utils::loadModel(const char* filename) {
+
+    std::cout << "Loading model " << filename << std::endl;
+
     // get vertex data from file
 
     std::vector<glm::vec3> vertices;
@@ -70,9 +73,10 @@ inline unsigned int Utils::loadModel(const char* filename) {
                 lines.push_back(line);
                 line = "";
             }
-            continue;
         }
-        line += *c;
+        else {
+            line += *c;
+        }
         c++;
     }
     if (line != "") {
@@ -98,22 +102,51 @@ inline unsigned int Utils::loadModel(const char* filename) {
             normals.push_back(newNormal);
         }
         else if (lineType == "f") {
-            // split each face by slashes
-            
+            Face newFace;
+            for (int i = 0; i < 3; i++) {
+                std::vector<std::string> attributes = splitString(words[i + 1], '/');
+                VertexAttributes newVertex;
+                newVertex.vertexIndex = std::stof(attributes[0]);
+                newVertex.textureCoordinateIndex = std::stof(attributes[1]);
+                newVertex.normalIndex = std::stof(attributes[2]);
+                newFace.vertices[i] = newVertex;
+            }
+            faces.push_back(newFace);
+        }
+    }
+
+    std::cout << "Read in " << faces.size() << " faces." << std::endl;
+    
+    // x vertices and 5 floats ver vertex
+    float finalVertices[5 * 3 * faces.size()];
+    for (unsigned int i = 0; i < faces.size(); i++) {
+        Face f = faces[i];
+        for (unsigned int j = 0; j < 3; j++) {
+            unsigned int vertexIndex = f.vertices[j].vertexIndex;
+            unsigned int textureCoordinateIndex = f.vertices[j].textureCoordinateIndex;
+            glm::vec3 v = vertices[vertexIndex];
+            glm::vec2 vt = textureCoordinates[textureCoordinateIndex];
+            finalVertices[15 * i + 0] = v.x;
+            finalVertices[15 * i + 1] = v.y;
+            finalVertices[15 * i + 2] = v.z;
+            finalVertices[15 * i + 3] = vt.x;
+            finalVertices[15 * i + 4] = vt.y;
         }
     }
 
 
-    float vertices[] = {
-        -10.0f, 0.0f, -10.0f, 0.0f, 0.0f,
-        10.0f, 0.0f, -10.0f, 20.0f, 0.0f,
-        -10.0f,  0.0f, 10.0f, 0.0f, 20.0f,
-        10.0f,  0.0f, 10.0f, 20.0f, 20.0f
-    };
+    for (int i = 0; i < sizeof(finalVertices); i++) {
+        if (i % 5 == 0) {
+            std::cout << std::endl;
+        }
+        std::cout << finalVertices[i] << " ";
+    }
 
-    unsigned int indices[] = {
-        0, 1, 2, 3
-    };
+    // set up the indices just in case
+    unsigned int indices[sizeof(finalVertices)];
+    for (int i = 0; i < sizeof(finalVertices); i++) {
+        indices[i] = i;
+    }
 
     // Generate vertex array and buffers
     unsigned int VAO, VBO, IBO;
@@ -125,7 +158,7 @@ inline unsigned int Utils::loadModel(const char* filename) {
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), finalVertices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
