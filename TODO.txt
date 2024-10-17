@@ -7,6 +7,7 @@ show close up of a card on hover
 networks, client/server multiplayer
 
 bugs:
+cards wont stack properly, or at least look wrong when hovering cards stacked more than 10
 z axis is backwards? maybe?
 fix camera width height on window
 

@@ -1,6 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <string>
+#include <vector>
+#include "glm/vec3.hpp"
+#include "glm/vec2.hpp"
 #include "stb_image.h"
 
 class Utils {
@@ -11,17 +15,94 @@ class Utils {
     static unsigned int LoadTexture(const char* filename);
 
     static unsigned int loadModel(const char* filename);
+
+    static std::vector<std::string> splitString(std::string string, char delimiter);
 };
+
+inline std::vector<std::string> Utils::splitString(std::string string, char delimiter) {
+    std::vector<std::string> subStrings;
+    std::string subString = "";
+    for (char letter : string) {
+        if (letter == delimiter) {
+            if (subString != "") {
+                subStrings.push_back(subString);
+                subString = "";
+            }
+            continue;
+        }
+        subString += letter;
+    }
+    if (subString != "") {
+        subStrings.push_back(subString);
+        subString = "";
+    }
+
+    return subStrings;
+}
 
 inline unsigned int Utils::loadModel(const char* filename) {
     // get vertex data from file
+
+    std::vector<glm::vec3> vertices;
+    std::vector<glm::vec2> textureCoordinates;
+    std::vector<glm::vec3> normals;
+
+    struct VertexAttributes {
+        unsigned int vertexIndex;
+        unsigned int textureCoordinateIndex;
+        unsigned int normalIndex;
+    };
+    struct Face {
+        VertexAttributes vertices[3];
+    };
+    std::vector<Face> faces;
+
     char* fileString;
     readTextFromFile(filename, fileString);
+
+    // split the filestring into lines
+    std::vector<std::string> lines;
+    std::string line = "";
     char* c = fileString;
     while (*c != '\0') {
-        std::cout << *c;
+        if (*c == '\n') {
+            if (line != "") {
+                lines.push_back(line);
+                line = "";
+            }
+            continue;
+        }
+        line += *c;
         c++;
     }
+    if (line != "") {
+        lines.push_back(line);
+        line = "";
+    }
+
+    for (std::string line : lines) {
+        // split the line by spaces
+        std::vector<std::string> words = splitString(line, ' ');
+
+        std::string lineType = words[0];
+        if (lineType == "v") {
+            glm::vec3 newVertex = glm::vec3(std::stof(words[1]), std::stof(words[2]), std::stof(words[3]));
+            vertices.push_back(newVertex);
+        }
+        else if (lineType == "vt") {
+            glm::vec2 newTextureCoordinate = glm::vec2(std::stof(words[1]), std::stof(words[2]));
+            textureCoordinates.push_back(newTextureCoordinate);
+        }
+        else if (lineType == "vn") {
+            glm::vec3 newNormal = glm::vec3(std::stof(words[1]), std::stof(words[2]), std::stof(words[3]));
+            normals.push_back(newNormal);
+        }
+        else if (lineType == "f") {
+            // split each face by slashes
+            
+        }
+    }
+
 
     float vertices[] = {
         -10.0f, 0.0f, -10.0f, 0.0f, 0.0f,

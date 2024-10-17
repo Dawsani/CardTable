@@ -238,7 +238,6 @@ int Engine::run() {
                 pSelectedCard->setPosition(glm::vec3(pSelectedCard->getPosition().x, 0.02f, pSelectedCard->getPosition().z));
             }
             pSelectedCard = nullptr;
-            std::cout << "Deselected card" << std::endl;
         }
 
         if (pSelectedCard != nullptr) {
@@ -300,7 +299,7 @@ void Engine::handleMouseButtonEvent(int button, int action, int mod) {
 }
 
 void Engine::handleScrollEvent(double xOffset, double yOffset) {
-    pCamera->moveForward(yOffset);
+    pCamera->moveForward(-yOffset);
 }
 
 glm::vec3 Engine::calculateCursorRay()
