@@ -87,8 +87,8 @@ int Engine::run() {
                                             numVAOPoints[VAO_ID::CARD],
                                             textureHandles[TEXTURE_ID::SATYA],
                                             glm::vec2(0.63f, 0.88f));
-    card->setPosition(glm::vec3(100.0f, 100.0f, 0.0f));
-    card->setScale(glm::vec3(1000.0f, 1000.0f, 1000.0f));
+    card->setPosition(glm::vec3(350.0f, -50.0f, 0.0f));
+    card->setScale(2.0f * glm::vec3(63.f, 88.0f, 1.0f));
     card->sendToHand();
     cards.push_back(card);
 
@@ -101,6 +101,7 @@ int Engine::run() {
                                             glm::vec2(0.63f, 0.88f));
         card->setPosition(glm::vec3(i, 0.02f, 0.0f));
         card->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
+        card->setScale(glm::vec3(0.63f, 0.88f, 1.0f));
 
         cards.push_back(card);
     }

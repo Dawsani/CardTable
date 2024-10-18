@@ -34,7 +34,8 @@ class Engine {
         Camera* pCamera;
 
         std::vector<Card*> cards;
-
+        std::vector<Card*> hand;
+        
         Card* pSelectedCard;
         glm::vec3 grabPoint;
 
