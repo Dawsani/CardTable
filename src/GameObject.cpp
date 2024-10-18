@@ -34,12 +34,13 @@ void GameObject::setScale(glm::vec3 scale)
 
 void GameObject::draw(Camera *pCamera)
 {
+    pShaderProgram->useProgram();
     glm::mat4 viewMatrix = pCamera->getViewMatrix();
     glm::mat4 projectionMatrix = pCamera->getProjectionMatrix();
     glm::mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
 
     glProgramUniformMatrix4fv(pShaderProgram->getProgramHandle(), pShaderProgram->getMVPMatrixUniformLocation(), 1, GL_FALSE, &mvpMatrix[0][0]);
-    glProgramUniform1i(pShaderProgram->getProgramHandle(), pShaderProgram->getTextureMapUniformLocation(), 0); // Set the texture to texture 0 for now, while we only have one texture
+    glProgramUniform1i(pShaderProgram->getProgramHandle(), pShaderProgram->getTextureMapUniformLocation(), 0);
 
     glBindTexture(GL_TEXTURE_2D, textureHandle);
     glBindVertexArray(vaoHandle);

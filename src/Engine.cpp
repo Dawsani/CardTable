@@ -68,7 +68,9 @@ int Engine::run() {
     SetupTextures();
     SetupVAOs();
 
-    pShaderProgram = new ShaderProgram("src/shaders/shader.v.glsl", "src/shaders/shader.f.glsl");
+    pShaderProgram = new ShaderProgram("shaders/shader.v.glsl", "shaders/shader.f.glsl");
+    pScreenSpaceShaderProgram = new ShaderProgram("shaders/screenSpaceShader.v.glsl", "shaders/screenSpaceShader.f.glsl");
+    
     pCamera = new Camera(glm::vec3(0.0f, 3.0f, 2.0f));
 
     // Main loop
@@ -79,8 +81,20 @@ int Engine::run() {
     std::vector<Card*> deckCards = Utils::readCardsFromFile("assets/deck_lists/my_deck.txt");
     Deck* deck = new Deck(pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
 
+    Card* card = new Card(  pShaderProgram, 
+                            pScreenSpaceShaderProgram,
+                                            vaoHandles[VAO_ID::CARD],
+                                            numVAOPoints[VAO_ID::CARD],
+                                            textureHandles[TEXTURE_ID::SATYA],
+                                            glm::vec2(0.63f, 0.88f));
+    card->setPosition(glm::vec3(100.0f, 100.0f, 0.0f));
+    card->setScale(glm::vec3(1000.0f, 1000.0f, 1000.0f));
+    card->sendToHand();
+    cards.push_back(card);
+
     for (int i = 0; i < 16; i++) {
         Card* card = new Card(  pShaderProgram, 
+                                pScreenSpaceShaderProgram,
                                             vaoHandles[VAO_ID::CARD],
                                             numVAOPoints[VAO_ID::CARD],
                                             textureHandles[TEXTURE_ID::SATYA],

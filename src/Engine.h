@@ -29,6 +29,7 @@ class Engine {
         GLFWwindow* pWindow;
 
         ShaderProgram* pShaderProgram;
+        ShaderProgram* pScreenSpaceShaderProgram;
 
         Camera* pCamera;
 

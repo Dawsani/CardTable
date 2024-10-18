@@ -1,0 +1,92 @@
+user stories:
+joining before the game starts:
+launch card table app
+connects to default server
+look through list of open games
+find the game by the right name or owner
+join the game
+enter the password for the game set by the owner
+wait for the host to stat the game
+play the game
+
+join after the games started:
+launch app
+connect to default server
+look through open games, find the right one by title, owner name, number of players
+sees the game has already started
+joins game, enters password
+places deck
+
+game creator:
+launches card table app
+connects to default server
+clicks creates game
+sets max players, game name, requires password, sets password
+creates game
+(from here they can either wait for people to join, or just enter the game
+
+general thoughts:
+when they first launch the program, it should check for updates first, and if there are updates, it should ask the user if they want to "Update" or "Exit".
+Then, they need to be able to join the default server theoretically hosted my me, or join some other server. need to make this clear that they have the option, but not confusing. maybe two buttons?
+"Connect to Default Server"
+"Connect to Custom Server"
+If they connect to the default server it will attempt to connect to my server, hard coded into the program.
+If the connect to a custom server it will need to ask for the host IP and port number, auto filled with the default server IP and port if they have never tried to connect to a cutom server before, or the last server they tried to connect to. Alternitively, It could be more like minecraft in which there is a server list to which they can add and remove servers from.
+Once they connect to a server, they will need to see all games currently being held on the server that are able to be joined, and an option to creat their own game. there would also ideally be an options menu for graphics and sound and a way to quit. Users would also have to set their username or display name at some point. 
+I think the only three options needed at the highest level would be:
+"Join Game"
+"Create Game"
+"Options"
+"Quit"
+The game may or may not also benefit from a server chat, where users can advertise their game. But this application is first and foremost for groups of friends, who will already have a way of communicating. Let's not forget the audience.
+Inside of "Join Game" there will be a list of games each with the following displayed information:
+"Game Name"
+"Owner Name"
+"Players/Max Players"
+"Password Required?"
+When you join a game, you will be prompted for a password if applicable, and then either wait for the host to start the game if they haven't yet, or be given the option to enter the game if the game has already started.
+
+So what if all of the buttons were playing cards? would that be fun? I think so. If buttons were playing cards what would text entry for stuff like game creation and display name selection be like? Paper form? What is the asthetic of the game if it's all cards? The default table should probably not be a white grid. It needs to be simple but all fit together.
+
+All Menus:
+"Update Required"
+	Button: "Start Update"
+	Button "Exit"
+"Display Name Selection"
+	Form: "Display Name"
+	Button: "Continue"
+"Server Connection"
+	Button: "Connect to Default Server"
+	Button: "Connect to Custom Server"
+	Button: "Exit"
+"Custom Server Connection"
+	Form: "Server IP"
+	Form: "Server Port"
+	Button: "Connect"
+	Button: "Back"
+"Server"
+	Button: "Join Game"
+	Button: "Create Game"
+	Button: "Quit"
+"Create Game"
+	Form: "Game Name"
+	Form: "Max Players" (Min: 1) (Max: 16)
+	Form: "Require Password" (Checkbox)
+	Form: "Password"
+	Button: "Create Game"
+"Join Game"
+	List of Buttons:
+		"Game Name"
+		"Owner Name"
+		"Players/Max Players"
+		"Password Required"
+		"Game ID"
+	Button:	"Back"
+"Game Lobby"
+	List: "Player Names"
+	Button: "Leave Game"
+	Button "Start/Enter Game"
+
+Cards as buttons would work really well for the most part. But in the actual game, I can't use cards as buttons for context menus, they wouldn't fit. For example when a player opens the context menu up of a card, they need to be able to set it's orientation, tap/untap it, send it to hand/graveyard/exile, select its alternate face, etc. These options will likely need to just be a square menu right next to the deck.
+	
+	

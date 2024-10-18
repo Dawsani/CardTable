@@ -15,6 +15,7 @@ class Camera {
         glm::vec3 getPosition() { return position; }
         glm::mat4 getViewMatrix() { return viewMatrix; }
         glm::mat4 getProjectionMatrix() { return projectionMatrix; }
+        glm::mat4 getOrthographicProjectionMatrix() { return orthographicProjectionMatrix; }
 
         void setMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
         void setZoomSpeed(float zoomSpeed) { this->zoomSpeed = zoomSpeed; }
@@ -24,6 +25,7 @@ class Camera {
 
         glm::mat4 viewMatrix;
         glm::mat4 projectionMatrix;
+        glm::mat4 orthographicProjectionMatrix;
 
         glm::vec3 position;
         glm::vec3 lookAtPoint;

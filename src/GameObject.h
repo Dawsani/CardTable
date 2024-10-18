@@ -17,7 +17,7 @@ public:
 
     glm::vec3 getPosition() { return position; }
 
-    void draw(Camera* pCamera);
+    virtual void draw(Camera* pCamera);
 protected:
     ShaderProgram* pShaderProgram;
 

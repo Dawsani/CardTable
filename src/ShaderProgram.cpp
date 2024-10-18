@@ -12,10 +12,30 @@ ShaderProgram::ShaderProgram(const char *vertexShaderFileName, const char *fragm
     glShaderSource(vertexShader, 1, (const char**)&fileString, nullptr);
     glCompileShader(vertexShader);
 
+    // Check for compilation errors
+    GLint success;
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+
+    if (!success) {
+        // If the shader failed to compile, get the error message
+        char infoLog[512];
+        glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
+        std::cerr << "ERROR: Shader Compilation Failed\n" << infoLog << std::endl;
+    }
+
     Utils::readTextFromFile(fragmentShaderFileName, fileString);
 
     glShaderSource(fragmentShader, 1, (const char**)&fileString, nullptr);
     glCompileShader(fragmentShader);
+
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+
+    if (!success) {
+        // If the shader failed to compile, get the error message
+        char infoLog[512];
+        glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
+        std::cerr << "ERROR: Shader Compilation Failed\n" << infoLog << std::endl;
+    }
 
     programHandle = glCreateProgram();
 
@@ -27,6 +47,7 @@ ShaderProgram::ShaderProgram(const char *vertexShaderFileName, const char *fragm
     // Get program uniforms
     mvpMatrixUniformLocation = glGetUniformLocation(programHandle, "mvpMatrix");
     textureMapUniformLocation = glGetUniformLocation(programHandle, "textureMap");
+    projectionMatrixUniformLocation = glGetUniformLocation(programHandle, "projectionMatrix");
 }
 
 void ShaderProgram::useProgram(){

@@ -30,12 +30,13 @@ std::vector<Card *> Utils::readCardsFromFile(std::string filename)
     }
 
     while (getline(file, line)) {
-        
+        // get the cards
     }
 
-    // Close the file stream once all lines have been
-    // read.
     file.close();
+
+    // TEMPORARY MANUALLY DOING IT
+    // Card* newCard = new Card()
 
     return cards;
 }

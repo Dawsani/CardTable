@@ -11,11 +11,13 @@ class ShaderProgram {
         unsigned int getProgramHandle() { return programHandle; }
         unsigned int getMVPMatrixUniformLocation() { return mvpMatrixUniformLocation; }
         unsigned int getTextureMapUniformLocation() { return textureMapUniformLocation; }
+        unsigned int getProjectionMatrixUniformLocation() { return projectionMatrixUniformLocation; }
     private:
         unsigned int programHandle;
 
         unsigned int mvpMatrixUniformLocation;
         unsigned int textureMapUniformLocation;
+        unsigned int projectionMatrixUniformLocation;
 };
 
 #endif
