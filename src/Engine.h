@@ -35,6 +35,8 @@ class Engine {
 
         std::vector<Card*> cards;
         std::vector<Card*> hand;
+
+        GameObject* table;
         
         Card* pSelectedCard;
         glm::vec3 grabPoint;
@@ -65,6 +67,10 @@ class Engine {
         int setupOpenGL();
         void SetupTextures();
         void SetupVAOs();
+
+        void drawScene();
+
+        Card* checkSelectedCard();
 };
 
 // Declare callbacks

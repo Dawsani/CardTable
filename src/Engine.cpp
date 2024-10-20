@@ -48,6 +48,8 @@ int Engine::setupOpenGL() {
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
 
+    glfwSwapInterval(0);  // Disable VSync
+
     return 0;
 }
 
@@ -61,6 +63,114 @@ void Engine::SetupVAOs() {
     Utils::loadModel("assets/models/table.obj", vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE]);
     Utils::loadModel("assets/models/card.obj", vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD]);
     Utils::loadModel("assets/models/deck.obj", vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK]);
+}
+
+void Engine::drawScene() {
+    pShaderProgram->useProgram();
+
+    table->draw(pCamera);
+    // deck->draw(pCamera);
+
+}
+
+Card* Engine::checkSelectedCard() {
+    if (leftMouseButtonState == GLFW_PRESS && pSelectedCard == nullptr) {
+        glm::vec3 cursorRay = calculateCursorRay();
+        glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
+
+        if (pSelectedCard != nullptr) {
+            pSelectedCard->setPosition(intersectionPoint + glm::vec3(0.0f, 0.2f, 0.0f) + grabPoint);
+        }
+
+        if (cursorPosition.y > handScreenThreshold) {
+            // check if they clicked a card
+            for (int i = 0; i < hand.size(); i++) {
+                Card* c = hand[i];
+                glm::vec2 cardPosition = glm::vec2(c->getPosition().x, c->getPosition().y);
+                glm::vec2 cardSize = 2.0f * glm::vec2(c->getScale().x, c->getScale().y);
+
+                // only checking x and y because anything above it isnt within the threshold and anything below is outside the screen
+                if (cursorPosition.x > cardPosition.x && cursorPosition.x < cardPosition.x + cardSize.x) {
+                    c->sendToBoard();
+                    // remove from hand
+                    for (int i = 0; i < hand.size(); i++) {
+                        Card* cc = hand[i];
+                        if (cc == c) {
+                            hand.erase(hand.begin() + i);
+                            break;
+                        }
+                    }
+                    // add to board
+                    cards.push_back(c);
+                    c->setScale(glm::vec3(0.63f, 0.88f, 1.0f));
+                    c->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
+                    grabPoint = glm::vec3(-c->getHitBox()->getSize().x / 2.0f, 0.0f, c->getHitBox()->getSize().y / 2.0f);
+                    return c;
+                }
+            }
+        }
+        else {
+            std::vector<Card*> cardsUnderCursor;
+            for (int i = 0; i < cards.size(); i++) {
+                Card* card = cards[i];
+                // check to see if the click selected a card
+                glm::vec2 groundIntersection = glm::vec2(intersectionPoint.x, intersectionPoint.z);
+                if (groundIntersection.x < card->getPosition().x + card->getHitBox()->getSize().x && groundIntersection.x > card->getPosition().x && 
+                    intersectionPoint.z > card->getPosition().z - card->getHitBox()->getSize().y && intersectionPoint.z < card->getPosition().z) {
+                        cardsUnderCursor.push_back(card);
+                }
+            }
+            Card* highestCard = Utils::findHighestCard(cardsUnderCursor);
+
+            if (highestCard != nullptr) {
+                grabPoint = glm::vec3(highestCard->getPosition().x - intersectionPoint.x, 0.0f, highestCard->getPosition().z - intersectionPoint.z);
+                return highestCard;
+            }
+        }
+    }
+    else if (leftMouseButtonState == GLFW_RELEASE && pSelectedCard != nullptr) {
+        // put the card in the hand if the mouse was near the bottom of the screen
+        if (cursorPosition.y > handScreenThreshold) {
+            pSelectedCard->sendToHand();
+            hand.push_back(pSelectedCard);
+            // remove card from the list of played cards
+            // first find the position of the card within the vector
+            for (int i = 0; i < cards.size(); i++) {
+                Card* c = cards.at(i);
+                if (c == pSelectedCard) {
+                    cards.erase(cards.begin() + i);
+                    break;
+                }
+            }
+        }
+        else {
+            // Make sure the card lands on top of the cards below it
+            std::vector<Card*> cardsUnderSelectedCard;
+            for (int i = 0; i < cards.size(); i++) {
+                Card* card = cards[i];
+                if (pSelectedCard == card) {
+                    continue;
+                }
+                // check quad collision!
+                if (pSelectedCard->getHitBox()->CheckCollision(card->getHitBox())) {
+                    cardsUnderSelectedCard.push_back(card);
+                }
+            }
+
+            Card* highestCardBelowSelectedCard = Utils::findHighestCard(cardsUnderSelectedCard);
+
+            if (highestCardBelowSelectedCard != nullptr) {
+                float highestYPosition = highestCardBelowSelectedCard->getPosition().y;
+            
+                pSelectedCard->setPosition(glm::vec3(pSelectedCard->getPosition().x, highestYPosition + 0.02f, pSelectedCard->getPosition().z));
+            }
+            else {
+                pSelectedCard->setPosition(glm::vec3(pSelectedCard->getPosition().x, 0.02f, pSelectedCard->getPosition().z));
+            }
+        }
+        return nullptr;
+    }
+    return nullptr;
 }
 
 int Engine::run() {
@@ -77,11 +187,12 @@ int Engine::run() {
     // Main loop
     glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
 
-    GameObject* table = new GameObject(pShaderProgram, vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
+    table = new GameObject(pShaderProgram, vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
 
     std::vector<Card*> deckCards = Utils::readCardsFromFile("assets/deck_lists/my_deck.txt");
     Deck* deck = new Deck(pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
 
+    // make some cards for now
     for (int i = 0; i < 16; i++) {
         Card* card = new Card(  pShaderProgram, 
                                 pScreenSpaceShaderProgram,
@@ -110,115 +221,25 @@ int Engine::run() {
 
         // Convert the delta time to seconds for easy use
         float deltaSeconds = deltaTime.count();
+        float fps = 1.0f / deltaSeconds;
 
         // Print delta time for demonstration purposes
-        //std::cout << "Time between frames: " << deltaSeconds << " seconds" << std::endl;
+        //std::cout << "Frame Time: " << deltaSeconds << " seconds" << std::endl;
+        //std::cout << "FPS: " << fps << std::endl;
         
         // Clear the screen to a color (e.g., black)
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        pShaderProgram->useProgram();
-
-        table->draw(pCamera);
-        deck->draw(pCamera);
-
-        glm::vec3 cursorRay = calculateCursorRay();
-        glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
-
-        if (leftMouseButtonState == GLFW_PRESS && pSelectedCard == nullptr) {
-            if (cursorPosition.y > handScreenThreshold) {
-                // check if they clicked a card
-                for (int i = 0; i < hand.size(); i++) {
-                    Card* c = hand[i];
-                    glm::vec2 cardPosition = glm::vec2(c->getPosition().x, c->getPosition().y);
-                    glm::vec2 cardSize = 2.0f * glm::vec2(c->getScale().x, c->getScale().y);
-
-                    // only checking x and y because anything above it isnt within the threshold and anything below is outside the screen
-                    if (cursorPosition.x > cardPosition.x && cursorPosition.x < cardPosition.x + cardSize.x) {
-                        pSelectedCard = c;
-                        pSelectedCard->sendToBoard();
-                        // remove from hand
-                        for (int i = 0; i < hand.size(); i++) {
-                            Card* cc = hand[i];
-                            if (cc == c) {
-                                hand.erase(hand.begin() + i);
-                                break;
-                            }
-                        }
-                        // add to board
-                        cards.push_back(pSelectedCard);
-                        pSelectedCard->setScale(glm::vec3(0.63f, 0.88f, 1.0f));
-                        pSelectedCard->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
-                        grabPoint = glm::vec3(-c->getHitBox()->getSize().x / 2.0f, 0.0f, c->getHitBox()->getSize().y / 2.0f);
-                    }
-                }
-            }
-            else {
-                std::vector<Card*> cardsUnderCursor;
-                for (int i = 0; i < cards.size(); i++) {
-                    Card* card = cards[i];
-                    // check to see if the click selected a card
-                    glm::vec2 groundIntersection = glm::vec2(intersectionPoint.x, intersectionPoint.z);
-                    if (groundIntersection.x < card->getPosition().x + card->getHitBox()->getSize().x && groundIntersection.x > card->getPosition().x && 
-                        intersectionPoint.z > card->getPosition().z - card->getHitBox()->getSize().y && intersectionPoint.z < card->getPosition().z) {
-                            cardsUnderCursor.push_back(card);
-                    }
-                }
-                Card* highestCard = Utils::findHighestCard(cardsUnderCursor);
-
-                if (highestCard != nullptr) {
-                    pSelectedCard = highestCard;
-                    grabPoint = glm::vec3(pSelectedCard->getPosition().x - intersectionPoint.x, 0.0f, pSelectedCard->getPosition().z - intersectionPoint.z);
-                }
-            }
-        }
-        else if (leftMouseButtonState == GLFW_RELEASE && pSelectedCard != nullptr) {
-            // put the card in the hand if the mouse was near the bottom of the screen
-            if (cursorPosition.y > handScreenThreshold) {
-                pSelectedCard->sendToHand();
-                hand.push_back(pSelectedCard);
-                // remove card from the list of played cards
-                // first find the position of the card within the vector
-                for (int i = 0; i < cards.size(); i++) {
-                    Card* c = cards.at(i);
-                    if (c == pSelectedCard) {
-                        cards.erase(cards.begin() + i);
-                        break;
-                    }
-                }
-            }
-            else {
-                // Make sure the card lands on top of the cards below it
-                std::vector<Card*> cardsUnderSelectedCard;
-                for (int i = 0; i < cards.size(); i++) {
-                    Card* card = cards[i];
-                    if (pSelectedCard == card) {
-                        continue;
-                    }
-                    // check quad collision!
-                    if (pSelectedCard->getHitBox()->CheckCollision(card->getHitBox())) {
-                        cardsUnderSelectedCard.push_back(card);
-                    }
-                }
-
-                Card* highestCardBelowSelectedCard = Utils::findHighestCard(cardsUnderSelectedCard);
-
-                if (highestCardBelowSelectedCard != nullptr) {
-                    float highestYPosition = highestCardBelowSelectedCard->getPosition().y;
-                
-                    pSelectedCard->setPosition(glm::vec3(pSelectedCard->getPosition().x, highestYPosition + 0.02f, pSelectedCard->getPosition().z));
-                }
-                else {
-                    pSelectedCard->setPosition(glm::vec3(pSelectedCard->getPosition().x, 0.02f, pSelectedCard->getPosition().z));
-                }
-            }
-            pSelectedCard = nullptr;
-        }
+        pSelectedCard = checkSelectedCard();
 
         if (pSelectedCard != nullptr) {
+            glm::vec3 cursorRay = calculateCursorRay();
+            glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
             pSelectedCard->setPosition(intersectionPoint + glm::vec3(0.0f, 0.2f, 0.0f) + grabPoint);
         }
+
+        drawScene();
 
         for (int i = 0; i < cards.size(); i++) {
             GameObject* card = cards[i];
