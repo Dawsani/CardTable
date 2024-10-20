@@ -39,6 +39,8 @@ class Engine {
         Card* pSelectedCard;
         glm::vec3 grabPoint;
 
+        float handScreenThreshold = 600 - (2 * 88);
+
         static const int NUM_TEXTURES = 3;
         enum TEXTURE_ID {
             GRID = 0,

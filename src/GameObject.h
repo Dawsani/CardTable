@@ -16,6 +16,7 @@ public:
     void setScale(glm::vec3 scale);
 
     glm::vec3 getPosition() { return position; }
+    glm::vec3 getScale() { return scale; }
 
     virtual void draw(Camera* pCamera);
 protected:
