@@ -16,9 +16,9 @@ int Engine::setupOpenGL() {
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Required for Mac
 #endif
-
+    windowSize = glm::vec2(800, 600);
     // Create a windowed mode window and its OpenGL context
-    pWindow = glfwCreateWindow(800, 600, "Card Table", NULL, NULL);
+    pWindow = glfwCreateWindow(windowSize.x, windowSize.y, "Card Table", NULL, NULL);
     if (!pWindow) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -48,7 +48,7 @@ int Engine::setupOpenGL() {
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
 
-    glfwSwapInterval(0);  // Disable VSync
+    // glfwSwapInterval(0);  // Disable VSync
 
     return 0;
 }
@@ -88,7 +88,7 @@ void Engine::drawScene() {
 
 Card* Engine::checkSelectedCard() {
     if (leftMouseButtonState == GLFW_PRESS && pSelectedCard == nullptr) {
-        glm::vec3 cursorRay = calculateCursorRay();
+        glm::vec3 cursorRay = Utils::calculateCursorRay(windowSize, cursorPosition, pCamera);
         glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
 
         if (pSelectedCard != nullptr) {

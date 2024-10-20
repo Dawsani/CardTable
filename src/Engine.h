@@ -41,6 +41,8 @@ class Engine {
         Card* pSelectedCard;
         glm::vec3 grabPoint;
 
+        glm::vec2 windowSize;
+
         float handScreenThreshold = 600 - (2 * 88);
 
         static const int NUM_TEXTURES = 3;
