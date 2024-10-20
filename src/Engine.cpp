@@ -89,11 +89,7 @@ void Engine::drawScene() {
 Card* Engine::checkSelectedCard() {
     if (leftMouseButtonState == GLFW_PRESS && pSelectedCard == nullptr) {
         glm::vec3 cursorRay = Utils::calculateCursorRay(windowSize, cursorPosition, pCamera);
-        glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
-
-        if (pSelectedCard != nullptr) {
-            pSelectedCard->setPosition(intersectionPoint + glm::vec3(0.0f, 0.2f, 0.0f) + grabPoint);
-        }
+        glm::vec3 intersectionPoint = Utils::calculateRayIntersection(pCamera->getPosition(), cursorRay);
 
         if (cursorPosition.y > handScreenThreshold) {
             // check if they clicked a card
@@ -117,28 +113,12 @@ Card* Engine::checkSelectedCard() {
                     cards.push_back(c);
                     c->setScale(glm::vec3(0.63f, 0.88f, 1.0f));
                     c->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
-                    grabPoint = glm::vec3(-c->getHitBox()->getSize().x / 2.0f, 0.0f, c->getHitBox()->getSize().y / 2.0f);
                     return c;
                 }
             }
         }
         else {
-            std::vector<Card*> cardsUnderCursor;
-            for (int i = 0; i < cards.size(); i++) {
-                Card* card = cards[i];
-                // check to see if the click selected a card
-                glm::vec2 groundIntersection = glm::vec2(intersectionPoint.x, intersectionPoint.z);
-                if (groundIntersection.x < card->getPosition().x + card->getHitBox()->getSize().x && groundIntersection.x > card->getPosition().x && 
-                    intersectionPoint.z > card->getPosition().z - card->getHitBox()->getSize().y && intersectionPoint.z < card->getPosition().z) {
-                        cardsUnderCursor.push_back(card);
-                }
-            }
-            Card* highestCard = Utils::findHighestCard(cardsUnderCursor);
-
-            if (highestCard != nullptr) {
-                grabPoint = glm::vec3(highestCard->getPosition().x - intersectionPoint.x, 0.0f, highestCard->getPosition().z - intersectionPoint.z);
-                return highestCard;
-            }
+            return Utils::findHoveredCard(windowSize, cursorPosition, pCamera, cards);
         }
     }
     else if (leftMouseButtonState == GLFW_RELEASE && pSelectedCard != nullptr) {
@@ -195,8 +175,6 @@ int Engine::run() {
     pShaderProgram = new ShaderProgram("shaders/shader.v.glsl", "shaders/shader.f.glsl");
     pScreenSpaceShaderProgram = new ShaderProgram("shaders/screenSpaceShader.v.glsl", "shaders/screenSpaceShader.f.glsl");
     
-
-
     pCamera = new Camera(glm::vec3(0.0f, 3.0f, 2.0f));
 
     // Main loop
@@ -249,9 +227,9 @@ int Engine::run() {
         pSelectedCard = checkSelectedCard();
 
         if (pSelectedCard != nullptr) {
-            glm::vec3 cursorRay = calculateCursorRay();
-            glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
-            pSelectedCard->setPosition(intersectionPoint + glm::vec3(0.0f, 0.2f, 0.0f) + grabPoint);
+            glm::vec3 cursorRay = Utils::calculateCursorRay(windowSize, cursorPosition, pCamera);
+            glm::vec3 intersectionPoint = Utils::calculateRayIntersection(pCamera->getPosition(), cursorRay);
+            pSelectedCard->setPosition(intersectionPoint + glm::vec3(-0.63f / 2.0f, 0.2f, 0.88f / 2.0f));
         }
 
         drawScene();

@@ -250,6 +250,23 @@ Card *Utils::findHoveredCard(glm::vec2 windowSize, glm::vec2 mousePosition, Came
 {
     glm::vec3 cursorRay = calculateCursorRay(windowSize, mousePosition, pCamera);
     glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
+
+    std::vector<Card*> cardsUnderCursor;
+    for (int i = 0; i < cards.size(); i++) {
+        Card* card = cards[i];
+        // check to see if the click selected a card
+        glm::vec2 groundIntersection = glm::vec2(intersectionPoint.x, intersectionPoint.z);
+        if (groundIntersection.x < card->getPosition().x + card->getHitBox()->getSize().x && groundIntersection.x > card->getPosition().x && 
+            intersectionPoint.z > card->getPosition().z - card->getHitBox()->getSize().y && intersectionPoint.z < card->getPosition().z) {
+                cardsUnderCursor.push_back(card);
+        }
+    }
+    Card* highestCard = Utils::findHighestCard(cardsUnderCursor);
+
+    if (highestCard != nullptr) {
+        return highestCard;
+    }
+
     return nullptr;
 }
 

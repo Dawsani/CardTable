@@ -22,10 +22,6 @@ class Engine {
         void handleScrollEvent(double xOffset, double yOffset);  
 
     private:
-
-        glm::vec3 calculateCursorRay();
-        glm::vec3 calculateRayIntersection(glm::vec3 rayOrigin, glm::vec3 rayDirection);
-
         GLFWwindow* pWindow;
 
         ShaderProgram* pShaderProgram;
@@ -39,7 +35,6 @@ class Engine {
         GameObject* table;
         
         Card* pSelectedCard;
-        glm::vec3 grabPoint;
 
         glm::vec2 windowSize;
 
