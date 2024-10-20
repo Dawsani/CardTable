@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include <chrono>
 
 int Engine::setupOpenGL() {
     // Initialize GLFW
@@ -106,8 +107,23 @@ int Engine::run() {
         cards.push_back(card);
     }
     pSelectedCard = nullptr;
+    auto previousTime = std::chrono::high_resolution_clock::now();
     
     while (!glfwWindowShouldClose(pWindow)) {
+        auto currentTime = std::chrono::high_resolution_clock::now();
+
+        // Calculate the time difference (delta time) between the current and previous frame
+        std::chrono::duration<float> deltaTime = currentTime - previousTime;
+
+        // Update the previous time to the current time
+        previousTime = currentTime;
+
+        // Convert the delta time to seconds for easy use
+        float deltaSeconds = deltaTime.count();
+
+        // Print delta time for demonstration purposes
+        //std::cout << "Time between frames: " << deltaSeconds << " seconds" << std::endl;
+        
         // Clear the screen to a color (e.g., black)
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
