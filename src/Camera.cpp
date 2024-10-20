@@ -1,14 +1,20 @@
 #include "Camera.h"
 
-Camera::Camera(glm::vec3 position) {
+Camera::Camera(glm::vec3 position, float fov, glm::vec2 windowSize) {
     this->position = position;
+    this->fov = fov;
     lookAtPoint = glm::vec3(0, 0, 0);
     upVector = glm::vec3(0.0f, 0.0f, -1.0f);
     moveSpeed = 0.01f;
     zoomSpeed = 0.1f;
     updateViewMatrix();
-    projectionMatrix = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-    orthographicProjectionMatrix = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
+    updateProjectionMatrices(windowSize);
+}
+
+void Camera::updateProjectionMatrices(glm::vec2 windowSize)
+{
+    projectionMatrix = glm::perspective(glm::radians(fov), windowSize.x / windowSize.y, 0.1f, 100.0f);
+    orthographicProjectionMatrix = glm::ortho(0.0f, windowSize.x, 0.0f, windowSize.y, -1.0f, 1.0f);
 }
 
 void Camera::Pan(glm::vec2 panMovement)

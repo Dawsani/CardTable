@@ -7,10 +7,12 @@
 
 class Camera {
     public:
-        Camera(glm::vec3 position);
+        Camera(glm::vec3 position, float fov, glm::vec2 windowSize);
 
         void Pan(glm::vec2 panMovement);
         void moveForward(float movement);
+
+        void updateProjectionMatrices(glm::vec2 windowSize);
 
         glm::vec3 getPosition() { return position; }
         glm::mat4 getViewMatrix() { return viewMatrix; }
@@ -22,6 +24,8 @@ class Camera {
     private:
 
         void updateViewMatrix();
+
+        float fov;
 
         glm::mat4 viewMatrix;
         glm::mat4 projectionMatrix;

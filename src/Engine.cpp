@@ -1,6 +1,10 @@
 #include "Engine.h"
 #include <chrono>
 
+Engine::Engine() {
+
+}
+
 int Engine::setupOpenGL() {
     // Initialize GLFW
     if (!glfwInit()) {
@@ -12,11 +16,12 @@ int Engine::setupOpenGL() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // Set OpenGL version to 3.x
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);  // Enable window resizing
 
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Required for Mac
 #endif
-    windowSize = glm::vec2(800, 600);
+    windowSize = glm::vec2(1280, 720);
     // Create a windowed mode window and its OpenGL context
     pWindow = glfwCreateWindow(windowSize.x, windowSize.y, "Card Table", NULL, NULL);
     if (!pWindow) {
@@ -48,7 +53,7 @@ int Engine::setupOpenGL() {
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
 
-    // glfwSwapInterval(0);  // Disable VSync
+    //glfwSwapInterval(0);  // Disable VSync
 
     return 0;
 }
@@ -87,6 +92,7 @@ void Engine::drawScene() {
 }
 
 Card* Engine::checkSelectedCard() {
+    float handScreenThreshold = windowSize.y - 100.0f;
     if (leftMouseButtonState == GLFW_PRESS && pSelectedCard == nullptr) {
         glm::vec3 cursorRay = Utils::calculateCursorRay(windowSize, cursorPosition, pCamera);
         glm::vec3 intersectionPoint = Utils::calculateRayIntersection(pCamera->getPosition(), cursorRay);
@@ -175,7 +181,7 @@ int Engine::run() {
     pShaderProgram = new ShaderProgram("shaders/shader.v.glsl", "shaders/shader.f.glsl");
     pScreenSpaceShaderProgram = new ShaderProgram("shaders/screenSpaceShader.v.glsl", "shaders/screenSpaceShader.f.glsl");
     
-    pCamera = new Camera(glm::vec3(0.0f, 3.0f, 2.0f));
+    pCamera = new Camera(glm::vec3(0.0f, 3.0f, 2.0f), 45.0f, windowSize);
 
     // Main loop
     glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
@@ -231,7 +237,7 @@ int Engine::run() {
             glm::vec3 boardPosition = pHoveredCard->getPosition();
             pHoveredCard->sendToHand();
 
-            glm::vec3 cardPreviewSize = (4.0f * glm::vec3(63.0f, 88.0f, 1.0f));
+            glm::vec3 cardPreviewSize = (8.0f * glm::vec3(63.0f, 88.0f, 1.0f));
             GLfloat padding = 100;
 
             // check which side of the screen the cursor is on, preview the card on the other side
@@ -278,6 +284,8 @@ int Engine::run() {
 
 void Engine::handleFramebufferSizeEven(int width, int height) {
         glViewport(0, 0, width, height);
+        windowSize = glm::vec2(width, height);
+        pCamera->updateProjectionMatrices(windowSize);
 }
 
 void Engine::handleCursorPositionEvent(double x, double y) {

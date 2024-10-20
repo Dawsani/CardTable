@@ -14,6 +14,7 @@
 
 class Engine {
     public:
+        Engine();
         int run();
         
         void handleFramebufferSizeEven(int width, int height);
@@ -38,8 +39,6 @@ class Engine {
         Card* pSelectedCard;
 
         glm::vec2 windowSize;
-
-        float handScreenThreshold = 600 - (2 * 88);
 
         static const int NUM_TEXTURES = 3;
         enum TEXTURE_ID {

@@ -1,0 +1,307 @@
+[33mcommit d5e0b4cc9a43d2364928087342e8fc1a8a5878e0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Sun Oct 20 16:13:55 2024 -0600
+
+    working card previews
+
+[33mcommit 8c8ac234f6dc6caf6e10c114d3f6bda9e7525943[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Sun Oct 20 12:33:15 2024 -0600
+
+    cleaned a little
+
+[33mcommit 51547184f1bfe33a1447f007bdc6642cd3b67468[m[33m ([m[1;32mtemp[m[33m)[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Sun Oct 20 11:04:06 2024 -0600
+
+    working on same thing still
+
+[33mcommit f690c537ace4d7c65f75b30b34303083524edafc[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Sun Oct 20 10:55:37 2024 -0600
+
+    moving things to utils
+
+[33mcommit dfebf00236207f29e8ec2f824d67d28efde78bc6[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Sun Oct 20 10:44:10 2024 -0600
+
+    fixed bug from last night
+
+[33mcommit 64636e8f6dfdf008257955cafaf645e9da0572bc[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Sat Oct 19 21:45:45 2024 -0600
+
+    working hand
+
+[33mcommit f33c7def95a847325807007d0474b499c84ec654[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Sat Oct 19 21:13:58 2024 -0600
+
+    can drag cards from board to hand and from hand to board
+
+[33mcommit a930fc348a4e88e2258c2e8169e8dc5af4cb07f3[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Sat Oct 19 20:32:53 2024 -0600
+
+    unknown change
+
+[33mcommit a1b630a8ddfb0053694d1e1108580a0b7ba190d8[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Thu Oct 17 18:46:29 2024 -0600
+
+    properly sized hand card
+
+[33mcommit bb80572be7104896f30518ad436a9e3c09e0fc02[m
+Merge: 908f102 61dddb9
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Thu Oct 17 18:38:43 2024 -0600
+
+    Merge branch 'main' of github.com:Dawsani/CardTable
+
+[33mcommit 908f10278929e04718eded60429be47c94f1cf93[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Thu Oct 17 18:37:40 2024 -0600
+
+    working screen space card
+
+[33mcommit 61dddb982cc599088b703e678b7cc85a7e36d83c[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Thu Oct 17 09:45:20 2024 -0600
+
+    Create README.md
+
+[33mcommit 723af26ae9852de87ca3038e8b45a1a058ef0f69[m[33m ([m[1;31morigin/add_decks[m[33m, [m[1;32madd_decks[m[33m)[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Thu Oct 17 09:43:45 2024 -0600
+
+    started work on read cards from file
+
+[33mcommit 83e815e1c2f3b936bec800eef65c4f7f1db3241b[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Thu Oct 17 09:03:56 2024 -0600
+
+    working and cleaner
+
+[33mcommit ea87f5e388216ecc4ad0b7be8389fe698e5c79e3[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Thu Oct 17 09:01:15 2024 -0600
+
+    cleaned up by dleeteding
+
+[33mcommit 43ceff19c7e07dd5c4bfbd45e394090b58c92ff9[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Wed Oct 16 22:12:49 2024 -0600
+
+    working deck model
+
+[33mcommit abaebc402651795e59abaea195d97339be4c3ba8[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Wed Oct 16 21:57:15 2024 -0600
+
+    working with numVAOPoints
+
+[33mcommit cfa818c40bbf0c8a1f91c650f4dd0f233213a106[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Wed Oct 16 21:31:22 2024 -0600
+
+    working model reader
+
+[33mcommit a90a63862713001ea44b71110b83f91e644a8b57[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Wed Oct 16 20:32:14 2024 -0600
+
+    i need a working debugger
+
+[33mcommit 1978943dd23987140b2200e7d1b896cad7753a60[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Wed Oct 16 19:31:43 2024 -0600
+
+    working on read model code
+
+[33mcommit f3f5e68d4086165daadeafe783cc8dfa5b151e44[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Wed Oct 16 18:35:36 2024 -0600
+
+    started work on read model from file
+
+[33mcommit e42424c4e41820f6cd0aa9a1d9e824207af51531[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Wed Oct 16 14:42:00 2024 -0600
+
+    added playing card textures and a deck list
+
+[33mcommit 54f6a036b966b27b30c73ef38d3c82237ba3dba7[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Wed Oct 16 14:36:04 2024 -0600
+
+    stacking cards
+
+[33mcommit 184d80273862c9bd08d74ac7de5b15bd58a7d060[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Wed Oct 16 13:58:59 2024 -0600
+
+    switched the table to a game object
+
+[33mcommit 331a3c204b7cfa8782d8445b58b65b96a04786c1[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Wed Oct 16 13:56:07 2024 -0600
+
+    added hitbox class and seperate card class from game object
+
+[33mcommit 75342a9f7e1c8dc1cfd721dcdde66d813a8face8[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Tue Oct 15 23:56:14 2024 -0600
+
+    working moving of cards and potentially working pick the right card when multiple are selected code. need to be able to stack cards to find out.
+
+[33mcommit 0b43579a4ca475f5f598e3aec18ff742ccc2ecf5[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Tue Oct 15 21:36:02 2024 -0600
+
+    working clicking dragging card
+
+[33mcommit 15003d4f21732a742eb844c52a6ba2e6be391835[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Tue Oct 15 21:13:39 2024 -0600
+
+    working click registration, had to negate z :(
+
+[33mcommit f2e53257b1bc4c32560372b646f43b0b987c9046[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Tue Oct 15 20:45:17 2024 -0600
+
+    working raycasting
+
+[33mcommit 495d21770bfefe1004c56e9b59d0bf073015c8b2[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Tue Oct 15 19:16:09 2024 -0600
+
+    added working game object class
+
+[33mcommit 65177c1bb6ee732b21d1221aa019c3f70e4687ba[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Tue Oct 15 17:45:01 2024 -0600
+
+    working shader program with useProgram method
+
+[33mcommit f7ed315eaea7cb9d6eed679a3caed97164a76e6b[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Tue Oct 15 17:37:22 2024 -0600
+
+    working with basic shader program class
+
+[33mcommit 963b1d0a09c1305f0428d1e156972332125e5048[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Tue Oct 15 17:09:24 2024 -0600
+
+    added camera class
+
+[33mcommit 086b9f0ba3d76905ea222a5509dc2bf7ca522335[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Tue Oct 15 16:44:57 2024 -0600
+
+    working with engine class
+
+[33mcommit 3e79eafe18a07b91abbcd3bdc97a948b7b96dd8c[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Tue Oct 15 16:25:57 2024 -0600
+
+    not working :)
+
+[33mcommit e3c1fed35f715a35f8d12385edc81dbe5f15e6ec[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Tue Oct 15 09:39:08 2024 -0600
+
+    moved load texture to utils
+
+[33mcommit 26fdca87b1c3e17442020b602c44cbec6da6c128[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Fri Oct 11 23:38:08 2024 -0600
+
+    added a draw card function
+
+[33mcommit 369b4b9f2089c8030ebaf1cafdfeb1bb564d3c29[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Fri Oct 11 23:23:35 2024 -0600
+
+    added a single card to the field
+
+[33mcommit 9d2a89e64b53f1e9c886dfd50287c7b93ad8369e[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Fri Oct 11 22:50:26 2024 -0600
+
+    stable working
+
+[33mcommit 6052dd48d3ccefb71cb5c66e9007314c614e0a35[m
+Merge: fdb7d69 2888719
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Fri Oct 11 22:06:44 2024 -0600
+
+    merged to head
+
+[33mcommit fdb7d696270b93e132152770c413032115bd3487[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Fri Oct 11 22:04:56 2024 -0600
+
+    working format for multiple textures
+
+[33mcommit 2888719f620cee9d886b025f73c93c1486b1c650[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Fri Oct 11 21:56:38 2024 -0600
+
+    not working when trying to add multiple textures, giving my a texture handle of 1, I was expecting 0
+
+[33mcommit 70bea7c4a3f87e128c32eb96879495b5403af4ce[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Fri Oct 11 21:39:38 2024 -0600
+
+    added texturing and made the table textured and bigger
+
+[33mcommit 266c7ca56b918f893b96cc34791bf007291408c3[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Fri Oct 11 11:37:09 2024 -0600
+
+    added zoom in/out
+
+[33mcommit d8df0e008959780ff7b40067ec94afdb1b8ed0f7[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Fri Oct 11 11:20:14 2024 -0600
+
+    clicking and dragging to pan the camera
+
+[33mcommit 7d8d07079b40050ac283c4ca9c4560e2cdaa66f9[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Fri Oct 11 11:07:47 2024 -0600
+
+    camera translates in the xz plane when the cursor moves
+
+[33mcommit 7e476ae56c34ee777f194718b02316f9889bdee5[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Fri Oct 11 10:51:56 2024 -0600
+
+    camera angled down towards the ground
+
+[33mcommit c012da2f81d02bef7d47e29b640513fa3e4bb480[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Fri Oct 11 10:38:43 2024 -0600
+
+    Program displays white square from 3 units above
+
+[33mcommit e11e583e0a56fdf19db47e33b52d8088532423ff[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Thu Oct 10 14:57:23 2024 -0600
+
+    compiling but not showing the white square.
+
+[33mcommit 1340f70df6b7dd749443930d96322b98e420e246[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Thu Oct 10 14:29:35 2024 -0600
+
+    working state with blank screen
+
+[33mcommit 748eb55e2e7f9876cf581f1d7de80a4c38055a3f[m
+Author: Dawson Matthews <dawson.dwm@gmail.com>
+Date:   Thu Oct 10 13:19:05 2024 -0600
+
+    initial commit

@@ -1,10 +1,8 @@
 allow a deck of stacked cards to be created from a file full of card names, each with a corresponding image file
-create the hand in screen space
-allow cards to be dragged to and from the hand and the board
 add counters
 add tokens
-show close up of a card on hover
 networks, client/server multiplayer
+
 
 bugs:
 cards wont stack properly, or at least look wrong when hovering cards stacked more than 10
