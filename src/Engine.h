@@ -34,6 +34,7 @@ class Engine {
 
         GameObject* table;
         
+        Card* pHoveredCard;
         Card* pSelectedCard;
 
         glm::vec2 windowSize;

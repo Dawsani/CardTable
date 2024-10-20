@@ -224,6 +224,35 @@ int Engine::run() {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        pHoveredCard = Utils::findHoveredCard(windowSize, cursorPosition, pCamera, cards);
+
+        // draw the hovered card in screen space big in a set location
+        if (pHoveredCard != nullptr) {
+            glm::vec3 boardPosition = pHoveredCard->getPosition();
+            pHoveredCard->sendToHand();
+
+            glm::vec3 cardPreviewSize = (4.0f * glm::vec3(63.0f, 88.0f, 1.0f));
+            GLfloat padding = 100;
+
+            // check which side of the screen the cursor is on, preview the card on the other side
+            if (cursorPosition.x > windowSize.x / 2.0f) {
+                pHoveredCard->setPosition(glm::vec3(padding, windowSize.y / 2.0f - cardPreviewSize.y / 2.0f, 0.0f));
+            }
+            else {
+                pHoveredCard->setPosition(glm::vec3(windowSize.x - cardPreviewSize.x - padding, windowSize.y / 2.0f - cardPreviewSize.y / 2.0f, 0.0f));
+            }
+
+            pHoveredCard->setScale(cardPreviewSize);
+            pHoveredCard->setRotation(glm::vec3(0.0f));
+
+            pHoveredCard->draw(pCamera);
+
+            pHoveredCard->sendToBoard();
+            pHoveredCard->setPosition(boardPosition);
+            pHoveredCard->setScale(glm::vec3(0.63f, 0.88f, 1.0f));
+            pHoveredCard->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
+        }
+
         pSelectedCard = checkSelectedCard();
 
         if (pSelectedCard != nullptr) {
