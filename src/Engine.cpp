@@ -170,7 +170,7 @@ Card* Engine::checkSelectedCard() {
         }
         return nullptr;
     }
-    return nullptr;
+    return pSelectedCard;
 }
 
 int Engine::run() {
@@ -182,6 +182,8 @@ int Engine::run() {
     pShaderProgram = new ShaderProgram("shaders/shader.v.glsl", "shaders/shader.f.glsl");
     pScreenSpaceShaderProgram = new ShaderProgram("shaders/screenSpaceShader.v.glsl", "shaders/screenSpaceShader.f.glsl");
     
+
+
     pCamera = new Camera(glm::vec3(0.0f, 3.0f, 2.0f));
 
     // Main loop
