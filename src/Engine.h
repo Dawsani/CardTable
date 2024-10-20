@@ -71,6 +71,7 @@ class Engine {
         void drawScene();
 
         Card* checkSelectedCard();
+        Card* checkHoveredCard();
 };
 
 // Declare callbacks

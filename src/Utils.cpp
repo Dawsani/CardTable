@@ -220,6 +220,39 @@ unsigned int Utils::LoadTexture(const char* filename) {
     return textureHandle;
 }
 
+glm::vec3 Utils::calculateCursorRay(glm::vec2 windowSize, glm::vec2 mousePosition, Camera* pCamera)
+{
+    // get mouse coordinates in normalized device coords, but really clip space
+    glm::vec2 cursorPositionNDC = glm::vec2(2 * mousePosition.x / windowSize.x - 1, 1 - 2 * mousePosition.y / windowSize.y);
+    glm::vec4 cursorPositionClipSpace = glm::vec4(cursorPositionNDC.x, cursorPositionNDC.y, -1.0f, 1.0f);
+    glm::mat4 inverseProjectionMatrix = glm::inverse(pCamera->getProjectionMatrix());
+    glm::vec4 cursorPositionViewSpace = inverseProjectionMatrix * cursorPositionClipSpace;
+    glm::vec4 cursorRayViewSpace = glm::vec4(cursorPositionViewSpace.x, cursorPositionViewSpace.y, -1.0f, 0.0f);
+
+    glm::mat4 inverseViewMatrix = glm::inverse(pCamera->getViewMatrix());
+    glm::vec3 cursorRay = glm::normalize(inverseViewMatrix * cursorRayViewSpace);
+
+    // flip some directions for some reasson
+    return cursorRay;
+}
+
+glm::vec3 Utils::calculateRayIntersection(glm::vec3 rayOrigin, glm::vec3 rayDirection)
+{
+    rayDirection = glm::normalize(rayDirection);
+    float t = - rayOrigin.y / rayDirection.y;
+    glm::vec3 intersectionPoint = rayOrigin + rayDirection * t;
+
+    // TODO: FIGURE OUT WHY I NEED TO MULTIPLY BY 2 RN.
+    return intersectionPoint;
+}
+
+Card *Utils::findHoveredCard(glm::vec2 windowSize, glm::vec2 mousePosition, Camera *pCamera, std::vector<Card *> cards)
+{
+    glm::vec3 cursorRay = calculateCursorRay(windowSize, mousePosition, pCamera);
+    glm::vec3 intersectionPoint = calculateRayIntersection(pCamera->getPosition(), cursorRay);
+    return nullptr;
+}
+
 bool Utils::readTextFromFile(const char *filename, char *&output)
 {
     std::string buf = std::string("");

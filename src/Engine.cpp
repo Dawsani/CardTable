@@ -71,6 +71,19 @@ void Engine::drawScene() {
     table->draw(pCamera);
     // deck->draw(pCamera);
 
+    for (int i = 0; i < cards.size(); i++) {
+        GameObject* card = cards[i];
+        card->draw(pCamera);
+    }
+
+    for (int i = 0; i < hand.size(); i++) {
+        GameObject* card = hand[i];
+        card->setPosition(glm::vec3(2 * 63.0f * i, 0.0f, 0.0f));
+        card->setScale(2.0f * glm::vec3(63.0f, 88.0f, 1.0f));
+        card->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
+        card->draw(pCamera);
+    }
+
 }
 
 Card* Engine::checkSelectedCard() {
@@ -243,19 +256,6 @@ int Engine::run() {
 
         drawScene();
 
-        for (int i = 0; i < cards.size(); i++) {
-            GameObject* card = cards[i];
-            card->draw(pCamera);
-        }
-
-        for (int i = 0; i < hand.size(); i++) {
-            GameObject* card = hand[i];
-            card->setPosition(glm::vec3(2 * 63.0f * i, 0.0f, 0.0f));
-            card->setScale(2.0f * glm::vec3(63.0f, 88.0f, 1.0f));
-            card->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
-            card->draw(pCamera);
-        }
-
         // Swap front and back buffers
         glfwSwapBuffers(pWindow);
 
@@ -307,32 +307,4 @@ void Engine::handleMouseButtonEvent(int button, int action, int mod) {
 
 void Engine::handleScrollEvent(double xOffset, double yOffset) {
     pCamera->moveForward(-yOffset);
-}
-
-glm::vec3 Engine::calculateCursorRay()
-{
-    // get mouse coordinates in normalized device coords, but really clip space
-    int width, height;
-    glfwGetFramebufferSize(pWindow, &width, &height);
-    glm::vec2 cursorPositionNDC = glm::vec2(2 * cursorPosition.x / width - 1, 1 - 2 * cursorPosition.y / height);
-    glm::vec4 cursorPositionClipSpace = glm::vec4(cursorPositionNDC.x, cursorPositionNDC.y, -1.0f, 1.0f);
-    glm::mat4 inverseProjectionMatrix = glm::inverse(pCamera->getProjectionMatrix());
-    glm::vec4 cursorPositionViewSpace = inverseProjectionMatrix * cursorPositionClipSpace;
-    glm::vec4 cursorRayViewSpace = glm::vec4(cursorPositionViewSpace.x, cursorPositionViewSpace.y, -1.0f, 0.0f);
-
-    glm::mat4 inverseViewMatrix = glm::inverse(pCamera->getViewMatrix());
-    glm::vec3 cursorRay = glm::normalize(inverseViewMatrix * cursorRayViewSpace);
-
-    // flip some directions for some reasson
-    return cursorRay;
-}
-
-glm::vec3 Engine::calculateRayIntersection(glm::vec3 rayOrigin, glm::vec3 rayDirection)
-{
-    rayDirection = glm::normalize(rayDirection);
-    float t = - rayOrigin.y / rayDirection.y;
-    glm::vec3 intersectionPoint = rayOrigin + rayDirection * t;
-
-    // TODO: FIGURE OUT WHY I NEED TO MULTIPLY BY 2 RN.
-    return intersectionPoint;
 }
