@@ -1,5 +1,62 @@
 #include "Utils.h"
 
+// Callback function to write data to a file
+size_t Utils::WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
+    std::ofstream* ofs = static_cast<std::ofstream*>(userp);
+    size_t totalSize = size * nmemb;
+    ofs->write(static_cast<char*>(contents), totalSize);
+    return totalSize;
+}
+
+// Function to download a card image given a set code and collector number
+bool Utils::downloadCardImage(const std::string& setCode, const std::string& collectorNumber, const std::string& outputFilename) {
+    CURL* curl;
+    CURLcode res;
+    std::ofstream ofs(outputFilename, std::ios::binary);
+    
+    if (!ofs.is_open()) {
+        std::cerr << "Failed to open file for writing: " << outputFilename << std::endl;
+        return false;
+    }
+
+    curl = curl_easy_init();
+    if(curl) {
+        // Construct the URL
+        std::string url = "https://api.scryfall.com/cards/" + setCode + "/" + collectorNumber + "?format=image";
+
+        // Set curl options
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);  // Follow redirects
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);  // Set write callback
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &ofs);  // Pass the file stream to the callback
+
+        // Add required headers
+        struct curl_slist* headers = nullptr;
+        headers = curl_slist_append(headers, "User-Agent: CardTable/0.1");
+        headers = curl_slist_append(headers, "Accept: */*");
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+
+        // Perform the request
+        res = curl_easy_perform(curl);
+
+        // Check for errors
+        if(res != CURLE_OK) {
+            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+            curl_easy_cleanup(curl);
+            return false;
+        }
+
+        // Clean up
+        curl_slist_free_all(headers);  // Free the header list
+        curl_easy_cleanup(curl);
+        ofs.close();
+        return true;
+    }
+    
+    std::cerr << "Failed to initialize CURL." << std::endl;
+    return false;
+}
+
 Card* Utils::findHighestCard(std::vector<Card*> cards) {
     if (cards.size() == 0) {
         return nullptr;
@@ -16,9 +73,9 @@ Card* Utils::findHighestCard(std::vector<Card*> cards) {
     return highestCard;
 }
 
-std::vector<Card *> Utils::readCardsFromFile(std::string filename)
+std::stack<Card *> Utils::readCardsFromFile(std::string filename)
 {
-    std::vector<Card*> cards;
+    std::stack<Card*> cards;
 
     std::ifstream file(filename);
 
@@ -30,7 +87,36 @@ std::vector<Card *> Utils::readCardsFromFile(std::string filename)
     }
 
     while (getline(file, line)) {
-        // get the cards
+        // assume the txt format for now
+        // split it into it's parts
+        std::vector<std::string> words = splitString(line, ' ');
+        std::string numCopies = words[0];
+
+        // combine words until you hit a word starting with (
+        std::string cardName = words[1];
+        char firstLetter = words[2][0];
+        int wordIndex = 2;
+        bool validFormat = true;
+        while (firstLetter != '(') {
+            cardName += words[2];
+            wordIndex++;
+            if (wordIndex >= words.size()) {
+                std::cout << "Improper formatting in file " << filename << std::endl;
+                validFormat = false;
+                break;
+            }
+        }
+        if (!validFormat) {
+            continue;
+        }
+        std::string setCode = words[wordIndex + 1];
+        std::string collectorNumber = words[wordIndex + 2];
+        std::string tags = words[wordIndex + 3];
+
+        std::string outputFileName = cardName + ".jpg";
+
+        // download the file
+        Utils::downloadCardImage(setCode, collectorNumber, outputFileName);
     }
 
     file.close();

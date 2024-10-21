@@ -3,11 +3,13 @@
 #include <cstring>
 #include <string>
 #include <vector>
+#include <stack>
 #include "glm/vec3.hpp"
 #include "glm/vec2.hpp"
 #include "stb_image.h"
 #include "Card.h"
 #include "Camera.h"
+#include <curl/curl.h>
 
 class Utils {
     public:
@@ -28,5 +30,9 @@ class Utils {
     
     static Card* findHighestCard(std::vector<Card*> cards);
 
-    static std::vector<Card*> readCardsFromFile(std::string filename);
+    static std::stack<Card*> readCardsFromFile(std::string filename);
+
+    // file downloading
+    static size_t Utils::WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);
+    static bool Utils::downloadCardImage(const std::string& setCode, const std::string& collectorNumber, const std::string& outputFilename);
 };

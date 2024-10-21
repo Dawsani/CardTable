@@ -188,7 +188,7 @@ int Engine::run() {
 
     table = new GameObject(pShaderProgram, vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
 
-    std::vector<Card*> deckCards = Utils::readCardsFromFile("assets/deck_lists/my_deck.txt");
+    std::stack<Card*> deckCards = Utils::readCardsFromFile("assets/deck_lists/my_deck.txt");
     Deck* deck = new Deck(pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
 
     // make some cards for now
