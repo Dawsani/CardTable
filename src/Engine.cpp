@@ -193,7 +193,7 @@ int Engine::run() {
 
     table = new GameObject(pShaderProgram, vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
 
-    std::stack<Card*> deckCards = Utils::readCardsFromFile("assets/deck_lists/my_deck.txt", pShaderProgram, pScreenSpaceShaderProgram, vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD], glm::vec2(0.63f, 0.88f));
+    std::deque<Card*> deckCards = Utils::readCardsFromFile("assets/deck_lists/my_deck.txt", pShaderProgram, pScreenSpaceShaderProgram, vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD], glm::vec2(0.63f, 0.88f));
     deck = new Deck(pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
 
     pSelectedCard = nullptr;
@@ -307,6 +307,17 @@ void Engine::handleMouseButtonEvent(int button, int action, int mod) {
     }
     else if (button == GLFW_MOUSE_BUTTON_LEFT) {
         leftMouseButtonState = action;
+        if (leftMouseButtonState == GLFW_PRESS) {
+            GLfloat currentTime = glfwGetTime();
+            if (currentTime - lastClickTime < doubleClickThreshold) {
+                isDoubleClick = true;
+                std::cout << "Double click!" << std::endl;
+            }
+            else {
+                isDoubleClick = false;
+            }
+            lastClickTime = currentTime;
+        }
     }
 }
 

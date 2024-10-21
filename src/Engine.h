@@ -60,6 +60,9 @@ class Engine {
         glm::vec2 cursorPosition;
         GLint rightMouseButtonState = GLFW_RELEASE;
         GLint leftMouseButtonState = GLFW_RELEASE;
+        GLfloat doubleClickThreshold = 0.25f;
+        GLfloat lastClickTime = 0.0f;
+        GLboolean isDoubleClick = false;
 
         int setupOpenGL();
         void SetupTextures();

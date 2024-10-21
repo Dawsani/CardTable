@@ -1,5 +1,6 @@
 tapping/untapping
 add context menu to deck on right click
+    move deck
     shuffle
     find card
     etc
@@ -22,3 +23,4 @@ add a border around hovered cards
 add lighting to shaders
 allow cards in hand to be reordered
 make dragging a card onto the deck put it on deck top
+don't allow cards to be placed colliding with the deck and visaversa

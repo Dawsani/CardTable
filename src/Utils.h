@@ -30,7 +30,7 @@ class Utils {
     
     static Card* findHighestCard(std::vector<Card*> cards);
 
-    static std::stack<Card *> readCardsFromFile(std::string filename, ShaderProgram* pShaderProgram, ShaderProgram* pScreenSpaceShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, glm::vec2 hitBoxSize);
+    static std::deque<Card *> readCardsFromFile(std::string filename, ShaderProgram* pShaderProgram, ShaderProgram* pScreenSpaceShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, glm::vec2 hitBoxSize);
 
     // file downloading
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);

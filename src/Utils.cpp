@@ -78,9 +78,9 @@ bool fileExists(const std::string& filename) {
     return std::filesystem::exists(filename);
 }
 
-std::stack<Card *> Utils::readCardsFromFile(std::string filename, ShaderProgram* pShaderProgram, ShaderProgram* pScreenSpaceShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, glm::vec2 hitBoxSize)
+std::deque<Card *> Utils::readCardsFromFile(std::string filename, ShaderProgram* pShaderProgram, ShaderProgram* pScreenSpaceShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, glm::vec2 hitBoxSize)
 {
-    std::stack<Card*> cards;
+    std::deque<Card*> cards;
 
     std::ifstream file(filename);
 
@@ -135,7 +135,7 @@ std::stack<Card *> Utils::readCardsFromFile(std::string filename, ShaderProgram*
         for (unsigned int i = 0; i < numCopies; i++) {
             Card* newCard = new Card(pShaderProgram, pScreenSpaceShaderProgram, vaoHandle, numVAOPoints, textureId, hitBoxSize);
             newCard->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
-            cards.push(newCard);
+            cards.push_back(newCard);
         }
     }
 
