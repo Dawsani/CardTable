@@ -1,10 +1,43 @@
 #include "Card.h"
+#include "Engine.h"
 
-Card::Card(ShaderProgram *pShaderProgram, ShaderProgram* pScreenSpaceShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, unsigned int textureHandle, glm::vec2 hitBoxSize) : GameObject(pShaderProgram, vaoHandle, numVAOPoints, textureHandle)
+Card::Card(Engine* pEngine, ShaderProgram *pShaderProgram, ShaderProgram* pScreenSpaceShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, unsigned int textureHandle, glm::vec2 hitBoxSize) : GameObject(pEngine, pShaderProgram, vaoHandle, numVAOPoints, textureHandle)
 {
     this->pHitBox = new HitBox(this, hitBoxSize);
     this->pScreenSpaceShaderProgram = pScreenSpaceShaderProgram;
     inHand = false;
+}
+
+void Card::onLeftClick() {
+    isSelected = true;
+}
+
+void Card::onLeftRelease() {
+    isSelected = false;
+}
+
+void Card::update()
+{
+    if (isSelected) {
+        float yOffset = 0.5f;
+        glm::vec3 mouseRay = Utils::calculateCursorRay(pEngine->getWindowSize(), pEngine->getMousePosition(), pEngine->getCamera());
+        glm::vec3 groundPoint = Utils::calculateRayIntersection(pEngine->getCamera()->getPosition(), mouseRay);
+        setPosition(glm::vec3(groundPoint.x, yOffset, groundPoint.z));
+    }
+}
+
+void Card::select()
+{
+    isSelected = true;
+}
+
+bool Card::check2DPointCollision(glm::vec2 point)
+{
+    if (point.x < position.x + pHitBox->getSize().x && point.x > position.x && 
+        point.y > position.z - pHitBox->getSize().y && point.y < point.y) {
+            return true;
+    }
+    return false;
 }
 
 void Card::draw(Camera *pCamera)
@@ -23,5 +56,15 @@ void Card::draw(Camera *pCamera)
     }
     else {
         GameObject::draw(pCamera);
+    }
+}
+
+void Card::toggleIsTapped() {
+    isTapped = !isTapped;
+    if (isTapped) {
+        setRotation(glm::vec3(rotation.x, glm::radians(90.0f), 0.0f));
+    }
+    else {
+        setRotation(glm::vec3(rotation.x, 0.0f, 0.0f));
     }
 }

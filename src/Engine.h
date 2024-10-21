@@ -16,6 +16,11 @@ class Engine {
     public:
         Engine();
         int run();
+        void addCard(Card* card) { cards.push_back(card); };
+
+        glm::vec2 getWindowSize() { return windowSize; }
+        Camera* getCamera() { return pCamera; }
+        glm::vec2 getMousePosition() { return cursorPosition; };
         
         void handleFramebufferSizeEven(int width, int height);
         void handleCursorPositionEvent(double x, double y );  

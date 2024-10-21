@@ -1,5 +1,6 @@
 #include "Utils.h"
 #include <filesystem>
+#include "Engine.h"
 
 // Callback function to write data to a file
 size_t Utils::WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
@@ -78,7 +79,7 @@ bool fileExists(const std::string& filename) {
     return std::filesystem::exists(filename);
 }
 
-std::deque<Card *> Utils::readCardsFromFile(std::string filename, ShaderProgram* pShaderProgram, ShaderProgram* pScreenSpaceShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, glm::vec2 hitBoxSize)
+std::deque<Card *> Utils::readCardsFromFile(Engine* pEngine, std::string filename, ShaderProgram* pShaderProgram, ShaderProgram* pScreenSpaceShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, glm::vec2 hitBoxSize)
 {
     std::deque<Card*> cards;
 
@@ -133,8 +134,9 @@ std::deque<Card *> Utils::readCardsFromFile(std::string filename, ShaderProgram*
         // create a texture from the file
         unsigned int textureId = LoadTexture(outputFileName.c_str());
         for (unsigned int i = 0; i < numCopies; i++) {
-            Card* newCard = new Card(pShaderProgram, pScreenSpaceShaderProgram, vaoHandle, numVAOPoints, textureId, hitBoxSize);
+            Card* newCard = new Card(pEngine, pShaderProgram, pScreenSpaceShaderProgram, vaoHandle, numVAOPoints, textureId, hitBoxSize);
             newCard->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
+            newCard->setScale(glm::vec3(0.63f, 0.88f, 1.0f));
             cards.push_back(newCard);
         }
     }

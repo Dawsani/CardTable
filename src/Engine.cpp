@@ -90,6 +90,7 @@ void Engine::drawScene() {
 
 }
 
+/*
 Card* Engine::checkSelectedCard() {
     float handScreenThreshold = windowSize.y - 100.0f;
     if (leftMouseButtonState == GLFW_PRESS && pSelectedCard == nullptr) {
@@ -125,11 +126,18 @@ Card* Engine::checkSelectedCard() {
         else {
             if (intersectionPoint.x < deck->getPosition().x + 0.63f && intersectionPoint.x > deck->getPosition().x &&
                 intersectionPoint.z < deck->getPosition().z + 0.88f && intersectionPoint.z > deck->getPosition().z) {
-                    Card* drawnCard = deck->drawCard();
-                    cards.push_back(drawnCard);
-                    return drawnCard;
+                    //Card* drawnCard = deck->drawCard();
+                    //cards.push_back(drawnCard);
+                    //return drawnCard;
                 }
-            return Utils::findHoveredCard(windowSize, cursorPosition, pCamera, cards);
+            Card* hoveredCard = Utils::findHoveredCard(windowSize, cursorPosition, pCamera, cards);
+            
+            if (isDoubleClick) {
+                hoveredCard->toggleIsTapped();
+                return nullptr;
+            }
+
+            return hoveredCard;
         }
     }
     else if (leftMouseButtonState == GLFW_RELEASE && pSelectedCard != nullptr) {
@@ -176,6 +184,7 @@ Card* Engine::checkSelectedCard() {
     }
     return pSelectedCard;
 }
+*/
 
 int Engine::run() {
 
@@ -191,10 +200,10 @@ int Engine::run() {
     // Main loop
     glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
 
-    table = new GameObject(pShaderProgram, vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
+    table = new GameObject(this, pShaderProgram, vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
 
-    std::deque<Card*> deckCards = Utils::readCardsFromFile("assets/deck_lists/my_deck.txt", pShaderProgram, pScreenSpaceShaderProgram, vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD], glm::vec2(0.63f, 0.88f));
-    deck = new Deck(pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
+    std::deque<Card*> deckCards = Utils::readCardsFromFile(this, "assets/deck_lists/my_deck.txt", pShaderProgram, pScreenSpaceShaderProgram, vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD], glm::vec2(0.63f, 0.88f));
+    deck = new Deck(this, pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
 
     pSelectedCard = nullptr;
     auto previousTime = std::chrono::high_resolution_clock::now();
@@ -220,11 +229,13 @@ int Engine::run() {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        /*
         pHoveredCard = Utils::findHoveredCard(windowSize, cursorPosition, pCamera, cards);
 
         // draw the hovered card in screen space big in a set location
         if (pHoveredCard != nullptr) {
             glm::vec3 boardPosition = pHoveredCard->getPosition();
+            glm::vec3 rotation = pHoveredCard->getRotation();
             pHoveredCard->sendToHand();
 
             glm::vec3 cardPreviewSize = (8.0f * glm::vec3(63.0f, 88.0f, 1.0f));
@@ -246,7 +257,7 @@ int Engine::run() {
             pHoveredCard->sendToBoard();
             pHoveredCard->setPosition(boardPosition);
             pHoveredCard->setScale(glm::vec3(0.63f, 0.88f, 1.0f));
-            pHoveredCard->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
+            pHoveredCard->setRotation(rotation);
         }
 
         pSelectedCard = checkSelectedCard();
@@ -255,6 +266,11 @@ int Engine::run() {
             glm::vec3 cursorRay = Utils::calculateCursorRay(windowSize, cursorPosition, pCamera);
             glm::vec3 intersectionPoint = Utils::calculateRayIntersection(pCamera->getPosition(), cursorRay);
             pSelectedCard->setPosition(intersectionPoint + glm::vec3(-0.63f / 2.0f, 0.5f, 0.88f / 2.0f));
+        }
+        */
+
+        for (Card* c : cards) {
+            c->update();
         }
 
         drawScene();
@@ -317,6 +333,24 @@ void Engine::handleMouseButtonEvent(int button, int action, int mod) {
                 isDoubleClick = false;
             }
             lastClickTime = currentTime;
+
+            // see if something is hovered, if so, click it
+            glm::vec3 cursorRay = Utils::calculateCursorRay(windowSize, cursorPosition, pCamera);
+            glm::vec3 intersectionPoint = Utils::calculateRayIntersection(pCamera->getPosition(), cursorRay);
+            if (deck->checkRayCollision(pCamera->getPosition(), cursorRay)) {
+                deck->onLeftClick();
+                return;
+            }
+            Card* hoveredCard = Utils::findHoveredCard(windowSize, cursorPosition, pCamera, cards);
+            if (hoveredCard) {
+                hoveredCard->onLeftClick();
+            }
+        }
+        else if (action == GLFW_RELEASE) {
+            for (Card* c : cards) {
+                c->onLeftRelease();
+            }
+            deck->onLeftRelease();
         }
     }
 }

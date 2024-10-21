@@ -1,3 +1,6 @@
+#ifndef DECK_H
+#define DECK_H
+
 #include <deque>
 #include <vector>
 #include <algorithm>
@@ -8,10 +11,15 @@
 
 class Deck : public GameObject {
 public:
-    Deck(ShaderProgram* pShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, unsigned int textureHandle, std::deque<Card*> cards);
+    Deck(class Engine* pEngine, ShaderProgram* pShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, unsigned int textureHandle, std::deque<Card*> cards);
 
-    Card* drawCard();
+    void onLeftClick() override;
+
+    bool checkRayCollision(glm::vec3 rayOrigin, glm::vec3 rayDirection);
+
     void shuffle();
 private:
     std::deque<Card*> cards;
 };
+
+#endif

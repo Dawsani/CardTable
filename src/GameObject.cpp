@@ -1,7 +1,9 @@
 #include "GameObject.h"
+#include "Engine.h"
 
-GameObject::GameObject(ShaderProgram* pShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, unsigned int textureHandle) {
+GameObject::GameObject(Engine* pEngine, ShaderProgram* pShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, unsigned int textureHandle) {
 
+    this->pEngine = pEngine;
     this->pShaderProgram = pShaderProgram;
     this->vaoHandle = vaoHandle;
     this->numVAOPoints = numVAOPoints;
