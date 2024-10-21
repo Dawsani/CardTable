@@ -78,7 +78,7 @@ bool fileExists(const std::string& filename) {
     return std::filesystem::exists(filename);
 }
 
-std::stack<Card *> Utils::readCardsFromFile(std::string filename)
+std::stack<Card *> Utils::readCardsFromFile(std::string filename, ShaderProgram* pShaderProgram, ShaderProgram* pScreenSpaceShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, glm::vec2 hitBoxSize)
 {
     std::stack<Card*> cards;
 
@@ -123,14 +123,18 @@ std::stack<Card *> Utils::readCardsFromFile(std::string filename)
         std::string outputFileName = "assets/cards/" + cardName + '_' + setCode + ".jpg";
 
         // check if the file is already downloaded
-        if (fileExists(outputFileName)) {
-            std::cout << "File " << outputFileName << " already exists, skipping download." << std::endl;
-            continue;
+        if (!fileExists(outputFileName)) {
+            // download the file
+            std::cout << "Downloading " << outputFileName << "...";
+            Utils::downloadCardImage(setCode, collectorNumber, outputFileName);
+            std::cout << "Done!" << std::endl;
         }
-        // download the file
-        std::cout << "Downloading " << outputFileName << "...";
-        Utils::downloadCardImage(setCode, collectorNumber, outputFileName);
-        std::cout << "Done!" << std::endl;
+        
+        // create a texture from the file
+        unsigned int textureId = LoadTexture(outputFileName.c_str());
+        Card* newCard = new Card(pShaderProgram, pScreenSpaceShaderProgram, vaoHandle, numVAOPoints, textureId, hitBoxSize);
+        newCard->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
+        cards.push(newCard);
     }
 
     file.close();

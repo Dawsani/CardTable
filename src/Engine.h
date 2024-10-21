@@ -30,6 +30,7 @@ class Engine {
 
         Camera* pCamera;
 
+        Deck* deck;
         std::vector<Card*> cards;
         std::vector<Card*> hand;
 
@@ -40,11 +41,10 @@ class Engine {
 
         glm::vec2 windowSize;
 
-        static const int NUM_TEXTURES = 3;
+        static const int NUM_TEXTURES = 2;
         enum TEXTURE_ID {
             GRID = 0,
-            SATYA = 1,
-            BACK = 2
+            BACK = 1
         };
         unsigned int textureHandles[NUM_TEXTURES];
 

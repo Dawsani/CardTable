@@ -59,9 +59,8 @@ int Engine::setupOpenGL() {
 }
 
 void Engine::SetupTextures() {
-    textureHandles[TEXTURE_ID::GRID] = Utils::LoadTexture("assets/textures/test.png");
-    textureHandles[TEXTURE_ID::SATYA] = Utils::LoadTexture("assets/textures/m3c-3-satya-aetherflux-genius.jpg");
-    textureHandles[TEXTURE_ID::BACK] = Utils::LoadTexture("assets/textures/playing_cards/back.png");
+    textureHandles[TEXTURE_ID::GRID] = Utils::LoadTexture("assets/textures/grid.png");
+    textureHandles[TEXTURE_ID::BACK] = Utils::LoadTexture("assets/textures/card_back.jpg");
 }
 
 void Engine::SetupVAOs() {
@@ -74,7 +73,7 @@ void Engine::drawScene() {
     pShaderProgram->useProgram();
 
     table->draw(pCamera);
-    // deck->draw(pCamera);
+    deck->draw(pCamera);
 
     for (int i = 0; i < cards.size(); i++) {
         GameObject* card = cards[i];
@@ -188,17 +187,13 @@ int Engine::run() {
 
     table = new GameObject(pShaderProgram, vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
 
-    std::stack<Card*> deckCards = Utils::readCardsFromFile("assets/deck_lists/my_deck.txt");
-    Deck* deck = new Deck(pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
+    std::stack<Card*> deckCards = Utils::readCardsFromFile("assets/deck_lists/my_deck.txt", pShaderProgram, pScreenSpaceShaderProgram, vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD], glm::vec2(0.63f, 0.88f));
+    deck = new Deck(pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
 
     // make some cards for now
-    for (int i = 0; i < 16; i++) {
-        Card* card = new Card(  pShaderProgram, 
-                                pScreenSpaceShaderProgram,
-                                            vaoHandles[VAO_ID::CARD],
-                                            numVAOPoints[VAO_ID::CARD],
-                                            textureHandles[TEXTURE_ID::SATYA],
-                                            glm::vec2(0.63f, 0.88f));
+    for (int i = 0; i < 10; i++) {
+        Card* card = deck->drawCard();
+                                            
         card->setPosition(glm::vec3(i, 0.02f, 0.0f));
         card->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
         card->setScale(glm::vec3(0.63f, 0.88f, 1.0f));

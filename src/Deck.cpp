@@ -5,7 +5,7 @@ Deck::Deck(ShaderProgram *pShaderProgram, unsigned int vaoHandle, unsigned int n
     this->cards = cards;
 }
 
-Card *Deck::draw()
+Card *Deck::drawCard()
 {
     Card* c = cards.top();
     cards.pop();
