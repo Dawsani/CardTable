@@ -22,7 +22,8 @@ void Card::update()
         float yOffset = 0.5f;
         glm::vec3 mouseRay = Utils::calculateCursorRay(pEngine->getWindowSize(), pEngine->getMousePosition(), pEngine->getCamera());
         glm::vec3 groundPoint = Utils::calculateRayIntersection(pEngine->getCamera()->getPosition(), mouseRay);
-        setPosition(glm::vec3(groundPoint.x, yOffset, groundPoint.z));
+        glm::vec3 offset = glm::vec3(-scale.x / 2.0f, 0.05f, scale.z / 2.0f);
+        setPosition(groundPoint + offset);
     }
 }
 
