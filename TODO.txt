@@ -1,6 +1,11 @@
-allow a deck of stacked cards to be created from a file full of card names, each with a corresponding image file
-add counters
-add tokens
+tapping/untapping
+add context menu to deck on right click
+    shuffle
+    find card
+    etc
+add context mentu to cards on right click
+    send to deck bottom/top
+add counters/tokens
 networks, client/server multiplayer
 
 
@@ -15,3 +20,5 @@ add a method to read in a vao from file
 polish:
 add a border around hovered cards
 add lighting to shaders
+allow cards in hand to be reordered
+make dragging a card onto the deck put it on deck top

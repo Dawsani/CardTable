@@ -1,4 +1,7 @@
 #include <stack>
+#include <vector>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 #include "GameObject.h"
 #include "Card.h"
 

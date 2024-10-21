@@ -123,6 +123,12 @@ Card* Engine::checkSelectedCard() {
             }
         }
         else {
+            if (intersectionPoint.x < deck->getPosition().x + 0.63f && intersectionPoint.x > deck->getPosition().x &&
+                intersectionPoint.z < deck->getPosition().z + 0.88f && intersectionPoint.z > deck->getPosition().z) {
+                    Card* drawnCard = deck->drawCard();
+                    cards.push_back(drawnCard);
+                    return drawnCard;
+                }
             return Utils::findHoveredCard(windowSize, cursorPosition, pCamera, cards);
         }
     }
@@ -190,17 +196,6 @@ int Engine::run() {
     std::stack<Card*> deckCards = Utils::readCardsFromFile("assets/deck_lists/my_deck.txt", pShaderProgram, pScreenSpaceShaderProgram, vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD], glm::vec2(0.63f, 0.88f));
     deck = new Deck(pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
 
-    // make some cards for now
-    for (int i = 0; i < 10; i++) {
-        Card* card = deck->drawCard();
-                                            
-        card->setPosition(glm::vec3(i, 0.02f, 0.0f));
-        card->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
-        card->setScale(glm::vec3(0.63f, 0.88f, 1.0f));
-
-        cards.push_back(card);
-    }
-
     pSelectedCard = nullptr;
     auto previousTime = std::chrono::high_resolution_clock::now();
     
@@ -259,7 +254,7 @@ int Engine::run() {
         if (pSelectedCard != nullptr) {
             glm::vec3 cursorRay = Utils::calculateCursorRay(windowSize, cursorPosition, pCamera);
             glm::vec3 intersectionPoint = Utils::calculateRayIntersection(pCamera->getPosition(), cursorRay);
-            pSelectedCard->setPosition(intersectionPoint + glm::vec3(-0.63f / 2.0f, 0.2f, 0.88f / 2.0f));
+            pSelectedCard->setPosition(intersectionPoint + glm::vec3(-0.63f / 2.0f, 0.5f, 0.88f / 2.0f));
         }
 
         drawScene();

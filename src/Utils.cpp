@@ -95,7 +95,7 @@ std::stack<Card *> Utils::readCardsFromFile(std::string filename, ShaderProgram*
         // assume the txt format for now
         // split it into it's parts
         std::vector<std::string> words = splitString(line, ' ');
-        std::string numCopies = words[0];
+        unsigned int numCopies = std::stoi(words[0].substr(words[0].size() - 2));
 
         // combine words until you hit a word starting with (
         std::string cardName = words[1];
@@ -132,9 +132,11 @@ std::stack<Card *> Utils::readCardsFromFile(std::string filename, ShaderProgram*
         
         // create a texture from the file
         unsigned int textureId = LoadTexture(outputFileName.c_str());
-        Card* newCard = new Card(pShaderProgram, pScreenSpaceShaderProgram, vaoHandle, numVAOPoints, textureId, hitBoxSize);
-        newCard->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
-        cards.push(newCard);
+        for (unsigned int i = 0; i < numCopies; i++) {
+            Card* newCard = new Card(pShaderProgram, pScreenSpaceShaderProgram, vaoHandle, numVAOPoints, textureId, hitBoxSize);
+            newCard->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
+            cards.push(newCard);
+        }
     }
 
     file.close();
