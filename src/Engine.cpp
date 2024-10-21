@@ -142,19 +142,7 @@ Card* Engine::checkSelectedCard() {
     }
     else if (leftMouseButtonState == GLFW_RELEASE && pSelectedCard != nullptr) {
         // put the card in the hand if the mouse was near the bottom of the screen
-        if (cursorPosition.y > handScreenThreshold) {
-            pSelectedCard->sendToHand();
-            hand.push_back(pSelectedCard);
-            // remove card from the list of played cards
-            // first find the position of the card within the vector
-            for (int i = 0; i < cards.size(); i++) {
-                Card* c = cards.at(i);
-                if (c == pSelectedCard) {
-                    cards.erase(cards.begin() + i);
-                    break;
-                }
-            }
-        }
+        
         else {
             // Make sure the card lands on top of the cards below it
             std::vector<Card*> cardsUnderSelectedCard;
@@ -188,13 +176,19 @@ Card* Engine::checkSelectedCard() {
 
 int Engine::run() {
 
+    // Clear the screen to a color (e.g., black)
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     setupOpenGL();
     SetupTextures();
     SetupVAOs();
 
+    std::cout << "Setting up shaders...";
     pShaderProgram = new ShaderProgram("shaders/shader.v.glsl", "shaders/shader.f.glsl");
     pScreenSpaceShaderProgram = new ShaderProgram("shaders/screenSpaceShader.v.glsl", "shaders/screenSpaceShader.f.glsl");
-    
+    std::cout << "Done" << std::endl;
+
     pCamera = new Camera(glm::vec3(0.0f, 3.0f, 2.0f), 45.0f, windowSize);
 
     // Main loop
@@ -202,8 +196,12 @@ int Engine::run() {
 
     table = new GameObject(this, pShaderProgram, vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
 
+    std::cout << "Reading in deck" << std::endl;
     std::deque<Card*> deckCards = Utils::readCardsFromFile(this, "assets/deck_lists/my_deck.txt", pShaderProgram, pScreenSpaceShaderProgram, vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD], glm::vec2(0.63f, 0.88f));
     deck = new Deck(this, pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
+    std::cout << "Deck loaded succesfully." << std::endl;
+
+    handScreenThreshold = 100;
 
     pSelectedCard = nullptr;
     auto previousTime = std::chrono::high_resolution_clock::now();
@@ -232,34 +230,6 @@ int Engine::run() {
         /*
         pHoveredCard = Utils::findHoveredCard(windowSize, cursorPosition, pCamera, cards);
 
-        // draw the hovered card in screen space big in a set location
-        if (pHoveredCard != nullptr) {
-            glm::vec3 boardPosition = pHoveredCard->getPosition();
-            glm::vec3 rotation = pHoveredCard->getRotation();
-            pHoveredCard->sendToHand();
-
-            glm::vec3 cardPreviewSize = (8.0f * glm::vec3(63.0f, 88.0f, 1.0f));
-            GLfloat padding = 100;
-
-            // check which side of the screen the cursor is on, preview the card on the other side
-            if (cursorPosition.x > windowSize.x / 2.0f) {
-                pHoveredCard->setPosition(glm::vec3(padding, windowSize.y / 2.0f - cardPreviewSize.y / 2.0f, 0.0f));
-            }
-            else {
-                pHoveredCard->setPosition(glm::vec3(windowSize.x - cardPreviewSize.x - padding, windowSize.y / 2.0f - cardPreviewSize.y / 2.0f, 0.0f));
-            }
-
-            pHoveredCard->setScale(cardPreviewSize);
-            pHoveredCard->setRotation(glm::vec3(0.0f));
-
-            pHoveredCard->draw(pCamera);
-
-            pHoveredCard->sendToBoard();
-            pHoveredCard->setPosition(boardPosition);
-            pHoveredCard->setScale(glm::vec3(0.63f, 0.88f, 1.0f));
-            pHoveredCard->setRotation(rotation);
-        }
-
         pSelectedCard = checkSelectedCard();
 
         if (pSelectedCard != nullptr) {
@@ -268,6 +238,10 @@ int Engine::run() {
             pSelectedCard->setPosition(intersectionPoint + glm::vec3(-0.63f / 2.0f, 0.5f, 0.88f / 2.0f));
         }
         */
+        Card* hoveredCard = Utils::findHoveredCard(windowSize, cursorPosition, pCamera, cards);
+        if (hoveredCard) {
+            hoveredCard->onHover();
+        }
 
         for (Card* c : cards) {
             c->update();

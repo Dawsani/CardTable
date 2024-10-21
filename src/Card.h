@@ -10,6 +10,7 @@ class Card : public GameObject {
         
         void onLeftClick() override;
         void onLeftRelease() override;
+        void onHover() override;
         void update() override;
 
         void select();

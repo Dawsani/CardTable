@@ -38,6 +38,7 @@ class Engine {
         Deck* deck;
         std::vector<Card*> cards;
         std::vector<Card*> hand;
+        GLfloat handScreenThreshold;
 
         GameObject* table;
         

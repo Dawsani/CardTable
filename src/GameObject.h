@@ -15,6 +15,7 @@ public:
     virtual void onLeftRelease() {};
     virtual void onRightClick() {};
     virtual void onRightRelease() {};
+    virtual void onHover() {};
 
     virtual void update() {};
 

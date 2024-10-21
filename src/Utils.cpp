@@ -121,7 +121,7 @@ std::deque<Card *> Utils::readCardsFromFile(Engine* pEngine, std::string filenam
         std::string collectorNumber = words[wordIndex + 1];
         std::string tags = words[wordIndex + 2];
 
-        std::string outputFileName = "assets/cards/" + cardName + '_' + setCode + ".jpg";
+        std::string outputFileName = "assets/cards/" + setCode + '_' + collectorNumber + ".jpg";
 
         // check if the file is already downloaded
         if (!fileExists(outputFileName)) {
@@ -142,9 +142,6 @@ std::deque<Card *> Utils::readCardsFromFile(Engine* pEngine, std::string filenam
     }
 
     file.close();
-
-    // TEMPORARY MANUALLY DOING IT
-    // Card* newCard = new Card()
 
     return cards;
 }
@@ -244,8 +241,6 @@ void Utils::loadModel(const char* filename, unsigned int& vao, unsigned int& num
             faces.push_back(newFace);
         }
     }
-
-    std::cout << "Read in " << faces.size() << " faces." << std::endl;
     
     // x vertices and 5 floats ver vertex
     const int finalVerticesSize = 5 * 3 * faces.size();
