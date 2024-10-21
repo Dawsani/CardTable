@@ -33,6 +33,6 @@ class Utils {
     static std::stack<Card*> readCardsFromFile(std::string filename);
 
     // file downloading
-    static size_t Utils::WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);
-    static bool Utils::downloadCardImage(const std::string& setCode, const std::string& collectorNumber, const std::string& outputFilename);
+    static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);
+    static bool downloadCardImage(const std::string& setCode, const std::string& collectorNumber, const std::string& outputFilename);
 };

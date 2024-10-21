@@ -16,4 +16,4 @@ add_executable(CardTable
                 src/HitBox.cpp src/HitBox.h
                 src/Utils.cpp src/Utils.h)
 
-target_link_libraries(CardTable GL glfw GLEW stbimage)
+target_link_libraries(CardTable GL glfw GLEW stbimage curl)

@@ -1,3 +1,5 @@
+assets/cards/**
+assets/deck_lists/**
 CMakeCache.txt
 CMakeFiles/**
 Makefile

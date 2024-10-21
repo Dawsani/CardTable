@@ -1,5 +1,10 @@
-// My deck!
-1x ace_of_spades.png
-2x 1_of_hearts.png
-3x 3_of_clubs.png
-4x 2_of_diamonds.png
+1x Abundance (cmm) 884 [Draw]
+1x Agitator Ant (mkc) 145 [Counters]
+1x Alexios, Deimos of Kosmos (acr) 33 [Finisher]
+1x Arachnogenesis (dsc) 169 [Protection]
+1x Arasta of the Endless Web (blc) 205 [Tokens]
+1x Arcane Signet (dsc) 92 [Ramp]
+1x Beast Within (dsc) 80 [Removal]
+1x Bedevil (dsc) 84 [Removal]
+1x Blasphemous Act (dsc) 160 [Maybeboard{noDeck}{noPrice},Removal]
+1x Blessed Respite (mh2) 150 [Protection]

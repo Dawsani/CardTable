@@ -1,4 +1,5 @@
 #include "Utils.h"
+#include <filesystem>
 
 // Callback function to write data to a file
 size_t Utils::WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
@@ -73,6 +74,10 @@ Card* Utils::findHighestCard(std::vector<Card*> cards) {
     return highestCard;
 }
 
+bool fileExists(const std::string& filename) {
+    return std::filesystem::exists(filename);
+}
+
 std::stack<Card *> Utils::readCardsFromFile(std::string filename)
 {
     std::stack<Card*> cards;
@@ -98,25 +103,34 @@ std::stack<Card *> Utils::readCardsFromFile(std::string filename)
         int wordIndex = 2;
         bool validFormat = true;
         while (firstLetter != '(') {
-            cardName += words[2];
+            cardName += words[wordIndex];
             wordIndex++;
             if (wordIndex >= words.size()) {
                 std::cout << "Improper formatting in file " << filename << std::endl;
                 validFormat = false;
                 break;
             }
+            firstLetter = words[wordIndex][0];
         }
         if (!validFormat) {
             continue;
         }
-        std::string setCode = words[wordIndex + 1];
-        std::string collectorNumber = words[wordIndex + 2];
-        std::string tags = words[wordIndex + 3];
+        std::string setCode = words[wordIndex];
+        setCode = setCode.substr(1, setCode.size() - 2);
+        std::string collectorNumber = words[wordIndex + 1];
+        std::string tags = words[wordIndex + 2];
 
-        std::string outputFileName = cardName + ".jpg";
+        std::string outputFileName = "assets/cards/" + cardName + '_' + setCode + ".jpg";
 
+        // check if the file is already downloaded
+        if (fileExists(outputFileName)) {
+            std::cout << "File " << outputFileName << " already exists, skipping download." << std::endl;
+            continue;
+        }
         // download the file
+        std::cout << "Downloading " << outputFileName << "...";
         Utils::downloadCardImage(setCode, collectorNumber, outputFileName);
+        std::cout << "Done!" << std::endl;
     }
 
     file.close();
