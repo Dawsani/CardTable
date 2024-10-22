@@ -8,6 +8,7 @@ Card::Card(Engine* pEngine, ShaderProgram *pShaderProgram, ShaderProgram* pScree
     this->pHitBox = new HitBox(this, hitBoxSize);
     this->pScreenSpaceShaderProgram = pScreenSpaceShaderProgram;
     inHand = false;
+    isTapped = false;
 }
 
 void Card::onLeftClick() {
@@ -54,15 +55,15 @@ void Card::onHover()
     else {
         setPosition(glm::vec3(pEngine->getWindowSize().x - cardPreviewSize.x - padding, pEngine->getWindowSize().y / 2.0f - cardPreviewSize.z / 2.0f, 0.0f));
     }
-    setScale(cardPreviewSize);
     setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
+    setScale(cardPreviewSize);
 
     draw(pEngine->getCamera());
 
     inHand = tempInHand; // back to where it was
     setPosition(tempPosition);
-    setScale(tempScale);
     setRotation(tempRotation);
+    setScale(tempScale);
 }
 
 void Card::update()
