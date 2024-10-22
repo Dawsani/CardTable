@@ -3,8 +3,7 @@
 
 Card::Card(Engine* pEngine, ShaderProgram *pShaderProgram, ShaderProgram* pScreenSpaceShaderProgram, unsigned int vaoHandle, unsigned int numVAOPoints, unsigned int textureHandle, glm::vec2 hitBoxSize) : GameObject(pEngine, pShaderProgram, vaoHandle, numVAOPoints, textureHandle)
 {
-    setRotation(glm::vec3(glm::radians(180.0f), 0.0f, 0.0f));
-    setScale(glm::vec3(0.63f, 0.005f, 0.88f));
+    setScale(glm::vec3(0.63f, 0.885f, 0.005f));
     this->pHitBox = new HitBox(this, hitBoxSize);
     this->pScreenSpaceShaderProgram = pScreenSpaceShaderProgram;
     inHand = false;
@@ -39,10 +38,10 @@ void Card::onHover()
     inHand = true; // not actually in hand, just needs to use screen space shader
                     // aka bad code
 
-    glm::vec3 cardPreviewSize = (glm::vec3(672.0f, 1.0f, 936.0f));
+    glm::vec3 cardPreviewSize = (glm::vec3(672.0f, 936.0f, 1.0f));
 
     // scale the preview for small screens
-    while (cardPreviewSize.z > pEngine->getWindowSize().y) {
+    while (cardPreviewSize.y > pEngine->getWindowSize().y) {
         cardPreviewSize *= 0.5f;
     }
 
@@ -50,12 +49,12 @@ void Card::onHover()
 
     // check which side of the screen the cursor is on, preview the card on the other side
     if (pEngine->getMousePosition().x > pEngine->getWindowSize().x / 2.0f) {
-        setPosition(glm::vec3(padding, pEngine->getWindowSize().y / 2.0f - cardPreviewSize.z / 2.0f, 0.0f));
+        setPosition(glm::vec3(padding, pEngine->getWindowSize().y / 2.0f - cardPreviewSize.y / 2.0f, 0.0f));
     }
     else {
-        setPosition(glm::vec3(pEngine->getWindowSize().x - cardPreviewSize.x - padding, pEngine->getWindowSize().y / 2.0f - cardPreviewSize.z / 2.0f, 0.0f));
+        setPosition(glm::vec3(pEngine->getWindowSize().x - cardPreviewSize.x - padding, pEngine->getWindowSize().y / 2.0f - cardPreviewSize.y / 2.0f, 0.0f));
     }
-    setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
+    setRotation(glm::vec3(0.0f));
     setScale(cardPreviewSize);
 
     draw(pEngine->getCamera());
@@ -73,7 +72,7 @@ void Card::update()
             float yOffset = 0.5f;
             glm::vec3 mouseRay = Utils::calculateCursorRay(pEngine->getWindowSize(), pEngine->getMousePosition(), pEngine->getCamera());
             glm::vec3 groundPoint = Utils::calculateRayIntersection(pEngine->getCamera()->getPosition(), mouseRay);
-            glm::vec3 offset = glm::vec3(-scale.x / 2.0f, 0.2f, scale.z / 2.0f);
+            glm::vec3 offset = glm::vec3(-scale.x / 2.0f, -scale.y / 2.0f, 0.2f);
             setPosition(groundPoint + offset);
         }
         else {
@@ -103,16 +102,16 @@ float Card::checkRayCollision(glm::vec3 rayOrigin, glm::vec3 rayDirection)
         glm::vec3 point = Utils::calculateRayIntersection(rayOrigin, rayDirection);
         // i only  care about the xz plane, since generally cards are close to it
         if (point.x < position.x + scale.x && point.x > position.x && 
-            point.z > position.z - scale.z && point.z < position.z) {
+            point.y < position.y + scale.y && point.y > position.y) {
                 GLfloat distanceToPoint = glm::distance(point, pEngine->getCamera()->getPosition());
-                return distanceToPoint - 2.0f * position.y; // subtract the distance from y such that cards higher up have prio
+                return distanceToPoint - 2.0f * position.z; // subtract the distance from y such that cards higher up have prio
         }
         return -1;
     }
     else {
         glm::vec2 cursorPosition = pEngine->getMousePosition();
         if (cursorPosition.x < position.x + scale.x && cursorPosition.x > position.x &&
-            cursorPosition.y > pEngine->getWindowSize().y - position.y - scale.z && cursorPosition.y < pEngine->getWindowSize().y - position.y) {
+            cursorPosition.y > pEngine->getWindowSize().y - position.y - scale.y && cursorPosition.y < pEngine->getWindowSize().y - position.y) {
                 return 0.0f;
             }
         return -1;
@@ -145,7 +144,7 @@ void Card::draw(Camera *pCamera)
     else {
         if (isTapped) {
             glm::vec3 tempPos = position;
-            setPosition(position + glm::vec3(0.0f, 0.0f, -scale.x));
+            setPosition(position + glm::vec3(0.0f, scale.x, 0.0f));
             GameObject::draw(pCamera);
             setPosition(tempPos);
         }
@@ -165,12 +164,12 @@ void Card::toggleIsTapped() {
 }
 
 void Card::tap() {
-    setRotation(glm::vec3(rotation.x, glm::radians(90.0f), 0.0f));
+    setRotation(glm::vec3(0.0f, 0.0f, glm::radians(-90.0f)));
     isTapped = true;
 }
 
 void Card::untap() {
-    setRotation(glm::vec3(rotation.x, 0.0f, 0.0f));
+    setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
     isTapped = false;
 }  
 
@@ -178,14 +177,12 @@ void Card::sendToHand()
 {
     untap();
     setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-    setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
-    setScale(0.5f * glm::vec3(672, 1.0f, 936));
+    setScale(0.5f * glm::vec3(672, 936, 1.0f));
     inHand = true;
 }
 
 void Card::sendToBoard()
 {
-    setRotation(glm::vec3(glm::radians(180.0f), 0.0f, 0.0f));
-    setScale(glm::vec3(0.63f, 0.005f, 0.88f));
+    setScale(glm::vec3(0.63f, 0.88f, 0.005f));
     inHand = false;
 }

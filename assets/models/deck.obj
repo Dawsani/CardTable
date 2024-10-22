@@ -2,12 +2,12 @@
 # buttom vertices
 v 0.0 0.0 0.0   # front left
 v 1.0 0.0 0.0  # front right
-v 0.00 0.0 1.0 # back left
-v 1.0 0.0 1.0 # back right
+v 0.0 1.0 0.0 # back left
+v 1.0 1.0 0.0 # back right
 # top vertices
-v 0.0 1.0 0.0   # front left
-v 1.0 1.0 0.0  # front right
-v 0.00 1.0 1.0 # back left
+v 0.0 0.0 1.0   # front left
+v 1.0 0.0 1.0  # front right
+v 0.0 1.0 1.0 # back left
 v 1.0 1.0 1.0 # back right
 
 # vertex normals, just making the top face normal, and all other faces the color of the side of the card

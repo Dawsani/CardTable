@@ -177,21 +177,20 @@ int Engine::run() {
     pScreenSpaceShaderProgram = new ShaderProgram("shaders/screenSpaceShader.v.glsl", "shaders/screenSpaceShader.f.glsl");
     std::cout << "Done" << std::endl;
 
-    pCamera = new Camera(glm::vec3(0.0f, 3.0f, 2.0f), 45.0f, windowSize);
+    pCamera = new Camera(glm::vec3(0.0f, -2.0f, 3.0f), 45.0f, windowSize);
 
     // Main loop
     glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
 
     table = new GameObject(this, pShaderProgram, vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
-    table->setPosition(glm::vec3(-10.0f, 0.0f, -10.0f));
-    table->setScale(glm::vec3(1.0f, 0.001f, 1.0f));
+    table->setPosition(glm::vec3(-10.0f, -10.0f, 0.0f));
+    table->setScale(glm::vec3(1.0f, 1.0f, 0.0001f));
     table->setName("Table");
     gameObjects.push_back(table);
     
     std::cout << "Reading in deck" << std::endl;
     std::deque<Card*> deckCards = Utils::readCardsFromFile(this, "assets/deck_lists/my_deck.txt", pShaderProgram, pScreenSpaceShaderProgram, vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD], glm::vec2(0.63f, 0.88f));
     deck = new Deck(this, pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
-    deck->setPosition(glm::vec3(2.0f, 0.0f, 0.0f));
     std::cout << "Deck loaded succesfully." << std::endl;
     deck->setName("My Deck");
     gameObjects.push_back(deck);
@@ -277,7 +276,7 @@ void Engine::drop(GameObject *gameObject)
         }
 
         if (g->checkVerticalCollision(gameObject)) {
-            GLfloat topPoint = g->getPosition().y + g->getScale().y;
+            GLfloat topPoint = g->getPosition().z + g->getScale().z;
             if (topPoint > highestPoint) {
                 highestPoint = topPoint;
                 std::cout << g->getName() << std::endl;
@@ -285,7 +284,7 @@ void Engine::drop(GameObject *gameObject)
         }
     }
 
-    gameObject->setPosition(glm::vec3(gameObject->getPosition().x, highestPoint + 0.005f, gameObject->getPosition().z));
+    gameObject->setPosition(glm::vec3(gameObject->getPosition().x, gameObject->getPosition().y, highestPoint + 0.005f));
 }
 
 void Engine::sendToHand(Card *card)

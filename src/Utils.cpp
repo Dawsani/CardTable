@@ -341,7 +341,7 @@ glm::vec3 Utils::calculateCursorRay(glm::vec2 windowSize, glm::vec2 mousePositio
 glm::vec3 Utils::calculateRayIntersection(glm::vec3 rayOrigin, glm::vec3 rayDirection)
 {
     rayDirection = glm::normalize(rayDirection);
-    float t = - rayOrigin.y / rayDirection.y;
+    float t = - rayOrigin.z / rayDirection.z;
     glm::vec3 intersectionPoint = rayOrigin + rayDirection * t;
 
     // TODO: FIGURE OUT WHY I NEED TO MULTIPLY BY 2 RN.
@@ -390,6 +390,10 @@ GameObject *Utils::findHoveredGameObject(glm::vec2 windowSize, glm::vec2 mousePo
                 closestDistance = distanceFromCamera;
                 closestHoveredObject = g;
         }
+    }
+
+    if (closestHoveredObject) {
+        std::cout << closestHoveredObject->getName() << std::endl;
     }
 
     return closestHoveredObject;

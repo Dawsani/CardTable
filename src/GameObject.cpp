@@ -20,8 +20,8 @@ bool GameObject::checkVerticalCollision(GameObject *other)
 {
     if (position.x < other->getPosition().x + other->getScale().x &&
 		position.x + scale.x > other->getPosition().x &&
-		position.z < other->getPosition().z + other->getScale().z &&
-		position.z + scale.z > other->getPosition().z) {
+		position.y < other->getPosition().y + other->getScale().y &&
+		position.y + scale.y > other->getPosition().y) {
 		return true;
 	}   
     return false;

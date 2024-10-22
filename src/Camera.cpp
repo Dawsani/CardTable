@@ -4,7 +4,7 @@ Camera::Camera(glm::vec3 position, float fov, glm::vec2 windowSize) {
     this->position = position;
     this->fov = fov;
     lookAtPoint = glm::vec3(0.0f, 0.0f, 0.0f);
-    upVector = glm::vec3(0.0f, 1.0f, 0.0f);
+    upVector = glm::vec3(0.0f, 0.0f, 1.0f);
     moveSpeed = 0.01f;
     zoomSpeed = 0.1f;
     updateViewMatrix();
@@ -19,7 +19,7 @@ void Camera::updateProjectionMatrices(glm::vec2 windowSize)
 
 void Camera::Pan(glm::vec2 panMovement)
 {
-    glm::vec3 movement = glm::vec3(panMovement.x, 0.0f, panMovement.y);
+    glm::vec3 movement = glm::vec3(panMovement.x, -panMovement.y, 0.0f);
     glm::vec3 finalMovement = moveSpeed * movement;
     position += finalMovement;
     lookAtPoint += finalMovement;
