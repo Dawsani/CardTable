@@ -11,10 +11,15 @@ Deck::Deck(Engine* pEngine, ShaderProgram *pShaderProgram, unsigned int vaoHandl
 
 void Deck::onLeftClick()
 {
+    if (cards.empty()) {
+        return;
+    }
+    
     Card* c = cards.front();
     c->select();
     pEngine->addGameObject(c);
     cards.pop_front();
+    setScale(glm::vec3(0.63f, cards.size() * 0.005, 0.88f));
 }
 
 float Deck::checkRayCollision(glm::vec3 rayOrigin, glm::vec3 rayDirection)

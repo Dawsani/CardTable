@@ -183,12 +183,16 @@ int Engine::run() {
     glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
 
     table = new GameObject(this, pShaderProgram, vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
+    table->setPosition(glm::vec3(-10.0f, 0.0f, -10.0f));
+    table->setScale(glm::vec3(1.0f, 0.001f, 1.0f));
+    table->setName("Table");
     gameObjects.push_back(table);
     
     std::cout << "Reading in deck" << std::endl;
     std::deque<Card*> deckCards = Utils::readCardsFromFile(this, "assets/deck_lists/my_deck.txt", pShaderProgram, pScreenSpaceShaderProgram, vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD], glm::vec2(0.63f, 0.88f));
     deck = new Deck(this, pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
     std::cout << "Deck loaded succesfully." << std::endl;
+    deck->setName("My Deck");
     gameObjects.push_back(deck);
 
     handScreenThreshold = 400;
@@ -271,10 +275,11 @@ void Engine::drop(GameObject *gameObject)
             continue;
         }
 
-        if (gameObject->checkVerticalCollision(g)) {
+        if (g->checkVerticalCollision(gameObject)) {
             GLfloat topPoint = g->getPosition().y + g->getScale().y;
             if (topPoint > highestPoint) {
                 highestPoint = topPoint;
+                std::cout << g->getName() << std::endl;
             }
         }
     }

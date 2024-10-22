@@ -135,6 +135,7 @@ std::deque<Card *> Utils::readCardsFromFile(Engine* pEngine, std::string filenam
         unsigned int textureId = LoadTexture(outputFileName.c_str());
         for (unsigned int i = 0; i < numCopies; i++) {
             Card* newCard = new Card(pEngine, pShaderProgram, pScreenSpaceShaderProgram, vaoHandle, numVAOPoints, textureId, hitBoxSize);
+            newCard->setName(cardName);
             cards.push_back(newCard);
         }
     }

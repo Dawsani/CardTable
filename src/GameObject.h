@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
+#include <string>
 #include "Camera.h"
 #include "ShaderProgram.h"
 
@@ -33,14 +34,17 @@ public:
     void setPosition(glm::vec3 position);
     void setRotation(glm::vec3 rotation);
     void setScale(glm::vec3 scale);
+    void setName(std::string name) { this->name = name; }
 
     glm::vec3 getPosition() { return position; }
     glm::vec3 getRotation() { return rotation; }
     glm::vec3 getScale() { return scale; }
     bool getIsSelected() { return isSelected; }
+    std::string getName() { return name; }
 
     virtual void draw(Camera* pCamera);
 protected:
+    std::string name = "Unnamed";
     class Engine* pEngine;
     ShaderProgram* pShaderProgram;
 

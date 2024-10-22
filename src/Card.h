@@ -17,6 +17,7 @@ class Card : public GameObject {
         
         bool check2DPointCollision(glm::vec2 point);
         float checkRayCollision(glm::vec3 rayOrigin, glm::vec3 rayDirection) override;
+        virtual bool checkVerticalCollision(GameObject* other) override;
         HitBox* getHitBox() { return pHitBox; }
 
         void toggleIsTapped();

@@ -104,7 +104,8 @@ float Card::checkRayCollision(glm::vec3 rayOrigin, glm::vec3 rayDirection)
         // i only  care about the xz plane, since generally cards are close to it
         if (point.x < position.x + scale.x && point.x > position.x && 
             point.z > position.z - scale.z && point.z < position.z) {
-                return glm::distance(point, pEngine->getCamera()->getPosition());
+                GLfloat distanceToPoint = glm::distance(point, pEngine->getCamera()->getPosition());
+                return distanceToPoint - 2.0f * position.y; // subtract the distance from y such that cards higher up have prio
         }
         return -1;
     }
@@ -116,6 +117,15 @@ float Card::checkRayCollision(glm::vec3 rayOrigin, glm::vec3 rayDirection)
             }
         return -1;
     }
+}
+
+bool Card::checkVerticalCollision(GameObject *other)
+{
+    if (inHand) {
+        return false;
+    }
+
+    return GameObject::checkVerticalCollision(other);
 }
 
 void Card::draw(Camera *pCamera)
