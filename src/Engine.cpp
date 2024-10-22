@@ -279,7 +279,6 @@ void Engine::drop(GameObject *gameObject)
             GLfloat topPoint = g->getPosition().z + g->getScale().z;
             if (topPoint > highestPoint) {
                 highestPoint = topPoint;
-                std::cout << g->getName() << std::endl;
             }
         }
     }

@@ -391,11 +391,6 @@ GameObject *Utils::findHoveredGameObject(glm::vec2 windowSize, glm::vec2 mousePo
                 closestHoveredObject = g;
         }
     }
-
-    if (closestHoveredObject) {
-        std::cout << closestHoveredObject->getName() << std::endl;
-    }
-
     return closestHoveredObject;
 }
 

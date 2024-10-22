@@ -10,18 +10,16 @@ networks, client/server multiplayer
 
 
 bugs:
-axis not alligned properly...
-what i want:
-    x left to right,
-    z front to back
-    y down to up
+none! (as far as i know)
 
 refactor/clean up code:
-add a method to read in a vao from file
+make all functions follow naming conventions (lower camel)
 
 polish:
+allow cards in hand to be reordered
+make the selected card appear on top of all other things while you drag it around
 add a border around hovered cards
 add lighting to shaders
-allow cards in hand to be reordered
 make dragging a card onto the deck put it on deck top
-don't allow cards to be placed colliding with the deck and visaversa
+add audio
+shuffling animation
