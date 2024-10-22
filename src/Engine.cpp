@@ -191,6 +191,7 @@ int Engine::run() {
     std::cout << "Reading in deck" << std::endl;
     std::deque<Card*> deckCards = Utils::readCardsFromFile(this, "assets/deck_lists/my_deck.txt", pShaderProgram, pScreenSpaceShaderProgram, vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD], glm::vec2(0.63f, 0.88f));
     deck = new Deck(this, pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
+    deck->setPosition(glm::vec3(2.0f, 0.0f, 0.0f));
     std::cout << "Deck loaded succesfully." << std::endl;
     deck->setName("My Deck");
     gameObjects.push_back(deck);

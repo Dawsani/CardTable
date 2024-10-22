@@ -1,4 +1,3 @@
-tapping/untapping
 add context menu to deck on right click
     move deck
     shuffle
@@ -11,9 +10,11 @@ networks, client/server multiplayer
 
 
 bugs:
-cards wont stack properly, or at least look wrong when hovering cards stacked more than 10
-z axis is backwards? maybe?
-fix camera width height on window
+axis not alligned properly...
+what i want:
+    x left to right,
+    z front to back
+    y down to up
 
 refactor/clean up code:
 add a method to read in a vao from file

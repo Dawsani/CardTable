@@ -3,8 +3,8 @@
 Camera::Camera(glm::vec3 position, float fov, glm::vec2 windowSize) {
     this->position = position;
     this->fov = fov;
-    lookAtPoint = glm::vec3(0, 0, 0);
-    upVector = glm::vec3(0.0f, 0.0f, -1.0f);
+    lookAtPoint = glm::vec3(0.0f, 0.0f, 0.0f);
+    upVector = glm::vec3(0.0f, 1.0f, 0.0f);
     moveSpeed = 0.01f;
     zoomSpeed = 0.1f;
     updateViewMatrix();
