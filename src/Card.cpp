@@ -11,7 +11,12 @@ Card::Card(Engine* pEngine, ShaderProgram *pShaderProgram, ShaderProgram* pScree
 }
 
 void Card::onLeftClick() {
-    isSelected = true;
+    if (pEngine->getIsDoubleClick()) {
+        toggleIsTapped();
+    }
+    else {
+        isSelected = true;
+    }
 }
 
 void Card::onLeftRelease() {
@@ -127,22 +132,40 @@ void Card::draw(Camera *pCamera)
         glDrawElements(GL_TRIANGLES, numVAOPoints, GL_UNSIGNED_INT, 0);
     }
     else {
-        GameObject::draw(pCamera);
+        if (isTapped) {
+            glm::vec3 tempPos = position;
+            setPosition(position + glm::vec3(0.0f, 0.0f, -scale.x));
+            GameObject::draw(pCamera);
+            setPosition(tempPos);
+        }
+        else {
+            GameObject::draw(pCamera);
+        }
     }
 }
 
 void Card::toggleIsTapped() {
-    isTapped = !isTapped;
     if (isTapped) {
-        setRotation(glm::vec3(rotation.x, glm::radians(90.0f), 0.0f));
+        untap();
     }
     else {
-        setRotation(glm::vec3(rotation.x, 0.0f, 0.0f));
+        tap();
     }
 }
 
+void Card::tap() {
+    setRotation(glm::vec3(rotation.x, glm::radians(90.0f), 0.0f));
+    isTapped = true;
+}
+
+void Card::untap() {
+    setRotation(glm::vec3(rotation.x, 0.0f, 0.0f));
+    isTapped = false;
+}  
+
 void Card::sendToHand()
 {
+    untap();
     setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
     setScale(0.5f * glm::vec3(672, 1.0f, 936));

@@ -23,7 +23,9 @@ class Engine {
         void sendToHand(Card* card);
         void removeFromHand(Card* card);
 
-        void checkIsDoubleClick();
+        void updateIsDoubleClick();
+        bool getIsDoubleClick() { return isDoubleClick; };
+
 
         glm::vec2 getWindowSize() { return windowSize; }
         Camera* getCamera() { return pCamera; }

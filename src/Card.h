@@ -20,6 +20,8 @@ class Card : public GameObject {
         HitBox* getHitBox() { return pHitBox; }
 
         void toggleIsTapped();
+        void tap();
+        void untap();
         void sendToHand();
         void sendToBoard();
 

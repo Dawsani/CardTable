@@ -321,7 +321,7 @@ void Engine::handleCursorPositionEvent(double x, double y) {
     cursorPosition = currentCursorPosition;
 }
 
-void Engine::checkIsDoubleClick() {
+void Engine::updateIsDoubleClick() {
     GLfloat currentTime = glfwGetTime();
     if (currentTime - lastClickTime < doubleClickThreshold) {
         isDoubleClick = true;
@@ -346,7 +346,7 @@ void Engine::handleMouseButtonEvent(int button, int action, int mod) {
             if (!hoveredGameObject) {
                 return;
             }
-            checkIsDoubleClick();
+            updateIsDoubleClick();
             hoveredGameObject->onLeftClick();
         }
         else if (action == GLFW_RELEASE) {
