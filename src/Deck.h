@@ -15,7 +15,7 @@ public:
 
     void onLeftClick() override;
 
-    bool checkRayCollision(glm::vec3 rayOrigin, glm::vec3 rayDirection);
+    float checkRayCollision(glm::vec3 rayOrigin, glm::vec3 rayDirection) override;
 
     void shuffle();
 private:

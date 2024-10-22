@@ -16,11 +16,19 @@ class Engine {
     public:
         Engine();
         int run();
-        void addCard(Card* card) { cards.push_back(card); };
+
+        void addGameObject(GameObject* gameObject);
+        void drop(GameObject* GameObject);
+
+        void sendToHand(Card* card);
+        void removeFromHand(Card* card);
+
+        void checkIsDoubleClick();
 
         glm::vec2 getWindowSize() { return windowSize; }
         Camera* getCamera() { return pCamera; }
         glm::vec2 getMousePosition() { return cursorPosition; };
+        GLfloat getHandScreenThreshold() { return handScreenThreshold; };
         
         void handleFramebufferSizeEven(int width, int height);
         void handleCursorPositionEvent(double x, double y );  
@@ -36,7 +44,7 @@ class Engine {
         Camera* pCamera;
 
         Deck* deck;
-        std::vector<Card*> cards;
+        std::vector<GameObject*> gameObjects;
         std::vector<Card*> hand;
         GLfloat handScreenThreshold;
 

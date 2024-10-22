@@ -135,8 +135,6 @@ std::deque<Card *> Utils::readCardsFromFile(Engine* pEngine, std::string filenam
         unsigned int textureId = LoadTexture(outputFileName.c_str());
         for (unsigned int i = 0; i < numCopies; i++) {
             Card* newCard = new Card(pEngine, pShaderProgram, pScreenSpaceShaderProgram, vaoHandle, numVAOPoints, textureId, hitBoxSize);
-            newCard->setRotation(glm::vec3(glm::radians(-90.0f), 0.0f, 0.0f));
-            newCard->setScale(glm::vec3(0.63f, 0.88f, 1.0f));
             cards.push_back(newCard);
         }
     }
@@ -371,6 +369,29 @@ Card *Utils::findHoveredCard(glm::vec2 windowSize, glm::vec2 mousePosition, Came
     }
 
     return nullptr;
+}
+
+GameObject *Utils::findHoveredGameObject(glm::vec2 windowSize, glm::vec2 mousePosition, Camera *pCamera, std::vector<GameObject *> gameObjects)
+{
+    // there are different ways of seeing what is being hovered dependant on the game object.
+    // every game object needs a way to check if it was collided with by a ray
+    // cards in your hand are always in front of everythin, the deck should, but is not guranteed to be closer than a card
+    // game objects should return how close to the camera they are somehow
+
+    glm::vec3 rayDirection = calculateCursorRay(windowSize, mousePosition, pCamera);
+
+    GameObject* closestHoveredObject = nullptr;
+    float closestDistance = -1;
+    for (GameObject* g : gameObjects) {
+        float distanceFromCamera = g->checkRayCollision(pCamera->getPosition(), rayDirection);
+        if (distanceFromCamera >= 0 && 
+            (distanceFromCamera < closestDistance || closestDistance == -1)) {
+                closestDistance = distanceFromCamera;
+                closestHoveredObject = g;
+        }
+    }
+
+    return closestHoveredObject;
 }
 
 bool Utils::readTextFromFile(const char *filename, char *&output)

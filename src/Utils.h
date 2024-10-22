@@ -21,7 +21,7 @@ class Utils {
     static glm::vec3 calculateCursorRay(glm::vec2 windowSize, glm::vec2 mousePosition, Camera* pCamera);
     static glm::vec3 calculateRayIntersection(glm::vec3 rayOrigin, glm::vec3 rayDirection);
     static Card* findHoveredCard(glm::vec2 windowSize, glm::vec2 mousePosition, Camera* pCamera, std::vector<Card*> cards);
-
+    static GameObject* findHoveredGameObject(glm::vec2 windowSize, glm::vec2 mousePosition, Camera* pCamera, std::vector<GameObject*> gameObjects);
     // Reads the data in file filename, puts the data in output, returns false if data cannot be read.
     static bool readTextFromFile(const char *filename, char* &output);
 

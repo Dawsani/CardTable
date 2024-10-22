@@ -72,20 +72,8 @@ void Engine::SetupVAOs() {
 void Engine::drawScene() {
     pShaderProgram->useProgram();
 
-    table->draw(pCamera);
-    deck->draw(pCamera);
-
-    for (int i = 0; i < cards.size(); i++) {
-        GameObject* card = cards[i];
-        card->draw(pCamera);
-    }
-
-    for (int i = 0; i < hand.size(); i++) {
-        GameObject* card = hand[i];
-        card->setPosition(glm::vec3(2 * 63.0f * i, 0.0f, 0.0f));
-        card->setScale(2.0f * glm::vec3(63.0f, 88.0f, 1.0f));
-        card->setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
-        card->draw(pCamera);
+    for (GameObject* g : gameObjects) {
+        g->draw(pCamera);
     }
 
 }
@@ -195,13 +183,15 @@ int Engine::run() {
     glm::mat4 modelMatrix, viewMatrix, projectionMatrix;
 
     table = new GameObject(this, pShaderProgram, vaoHandles[VAO_ID::TABLE], numVAOPoints[VAO_ID::TABLE], textureHandles[TEXTURE_ID::GRID]);
-
+    gameObjects.push_back(table);
+    
     std::cout << "Reading in deck" << std::endl;
     std::deque<Card*> deckCards = Utils::readCardsFromFile(this, "assets/deck_lists/my_deck.txt", pShaderProgram, pScreenSpaceShaderProgram, vaoHandles[VAO_ID::CARD], numVAOPoints[VAO_ID::CARD], glm::vec2(0.63f, 0.88f));
     deck = new Deck(this, pShaderProgram, vaoHandles[VAO_ID::DECK], numVAOPoints[VAO_ID::DECK], textureHandles[TEXTURE_ID::BACK], deckCards);
     std::cout << "Deck loaded succesfully." << std::endl;
+    gameObjects.push_back(deck);
 
-    handScreenThreshold = 100;
+    handScreenThreshold = 400;
 
     pSelectedCard = nullptr;
     auto previousTime = std::chrono::high_resolution_clock::now();
@@ -238,13 +228,18 @@ int Engine::run() {
             pSelectedCard->setPosition(intersectionPoint + glm::vec3(-0.63f / 2.0f, 0.5f, 0.88f / 2.0f));
         }
         */
-        Card* hoveredCard = Utils::findHoveredCard(windowSize, cursorPosition, pCamera, cards);
-        if (hoveredCard) {
-            hoveredCard->onHover();
+        GameObject* hoveredObject = Utils::findHoveredGameObject(windowSize, cursorPosition, pCamera, gameObjects);
+        if (hoveredObject) {
+            hoveredObject->onHover();
         }
 
-        for (Card* c : cards) {
-            c->update();
+        for (GameObject* g : gameObjects) {
+            g->update();
+        }
+
+        for (int i = 0; i < hand.size(); i++) {
+            Card* c = hand[i];
+            c->setPosition(glm::vec3(i * c->getScale().x, 0.0f, 0.0f));
         }
 
         drawScene();
@@ -260,6 +255,48 @@ int Engine::run() {
     glfwDestroyWindow(pWindow);
     glfwTerminate();
     return 0;
+}
+
+void Engine::addGameObject(GameObject *gameObject)
+{
+    gameObjects.push_back(gameObject);
+}
+
+void Engine::drop(GameObject *gameObject)
+{
+    // find the highest point on every object
+    GLfloat highestPoint = 0.0f;
+    for (GameObject* g : gameObjects) {
+        if (g == gameObject) {
+            continue;
+        }
+
+        if (gameObject->checkVerticalCollision(g)) {
+            GLfloat topPoint = g->getPosition().y + g->getScale().y;
+            if (topPoint > highestPoint) {
+                highestPoint = topPoint;
+            }
+        }
+    }
+
+    gameObject->setPosition(glm::vec3(gameObject->getPosition().x, highestPoint + 0.005f, gameObject->getPosition().z));
+}
+
+void Engine::sendToHand(Card *card)
+{
+    hand.push_back(card);
+    card->sendToHand();
+}
+
+void Engine::removeFromHand(Card *card)
+{
+    for (int i = 0; i < hand.size(); i++) {
+        if (hand[i] == card) {
+            hand.erase(hand.begin() + i);
+            card->sendToBoard();
+            return;
+        }
+    }
 }
 
 void Engine::handleFramebufferSizeEven(int width, int height) {
@@ -280,12 +317,20 @@ void Engine::handleCursorPositionEvent(double x, double y) {
         
         pCamera->Pan(cursorMovement);
     }
-    if (leftMouseButtonState == GLFW_PRESS) {
-        // Check if the mouse clicked a card, skipping this for now and just grabbing the only card
-
-    }
 
     cursorPosition = currentCursorPosition;
+}
+
+void Engine::checkIsDoubleClick() {
+    GLfloat currentTime = glfwGetTime();
+    if (currentTime - lastClickTime < doubleClickThreshold) {
+        isDoubleClick = true;
+        std::cout << "Double click!" << std::endl;
+    }
+    else {
+        isDoubleClick = false;
+    }
+    lastClickTime = currentTime;
 }
 
 void Engine::handleMouseButtonEvent(int button, int action, int mod) {
@@ -296,35 +341,20 @@ void Engine::handleMouseButtonEvent(int button, int action, int mod) {
         }
     }
     else if (button == GLFW_MOUSE_BUTTON_LEFT) {
-        leftMouseButtonState = action;
-        if (leftMouseButtonState == GLFW_PRESS) {
-            GLfloat currentTime = glfwGetTime();
-            if (currentTime - lastClickTime < doubleClickThreshold) {
-                isDoubleClick = true;
-                std::cout << "Double click!" << std::endl;
-            }
-            else {
-                isDoubleClick = false;
-            }
-            lastClickTime = currentTime;
-
-            // see if something is hovered, if so, click it
-            glm::vec3 cursorRay = Utils::calculateCursorRay(windowSize, cursorPosition, pCamera);
-            glm::vec3 intersectionPoint = Utils::calculateRayIntersection(pCamera->getPosition(), cursorRay);
-            if (deck->checkRayCollision(pCamera->getPosition(), cursorRay)) {
-                deck->onLeftClick();
+        if (action == GLFW_PRESS) {
+            GameObject* hoveredGameObject = Utils::findHoveredGameObject(windowSize, cursorPosition, pCamera, gameObjects);
+            if (!hoveredGameObject) {
                 return;
             }
-            Card* hoveredCard = Utils::findHoveredCard(windowSize, cursorPosition, pCamera, cards);
-            if (hoveredCard) {
-                hoveredCard->onLeftClick();
-            }
+            checkIsDoubleClick();
+            hoveredGameObject->onLeftClick();
         }
         else if (action == GLFW_RELEASE) {
-            for (Card* c : cards) {
-                c->onLeftRelease();
+            for (GameObject* g : gameObjects) {
+                if (g->getIsSelected()) {
+                    g->onLeftRelease();
+                }
             }
-            deck->onLeftRelease();
         }
     }
 }

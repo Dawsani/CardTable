@@ -1,8 +1,8 @@
 # vertices
 v 0.0 0.0 0.0
 v 1.0 0.0 0.0
-v 0.0  1.0 0.0
-v 1.0 1.0 0.0
+v 0.0  0.0 1.0
+v 1.0 0.0 1.0
 
 # texture coordinates
 vt 0 0

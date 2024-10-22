@@ -13,11 +13,11 @@ void Deck::onLeftClick()
 {
     Card* c = cards.front();
     c->select();
-    pEngine->addCard(c);
+    pEngine->addGameObject(c);
     cards.pop_front();
 }
 
-bool Deck::checkRayCollision(glm::vec3 rayOrigin, glm::vec3 rayDirection)
+float Deck::checkRayCollision(glm::vec3 rayOrigin, glm::vec3 rayDirection)
 {
     // just check the top plane of the deck, for now
     glm::vec3 normal = glm::vec3(0.0f, -1.0f, 0.0f);
@@ -27,10 +27,10 @@ bool Deck::checkRayCollision(glm::vec3 rayOrigin, glm::vec3 rayDirection)
 
     if (intersectionPoint.x < position.x + scale.x && intersectionPoint.x > position.x &&
         intersectionPoint.z < position.z + scale.z && intersectionPoint.z > position.z) {
-            return true;
+            return glm::distance(intersectionPoint, pEngine->getCamera()->getPosition());
     }
 
-    return false;
+    return -1;
 }
 
 void Deck::shuffle()

@@ -16,11 +16,12 @@ class Card : public GameObject {
         void select();
         
         bool check2DPointCollision(glm::vec2 point);
+        float checkRayCollision(glm::vec3 rayOrigin, glm::vec3 rayDirection) override;
         HitBox* getHitBox() { return pHitBox; }
 
         void toggleIsTapped();
-        void sendToHand() { inHand = true; }
-        void sendToBoard() { inHand = false; }
+        void sendToHand();
+        void sendToBoard();
 
         void draw(Camera *pCamera) override;
     private:
@@ -28,7 +29,6 @@ class Card : public GameObject {
         ShaderProgram* pScreenSpaceShaderProgram;
         bool inHand;
         bool isTapped;
-        bool isSelected;
 };
 
 #endif

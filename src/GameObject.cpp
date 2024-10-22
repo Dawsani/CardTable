@@ -16,6 +16,17 @@ GameObject::GameObject(Engine* pEngine, ShaderProgram* pShaderProgram, unsigned 
     updateModelMatrix();
 }
 
+bool GameObject::checkVerticalCollision(GameObject *other)
+{
+    if (position.x < other->getPosition().x + other->getScale().x &&
+		position.x + scale.x > other->getPosition().x &&
+		position.z < other->getPosition().z + other->getScale().z &&
+		position.z + scale.z > other->getPosition().z) {
+		return true;
+	}   
+    return false;
+}
+
 void GameObject::setPosition(glm::vec3 position)
 {
     this->position = position;
